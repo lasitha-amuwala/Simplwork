@@ -1,7 +1,10 @@
 import { NextPage } from 'next';
+import React from 'react';
 
-const Jobs: NextPage = () => {
-    return <div>Jobs</div>;
+type Props = {};
+
+const jobs: NextPage = (props: Props) => {
+	return <div>jobs</div>;
 };
 
-export default Jobs;
+export default jobs;

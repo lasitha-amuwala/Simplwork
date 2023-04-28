@@ -1,7 +1,10 @@
 import { NextPage } from 'next';
+import React from 'react';
 
-const Applications: NextPage = () => {
-    return <div>Applications</div>;
+type Props = {};
+
+const applications: NextPage = (props: Props) => {
+	return <div>applications</div>;
 };
 
-export default Applications;
+export default applications;

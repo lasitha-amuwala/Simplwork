@@ -1,7 +1,10 @@
 import { NextPage } from 'next';
+import React from 'react';
 
-const Profile: NextPage = () => {
-    return <div>Profile</div>;
+type Props = {};
+
+const profile: NextPage = (props: Props) => {
+	return <div>profile</div>;
 };
 
-export default Profile;
+export default profile;
