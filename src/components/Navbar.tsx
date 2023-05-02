@@ -81,7 +81,7 @@ const Navbar = () => {
 						<div className='absolute top-[var(--header-height)] left-0 right-0 w-full h-auto bg-white'>
 							<ul>
 								{navlinks.map((link) => (
-									<li className='pl-6 p-2 border-b text-base font-medium'>
+									<li key={link.name} className='pl-6 p-2 border-b text-base font-medium'>
 										<Link className='text-neutral-600 hover:text-neutral-800' href={link.href} onClick={() => setOpen(false)}>
 											{link.name}
 										</Link>
@@ -97,7 +97,7 @@ const Navbar = () => {
 				<div className='hidden md:block'>
 					<ul className='flex gap-10 font-medium'>
 						{navlinks.map((link) => (
-							<li>
+							<li key={link.name} >
 								<Link className='text-neutral-600 hover:text-neutral-800' href={link.href}>
 									{link.name}
 								</Link>
