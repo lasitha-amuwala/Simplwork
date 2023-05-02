@@ -10,7 +10,7 @@ type Props = {};
 
 const NavControls = () => {
 	const { data: session } = useSession();
-  
+
 	if (!session) {
 		return (
 			<div className='flex gap-2 md:gap-3 tranistion-all duration-300'>
@@ -74,14 +74,14 @@ const Navbar = () => {
 				<div className='md:hidden'>
 					<button
 						onClick={() => setOpen(!open)}
-						className='rounded-full hover:bg-neutral-100 active:bg-neutral-200 p-3 transition-all duration-150'>
+						className='rounded-full hover:bg-neutral-100 active:bg-neutral-200 p-3 transition-all duration-150 cursor-pointer'>
 						<HamburgerMenuIcon className='h-6 w-6' />
 					</button>
 					{open && (
 						<div className='absolute top-[var(--header-height)] left-0 right-0 w-full h-auto bg-white'>
 							<ul>
 								{navlinks.map((link) => (
-									<li className='pl-6 p-2 border text-lg font-medium'>
+									<li className='pl-6 p-2 border-b text-base font-medium'>
 										<Link className='text-neutral-600 hover:text-neutral-800' href={link.href} onClick={() => setOpen(false)}>
 											{link.name}
 										</Link>
