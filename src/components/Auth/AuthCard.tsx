@@ -9,7 +9,7 @@ type AuthCardProps = React.PropsWithChildren<{
 	linkHref: string;
 }>;
 
-const AuthCard = ({ title, subtitle, linkHref, linkText, children }: AuthCardProps) => {
+export const AuthCard = ({ title, subtitle, linkHref, linkText, children }: AuthCardProps) => {
 	return (
 		<div className='flex flex-col items-center'>
 			<div className='bg-[#64B1EC] bg-opacity-[22%] p-3 rounded-lg'>
@@ -27,5 +27,3 @@ const AuthCard = ({ title, subtitle, linkHref, linkText, children }: AuthCardPro
 		</div>
 	);
 };
-
-export default AuthCard;

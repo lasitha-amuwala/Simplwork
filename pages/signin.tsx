@@ -1,29 +1,27 @@
 import { ReactElement } from 'react';
-import { authOptions } from './api/auth/[...nextauth]';
+import { useRouter } from 'next/router';
 import { EmptyLayout } from '@/src/components/layout/EmptyLayout';
-import { GoogleButton } from '@/src/components/Auth/GoogleButton';
-import { getServerSession } from 'next-auth/next';
 import { NextPageWithLayout } from '@/src/types/NextPageWithLayout';
-import AuthCard from '@/src/components/Auth/AuthCard';
+import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+import { useAuth } from '@/src/components/Auth/AuthProvider';
+import { AuthCard } from '@/src/components/Auth/AuthCard';
 
-const SignIn: NextPageWithLayout = () => (
-<div className=' md:bg-white h-auto p-10 rounded-xl md:border border-neural-200'>
-	<AuthCard title='Welcome Back' subtitle='Please login to continue' linkText="Don't have an account? Sign up" linkHref='/signup'>
-		<GoogleButton text='Continue' />
-	</AuthCard></div>
-);
+const SignIn: NextPageWithLayout = () => {
+	const router = useRouter()
+	const { setCredential } = useAuth()
 
-export const getServerSideProps = async (context: any) => {
-	const session = await getServerSession(context.req, context.res, authOptions);
-	if (session) {
-		return {
-			redirect: {
-				destination: '/',
-			},
-		};
+	const handleOnSuccess = (credentialResponse: CredentialResponse) => {
+		setCredential(credentialResponse)
+		router.push('/')
 	}
 
-	return { props: { session } };
+	return (
+		<div className=' md:bg-white h-auto p-10 rounded-xl md:border border-neural-200'>
+			<AuthCard title='Welcome Back' subtitle='Please login to continue' linkText="Don't have an account? Sign up" linkHref='/signup'>
+				<GoogleLogin useOneTap shape='pill' onSuccess={credentialResponse => handleOnSuccess(credentialResponse)}
+					onError={() => console.log('Login Failed')} />
+			</AuthCard></div>
+	)
 };
 
 SignIn.getLayout = function getLayout(page: ReactElement) {

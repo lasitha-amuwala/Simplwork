@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import * as Avatar from '@radix-ui/react-avatar';
 import * as Popover from '@radix-ui/react-popover';
-import { useSession, signOut } from 'next-auth/react';
 import { Cross2Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
+import { useAuth } from './Auth/AuthProvider';
 
 type Props = {};
 
 const NavControls = () => {
-	const { data: session } = useSession();
+	const router = useRouter();
+	const { user: session, setCredential } = useAuth();
 
 	if (!session) {
 		return (
@@ -24,10 +25,15 @@ const NavControls = () => {
 		);
 	}
 
-	const { user } = session;
-	const name = user?.name as string | undefined;
-	const image = user?.image as string | undefined;
-	const nameSplit = name?.split(' ') ?? '';
+
+	const name = session.name as string | undefined;
+	const image = session.image as string | undefined;
+	const initials = `${session.firstName.charAt(0)} ${session.lastName.charAt(0)}`;
+
+	const handleSignOut = () => {
+		setCredential(null)
+		router.reload()
+	}
 
 	return (
 		<Popover.Root>
@@ -36,7 +42,7 @@ const NavControls = () => {
 					<Avatar.Image className='w-full h-full object-cover rounded-full' src={image} alt={name} />
 					<Avatar.Fallback
 						className='h-11 w-11 flex items-center justify-center font-medium border border-neutral-300 bg-sky-500/20 rounded-full text-sky-600 tracking-wider'
-						delayMs={600}>{`${nameSplit[0][0]} ${nameSplit[1][0]}`}</Avatar.Fallback>
+						delayMs={600}>{initials}</Avatar.Fallback>
 				</Avatar.Root>
 			</Popover.Trigger>
 			<Popover.Portal>
@@ -44,7 +50,7 @@ const NavControls = () => {
 					<div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
 						<button
 							className='bg-black px-3 py-1 rounded text-white font-medium w-auto text-center cursor-pointer hover:bg-neutral-800 active:bg-neutral-700'
-							onClick={() => signOut()}>
+							onClick={handleSignOut}>
 							Sign Out
 						</button>
 					</div>
@@ -60,7 +66,7 @@ const NavControls = () => {
 
 const Navbar = () => {
 	const [open, setOpen] = useState(false);
-  const router = useRouter();
+	const router = useRouter();
 
 	const navlinks = [
 		{ name: 'Find Jobs', href: '/jobs' },

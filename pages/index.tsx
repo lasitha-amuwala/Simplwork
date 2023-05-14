@@ -1,13 +1,6 @@
-import Image from 'next/image';
 import { Inter } from 'next/font/google';
-import Navbar from '@/src/components/Navbar';
-import * as Avatar from '@radix-ui/react-avatar';
-import { getServerSession } from 'next-auth/next';
-import * as Popover from '@radix-ui/react-popover';
-
-import { authOptions } from './api/auth/[...nextauth]';
-import { signIn, signOut } from 'next-auth/react';
-import { Cross2Icon } from '@radix-ui/react-icons';
+import { useRouter } from 'next/router';
+import { useAuth } from '@/src/components/Auth/AuthProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,19 +10,15 @@ interface HomeProps {
 
 const Home = ({ session }: HomeProps) => {
     console.log(session);
-
+    const router = useRouter()
+    const { user } = useAuth()
 
     return (
-        <div className="flex min-h-screen w-full h-screen flex-col items-center">
-            
+        <div className="flex min-h-screen w-full h-screen flex-col items-center pt-20">
+            Home
+            {!!user}
         </div>
     );
-};
-
-export const getServerSideProps = async (context: any) => {
-    const session = await getServerSession(context.req, context.res, authOptions);
-
-    return { props: { session } };
 };
 
 export default Home;
