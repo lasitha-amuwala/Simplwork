@@ -1,16 +1,9 @@
 import { Inter } from 'next/font/google';
-import { useRouter } from 'next/router';
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
-interface HomeProps {
-    session: any;
-}
-
-const Home = ({ session }: HomeProps) => {
-    console.log(session);
-    const router = useRouter()
+const Home = () => {
     const { user } = useAuth()
 
     return (

@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
     useEffect(() => {
         if (credential) {
             const userData = jwt_decode(credential.credential as string) as any
+            console.log(userData)
             const { name, family_name: lastName, given_name: firstName, picture: image, email } = userData
             setUser({ name, firstName, lastName, image, email })
         }

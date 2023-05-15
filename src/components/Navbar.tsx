@@ -5,6 +5,7 @@ import { Cross2Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 import { useAuth } from './Auth/AuthProvider';
+import { googleLogout } from '@react-oauth/google';
 
 type Props = {};
 
@@ -32,6 +33,7 @@ const NavControls = () => {
 
 	const handleSignOut = () => {
 		setCredential(null)
+		googleLogout();
 		router.reload()
 	}
 

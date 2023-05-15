@@ -18,7 +18,7 @@ const SignIn: NextPageWithLayout = () => {
 	return (
 		<div className=' md:bg-white h-auto p-10 rounded-xl md:border border-neural-200'>
 			<AuthCard title='Welcome Back' subtitle='Please login to continue' linkText="Don't have an account? Sign up" linkHref='/signup'>
-				<GoogleLogin useOneTap shape='pill' onSuccess={credentialResponse => handleOnSuccess(credentialResponse)}
+				<GoogleLogin useOneTap width='250' shape='pill' onSuccess={credentialResponse => handleOnSuccess(credentialResponse)}
 					onError={() => console.log('Login Failed')} />
 			</AuthCard></div>
 	)
