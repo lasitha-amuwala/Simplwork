@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import * as Avatar from '@radix-ui/react-avatar';
 import * as Popover from '@radix-ui/react-popover';
-import { Cross2Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
+import { RiMenuFill } from 'react-icons/ri';
+import { RxCross2 } from 'react-icons/rx';
 import Link from 'next/link';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import { useAuth } from './Auth/AuthProvider';
 import { googleLogout } from '@react-oauth/google';
 
@@ -26,16 +27,15 @@ const NavControls = () => {
 		);
 	}
 
-
 	const name = session.name as string | undefined;
 	const image = session.image as string | undefined;
 	const initials = `${session.firstName.charAt(0)} ${session.lastName.charAt(0)}`;
 
 	const handleSignOut = () => {
-		setCredential(null)
+		setCredential(null);
 		googleLogout();
-		router.reload()
-	}
+		router.reload();
+	};
 
 	return (
 		<Popover.Root>
@@ -44,7 +44,9 @@ const NavControls = () => {
 					<Avatar.Image className='w-full h-full object-cover rounded-full' src={image} alt={name} />
 					<Avatar.Fallback
 						className='h-11 w-11 flex items-center justify-center font-medium border border-neutral-300 bg-sky-500/20 rounded-full text-sky-600 tracking-wider'
-						delayMs={600}>{initials}</Avatar.Fallback>
+						delayMs={600}>
+						{initials}
+					</Avatar.Fallback>
 				</Avatar.Root>
 			</Popover.Trigger>
 			<Popover.Portal>
@@ -57,7 +59,7 @@ const NavControls = () => {
 						</button>
 					</div>
 					<Popover.Close className='PopoverClose' aria-label='Close'>
-						<Cross2Icon />
+						<RxCross2 />
 					</Popover.Close>
 					<Popover.Arrow className='PopoverArrow' />
 				</Popover.Content>
@@ -83,7 +85,7 @@ const Navbar = () => {
 					<button
 						onClick={() => setOpen(!open)}
 						className='rounded-full hover:bg-neutral-100 active:bg-neutral-200 p-3 transition-all duration-150 cursor-pointer'>
-						<HamburgerMenuIcon className='h-6 w-6' />
+						<RiMenuFill className='h-6 w-6' />
 					</button>
 					{open && (
 						<div className='absolute top-[var(--header-height)] left-0 right-0 w-full h-auto bg-white'>
@@ -105,7 +107,7 @@ const Navbar = () => {
 				<div className='hidden md:block'>
 					<ul className='flex gap-10 font-medium'>
 						{navlinks.map((link) => (
-							<li key={link.name} >
+							<li key={link.name}>
 								<Link className='text-neutral-600 hover:text-neutral-800' href={link.href}>
 									{link.name}
 								</Link>
