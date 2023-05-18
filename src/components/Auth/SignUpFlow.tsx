@@ -1,12 +1,36 @@
+import React from 'react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { CgCheckO } from 'react-icons/cg';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import {
+	ErrorMessage,
+	Field,
+	FieldProps,
+	Form,
+	Formik,
+	FormikConfig,
+	FormikFormProps,
+	FormikHelpers,
+	FormikProps,
+	FormikValues,
+	useField,
+} from 'formik';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { RxCheck } from 'react-icons/rx';
 import * as Yup from 'yup';
+import { useRouter } from 'next/router';
 
-const StepHeader = ({ name, description, stepId, currStep }: { name: string; description: string; stepId: number; currStep: number }) => {
+const StepProgressHeader = ({
+	name,
+	description,
+	stepId,
+	currStep,
+}: {
+	name: string;
+	description: string;
+	stepId: number;
+	currStep: number;
+}) => {
 	const titleColor = currStep === stepId ? 'text-black' : 'text-neutral-500';
 	const descColor = currStep === stepId ? 'text-neutral-700' : 'text-neutral-500';
 	const iconColor = currStep === stepId ? 'text-[#64B1EC]' : currStep > stepId ? 'text-[#64B1EC]/50' : 'text-neutral-400';
@@ -22,118 +46,184 @@ const StepHeader = ({ name, description, stepId, currStep }: { name: string; des
 	);
 };
 
-const InputControl = ({ name, label }: { name: string; label: string }) => {
+const StepHeader = ({ title, subtitle }: { title: string; subtitle: string }) => {
 	return (
 		<div>
+			<h3 className='text-2xl pt-3 font-medium text-center'>{title}</h3>
+			<p className='pt-1 pb-2 text-center font-medium opacity-70'>{subtitle}</p>
+		</div>
+	);
+};
+
+type InputControlProps = {
+	name: string;
+	label: string;
+	errorAbove?: boolean;
+};
+
+const InputControl = ({ name, label, errorAbove }: InputControlProps) => {
+	const errorMsgStyle = 'text-sm font-medium text-red-700';
+	return (
+		<div className=''>
 			<div className='flex items-baseline justify-between'>
 				<label className='font-medium leading-[35px]' htmlFor={name}>
 					{label}
 				</label>
-				<ErrorMessage name={name} className='opacity-[0.8]' />
+				{errorAbove && <ErrorMessage name={name} render={(msg) => <p className={errorMsgStyle}>{msg}</p>} />}
 			</div>
 			<Field
 				type='text'
 				name={name}
 				required
-				className='inline-flex h-[35px] w-full appearance-none items-center justify-center rounded-[4px] px-[10px] leading-none shadow-[0_0_0_1px]  focus:shadow-[0_0_0_2px_black]'></Field>
+				className='box-border inline-flex h-[35px] w-full appearance-none items-center justify-center rounded-[4px] px-[10px] leading-none shadow-[0_0_0_1px]  focus:shadow-[0_0_0_2px_black]'
+			/>
+			{!errorAbove && <ErrorMessage name={name} render={(msg) => <p className={errorMsgStyle}>{msg}</p>} />}
 		</div>
 	);
+};
+
+type ValueTypes = {
+	firstName: string;
+	lastName: string;
+	age: string;
+	gender: string;
+	phone: string;
+	workInCanada: boolean;
+	homeAddress: string;
+	hoursPerWeek: number | null;
 };
 export const SignUpFlow = () => {
 	const [step, setStep] = useState(0);
 
-	const initialValues = {
+	const initialValues: ValueTypes = {
 		firstName: '',
-		LastName: '',
+		lastName: '',
 		age: '',
 		gender: '',
 		phone: '',
+		workInCanada: false,
+		homeAddress: '',
+		hoursPerWeek: null,
 	};
 
-	const validationSchema = Yup.object().shape({
+	// const validationSchema = Yup.object().shape({
+	// 	firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Please enter your first name'),
+	// 	lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Please enter your last name'),
+	// 	age: Yup.number().required('Please enter your age').positive().integer(),
+	// 	gender: Yup.string().required('Please enter your gender'),
+	// 	phone: Yup.number().required('Please enter your phone number'),
+	// 	homeAddress: Yup.string(),
+	// 	hoursPerWeek: Yup.number().required('ypman'),
+	// });
+
+	const validationSchemaStepOne = Yup.object().shape({
 		firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Please enter your first name'),
-		lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required(),
-		age: Yup.number().required().positive().integer(),
-		phone: Yup.number().required(),
+		lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Please enter your last name'),
+		age: Yup.number().required('Please enter your age').positive().integer(),
+		gender: Yup.string().required('Please enter your gender'),
+		phone: Yup.number().required('Please enter your phone number'),
 	});
-	const onSubmit = () => {};
+
+	const validationSchemaStepTwo = Yup.object().shape({
+		homeAddress: Yup.string(),
+		hoursPerWeek: Yup.number().required('ypman'),
+	});
+	const validationSchema = [validationSchemaStepOne, validationSchemaStepTwo];
+
+	const onSubmit = (values: FormikValues) => {
+		if (step === 3) {
+		} else {
+			setStep((step) => step + 1);
+		}
+		alert(JSON.stringify(values, null, 2));
+	};
+
+	const stepArray = [];
 
 	return (
-		<>
-			<div className='flex w-full h-full bg-white p-5'>
-				<div className='bg-gray-100 titems-start rounded-xl w-1/3 min-w-[450px] px-7 py-10 overflow-hidden'>
-					<div className='pb-8'>
-						<Image src='/Logo-long.svg' alt='logo' width={145} height={30} />
-					</div>
-					<div className='flex flex-col gap-6'>
-						<StepHeader name='Create profile' description='Please select the account type that you wish to create' stepId={1} currStep={step} />
-						<StepHeader name='Add Work Availability' description='Please add your work availability' stepId={2} currStep={step} />
-						<StepHeader
-							name='Add Work Experience'
-							description='Please select the account type that you wish to create'
-							stepId={3}
-							currStep={step}
-						/>
-					</div>
+		<div className='flex w-full h-full bg-white p-5'>
+			<div className='bg-gray-100 titems-start rounded-xl w-1/3 min-w-[450px] px-7 py-10 overflow-hidden'>
+				<div className='pb-8'>
+					<Image src='/Logo-long.svg' alt='logo' width={145} height={30} />
 				</div>
-				<div className='flex flex-col w-full h-full gap-3 items-center justify-center'>
-					<Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-						{({ errors }) => (
-							<Form>
-								<div className='flex flex-col gap-5 w-[350px] max-w-[350px]'>
-									<div>
-										<h3 className='text-2xl pt-3 font-medium text-center'>Create Profile</h3>
-										<p className='pt-1 pb-2 text-center'>Enter your information to create your profile</p>
-									</div>
-									<InputControl name='firstName' label='First name' />
-									<InputControl name='lastName' label='Last name' />
-									<div className='flex w-full gap-10'>
+				<div className='flex flex-col gap-6'>
+					<StepProgressHeader
+						name='Create Profile'
+						description='Please select the account type that you wish to create'
+						stepId={0}
+						currStep={step}
+					/>
+					<StepProgressHeader name='Add Work Availability' description='Please add your work availability' stepId={1} currStep={step} />
+					<StepProgressHeader
+						name='Add Work Experience'
+						description='Please select the account type that you wish to create'
+						stepId={2}
+						currStep={step}
+					/>
+				</div>
+			</div>
+			<div className='flex flex-col w-full h-full gap-3 items-center justify-center'>
+				<Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema[step]}>
+					{({ values, setFieldValue }) => (
+						<div className='flex flex-col gap-5 w-[350px] max-w-[350px]'>
+							<FormStepper step={step}>
+								<FormStep>
+									<StepHeader title='Create Profile' subtitle='Enter your details to create a profile' />
+									<InputControl name='firstName' label='First name' errorAbove />
+									<InputControl name='lastName' label='Last name' errorAbove />
+									<div className='flex w-full gap-5'>
 										<InputControl name='age' label='Age' />
 										<InputControl name='gender' label='Gender' />
 									</div>
-									<InputControl name='phone' label='Phone number' />
-
+									<InputControl name='phone' label='Phone' errorAbove />
 									<div className='flex items-center'>
 										<Checkbox.Root
-											className='flex bg-neutral-200 h-[20px] w-[20px] appearance-none items-center justify-center rounded-[4px] outline-none cursor-pointer'
+											onCheckedChange={() => setFieldValue('workInCanada', !values.workInCanada)}
+											className='bg-neutral-200 flex h-5 w-5 appearance-none items-center justify-center rounded-[4px] outline-none'
 											id='c1'>
 											<Checkbox.Indicator>
 												<RxCheck />
 											</Checkbox.Indicator>
 										</Checkbox.Root>
-										<label className='pl-[15px] text-[15px] leading-none text-black font-medium' htmlFor='c1'>
-											I am legally allowed to work in Canada.
+										<label className='pl-[15px] text-[15px] leading-none' htmlFor='c1'>
+											Are you allowed to work in Canada. {values.workInCanada}
 										</label>
 									</div>
-									<div className='flex gap-3 w-full '>
-										<button className='w-1/2 bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80'>
-											Back
-										</button>
-										<button
-											type='submit'
-											className='w-1/2 bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80'>
-											Continue
-										</button>
-									</div>
-								</div>
-							</Form>
-						)}
-					</Formik>
-					<button
-						onClick={() => {
-							setStep(step + 1);
-						}}>
-						Up
-					</button>
-					<button
-						onClick={() => {
-							setStep(step - 1);
-						}}>
-						Down
-					</button>
-					<Formik initialValues={initialValues} onSubmit={() => {}}></Formik>
-				</div>
+								</FormStep>
+								<FormStep>
+									<StepHeader title='Create Profile' subtitle='Enter your details to create a profile' />
+									<InputControl name='homeAddress' label='Home address' errorAbove />
+									<InputControl name='hoursPerWeek' label='Hours per week' errorAbove />
+								</FormStep>
+							</FormStepper>
+						</div>
+					)}
+				</Formik>
 			</div>
-		</>
+		</div>
+	);
+};
+
+const StepOne = ({ children, values, setFieldValue }: React.PropsWithChildren<FormikProps<ValueTypes>>) => {
+	return <></>;
+};
+
+const FormStep = ({ children }: React.PropsWithChildren<{}>) => <>{children}</>;
+
+const FormStepper = ({ children, step }: React.PropsWithChildren<{ step: number }>) => {
+	const arrayChildren = React.Children.toArray(children);
+	const currentChild = arrayChildren[step];
+
+	return (
+		<Form noValidate>
+			{currentChild}
+			<div className='flex gap-3 w-full '>
+				<button
+					type='submit'
+					className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
+					Continue
+				</button>
+			</div>
+		</Form>
 	);
 };
