@@ -6,15 +6,11 @@ import { RxCross2 } from 'react-icons/rx';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useAuth } from './Auth/AuthProvider';
-import { googleLogout } from '@react-oauth/google';
-
-type Props = {};
 
 const NavControls = () => {
-	const router = useRouter();
-	const { user: session, setCredential } = useAuth();
+	const { user, signOut } = useAuth();
 
-	if (!session) {
+	if (!user) {
 		return (
 			<div className='flex gap-2 md:gap-3 tranistion-all duration-300'>
 				<Link href='/signin' className='bg-sky-500 px-2 md:px-3 py-1 rounded text-white font-medium hover:bg-sky-400 active:bg-sky-300 '>
@@ -27,26 +23,16 @@ const NavControls = () => {
 		);
 	}
 
-	const name = session.name as string | undefined;
-	const image = session.image as string | undefined;
-	const initials = `${session.firstName.charAt(0)} ${session.lastName.charAt(0)}`;
-
-	const handleSignOut = () => {
-		setCredential(null);
-		googleLogout();
-		router.reload();
-	};
+	const initials = `${user.givenName.charAt(0)} ${user.familyName.charAt(0)}`;
 
 	return (
 		<Popover.Root>
 			<Popover.Trigger asChild>
 				<Avatar.Root className='h-11 w-11 overflow-hidden rounded-full'>
-					<Avatar.Image className='w-full h-full object-cover rounded-full' src={image} alt={name} />
+					<Avatar.Image className='w-full h-full object-cover rounded-full' src={user.picture} alt={initials} />
 					<Avatar.Fallback
 						className='h-11 w-11 flex items-center justify-center font-medium border border-neutral-300 bg-sky-500/20 rounded-full text-sky-600 tracking-wider'
-						delayMs={600}>
-						{initials}
-					</Avatar.Fallback>
+						delayMs={600}></Avatar.Fallback>
 				</Avatar.Root>
 			</Popover.Trigger>
 			<Popover.Portal>
@@ -54,7 +40,7 @@ const NavControls = () => {
 					<div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
 						<button
 							className='bg-black px-3 py-1 rounded text-white font-medium w-auto text-center cursor-pointer hover:bg-neutral-800 active:bg-neutral-700'
-							onClick={handleSignOut}>
+							onClick={signOut}>
 							Sign Out
 						</button>
 					</div>
@@ -70,7 +56,6 @@ const NavControls = () => {
 
 const Navbar = () => {
 	const [open, setOpen] = useState(false);
-	const router = useRouter();
 
 	const navlinks = [
 		{ name: 'Find Jobs', href: '/jobs' },

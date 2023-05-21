@@ -1,16 +1,18 @@
 import { AuthCard } from '@/src/components/Auth/AuthCard';
 import { EmptyLayout } from '@/src/components/layout/EmptyLayout';
 import { NextPageWithLayout } from '@/src/types/NextPageWithLayout';
-import { ReactElement, useState } from 'react';
-import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+import { ReactElement, useEffect, useState } from 'react';
+import { GoogleLogin } from '@react-oauth/google';
 import { SignUpFlow } from '@/src/components/Auth/SignUpFlow';
+import { useAuth } from '@/src/components/Auth/AuthProvider';
 
 const SignUp: NextPageWithLayout = () => {
-	const [googleSuccess, setGoogleSucess] = useState(true);
+	const [googleSuccess, setGoogleSucess] = useState(false);
+	const { user, handleSignIn } = useAuth();
 
-	const handleSignUp = (credentialResponse: CredentialResponse) => {
-		if (credentialResponse.credential) setGoogleSucess(true);
-	};
+	useEffect(() => {
+		if (user?.credential) setGoogleSucess(true);
+	}, [user]);
 
 	if (googleSuccess) {
 		return <SignUpFlow />;
@@ -21,7 +23,7 @@ const SignUp: NextPageWithLayout = () => {
 			<div className='w-auto bg-white p-10 flex justify-center items-center rounded-xl'>
 				<div className='flex items-center flex-col'>
 					<AuthCard title='Try Simplwork for free' subtitle='' linkText='Already have an account? Sign in' linkHref='/signin'>
-						<GoogleLogin useOneTap width='250' context='signup' shape='pill' onSuccess={handleSignUp}></GoogleLogin>
+						<GoogleLogin useOneTap width='250' context='signup' shape='pill' onSuccess={handleSignIn}></GoogleLogin>
 					</AuthCard>
 				</div>
 			</div>

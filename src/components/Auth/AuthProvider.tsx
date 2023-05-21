@@ -1,38 +1,25 @@
-import { createContext, useContext, useState, useEffect, PropsWithChildren } from 'react'
-import { CredentialResponse } from '@react-oauth/google';
-import jwt_decode from "jwt-decode";
+import { createContext, useContext, useState, PropsWithChildren } from 'react';
+import { CredentialResponse, googleLogout } from '@react-oauth/google';
+import { AuthContextType, GoogleProfileData, GoogleToken } from '@/src/types/Auth';
+import jwt_decode from 'jwt-decode';
 
-type UserType = {
-    name: string,
-    firstName: string,
-    lastName: string
-    image: string,
-    email: string
-}
+export const AuthContext = createContext<AuthContextType | null>(null);
 
-export type AuthContextType = {
-    user: UserType | null,
-    setCredential: (user: CredentialResponse | null) => void
-}
-
-export const AuthContext = createContext<AuthContextType | null>(null)
-
-export const useAuth = () => useContext(AuthContext) as AuthContextType
+export const useAuth = () => useContext(AuthContext) as AuthContextType;
 
 export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
-    const [credential, setCredential] = useState<CredentialResponse | null>(null)
-    const [user, setUser] = useState<UserType | null>(null)
+	const [user, setGoogleProfile] = useState<GoogleProfileData | null>(null);
 
-    useEffect(() => {
-        if (credential) {
-            const userData = jwt_decode(credential.credential as string) as any
-            console.log(userData)
-            const { name, family_name: lastName, given_name: firstName, picture: image, email } = userData
-            setUser({ name, firstName, lastName, image, email })
-        }
-    }, [credential])
+	const handleSignIn = ({ credential }: CredentialResponse) => {
+		const { name, email, family_name, given_name, picture } = jwt_decode(credential as string) as GoogleToken;
+		const googleProfile = { credential: credential, name, email, familyName: family_name, givenName: given_name, picture };
+		setGoogleProfile(googleProfile);
+	};
 
-    return (
-        <AuthContext.Provider value={{ user, setCredential }}>{children}</AuthContext.Provider>
-    )
-}
+	const signOut = () => {
+		setGoogleProfile(null);
+		googleLogout();
+	};
+
+	return <AuthContext.Provider value={{ user, handleSignIn, signOut }}>{children}</AuthContext.Provider>;
+};
