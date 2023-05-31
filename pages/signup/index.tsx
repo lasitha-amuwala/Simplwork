@@ -7,16 +7,9 @@ import { SignUpFlow } from '@/src/components/Auth/SignUpFlow';
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 
 const SignUp: NextPageWithLayout = () => {
-	const [googleSuccess, setGoogleSucess] = useState(false);
 	const { user, handleSignIn } = useAuth();
 
-	useEffect(() => {
-		if (user?.credential) setGoogleSucess(true);
-	}, [user]);
-
-	if (googleSuccess) {
-		return <SignUpFlow />;
-	}
+	if (user?.credential) return <SignUpFlow />;
 
 	return (
 		<div className='flex flex-col w-full items-center justify-center'>
