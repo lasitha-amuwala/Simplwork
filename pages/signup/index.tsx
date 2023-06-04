@@ -1,7 +1,7 @@
 import { AuthCard } from '@/src/components/Auth/AuthCard';
 import { EmptyLayout } from '@/src/components/layout/EmptyLayout';
 import { NextPageWithLayout } from '@/src/types/NextPageWithLayout';
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { SignUpFlow } from '@/src/components/Auth/SignUpFlow';
 import { useAuth } from '@/src/components/Auth/AuthProvider';

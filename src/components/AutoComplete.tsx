@@ -44,13 +44,10 @@ const AutoComplete = (props: Props) => {
 				Home Address:
 			</label>
 			<div>
-				<input
-					{...getInputProps()}
-					className='box-border inline-flex h-9 w-full appearance-none items-center justify-center rounded-[4px] px-[10px] leading-none shadow-[0_0_0_1px]  focus:shadow-[0_0_0_2px_black]'
-				/>
+				<input {...getInputProps()} className='inputStyle' />
 				<ul
 					{...getMenuProps()}
-					className={`absolute p-0 w-[350px] mt-1 bg-white shadow-md overflow-auto max-h-80 ${!(isOpen && items.length) && 'hidden'}`}>
+					className={`absolute p-0 mt-1 bg-white shadow-md overflow-auto max-h-80 ${!(isOpen && items.length) && 'hidden'}`}>
 					{isOpen &&
 						items.length &&
 						items.map(
