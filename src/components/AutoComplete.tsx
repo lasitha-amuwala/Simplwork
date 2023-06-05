@@ -47,7 +47,7 @@ const AutoComplete = (props: Props) => {
 				<input {...getInputProps()} className='inputStyle' />
 				<ul
 					{...getMenuProps()}
-					className={`absolute p-0 mt-1 bg-white shadow-md overflow-auto max-h-80 ${!(isOpen && items.length) && 'hidden'}`}>
+					className={`absolute p-0 mt-1 bg-white shadow-md overflow-auto max-h-80 w-[450px] ${!(isOpen && items.length) && 'hidden'}`}>
 					{isOpen &&
 						items.length &&
 						items.map(

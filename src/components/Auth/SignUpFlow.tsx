@@ -1,16 +1,15 @@
 import React from 'react';
 import Image from 'next/image';
 import { useState } from 'react';
-import { ErrorMessage, Field, Formik, FormikValues } from 'formik';
+import { ErrorMessage, Field, FieldArray, FieldProps, Formik, FormikValues } from 'formik';
 import * as Yup from 'yup';
 import AutoComplete from '../AutoComplete';
-import { CandaidateProfile } from '@/src/types/api/candidate';
 import { WorkExperience } from '../WorkExperience';
 import { StepProgressHeader } from '../StepProgressHeader';
-import { StepHeader } from '../StepHeader';
 import { FieldControl } from '../FieldControl';
 import { FormStep, FormStepper } from '../FormStep';
 import { HiOutlinePlus } from 'react-icons/hi';
+import { MdTrain, MdDirectionsCar, MdDirectionsBike, MdDirectionsWalk } from 'react-icons/md'
 import 'yup-phone-lite';
 
 type ValueTypes = {
@@ -21,10 +20,11 @@ type ValueTypes = {
 	phoneNumber: string;
 	location: string;
 	minimumHours: number | string;
-	publicTransit: number | string;
-	walk: number | string;
-	bicycle: number | string;
-	vehicle: number | string;
+	// publicTransit: number | string;
+	// walk: number | string;
+	// bicycle: number | string;
+	// vehicle: number | string;
+	commuteTypes: string[]
 };
 
 export const SignUpFlow = () => {
@@ -38,10 +38,7 @@ export const SignUpFlow = () => {
 		phoneNumber: '',
 		location: '',
 		minimumHours: '',
-		publicTransit: '',
-		walk: '',
-		bicycle: '',
-		vehicle: '',
+		commuteTypes: []
 	};
 
 	const validationSchemaStepOne = Yup.object().shape({
@@ -77,7 +74,7 @@ export const SignUpFlow = () => {
 
 	return (
 		<div className='flex w-full h-full bg-white p-5'>
-			<div className='bg-gray-100 titems-start rounded-xl w-1/3 min-w-[450px] px-7 py-10 overflow-hidden'>
+			<div className='bg-gray-100 titems-start rounded-xl w-1/3 min-w-[450px] px-7 py-10 overflow-hidden hidden md:block'>
 				<div className='pb-8'>
 					<Image src='/Logo-long.svg' alt='logo' width={145} height={30} />
 				</div>
@@ -128,7 +125,7 @@ export const SignUpFlow = () => {
 								<h1 className='text-md pt-3 font-medium'>
 									Select the methods of transporation that  and the maximum distance you are willing to commute for a job:
 								</h1>
-								<div className='flex flex-col gap-3 border-2 rounded-md border-zinc-200 px-3 py-3'>
+								{/* <div className='flex flex-col gap-3 border-2 rounded-md border-zinc-200 px-3 py-3'>
 									<div className='flex items-center justify-between'>
 										<label className='font-normal leading-[35px]' htmlFor='vehicle'>
 											Maximum commute by vehicle
@@ -153,8 +150,14 @@ export const SignUpFlow = () => {
 											<Field type='number' name='publicTransit' required className='inputStyle' min={0} />
 										</div>
 									</div>
+								</div> */}
+								<div className='flex gap-5 w-[450px]] justify-between'>
+									{commuteTypes.map(({ text, value, icon }) => <Field type='checkbox' name='commuteTypes' value={value} component={CommuteCheckBoxButton} label={text} icon={icon} />)}
 								</div>
+								{values.commuteTypes}
+								{JSON.stringify(values, null, 2)}
 							</FormStep>
+
 							<FormStep title='Add Experience' subtitle='Add your work experience'>
 								<WorkExperience />
 								<button className='text-base bg-black p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-black/90 active:bg-black/80 disabled:bg-gray-300'>
@@ -171,3 +174,23 @@ export const SignUpFlow = () => {
 		</div>
 	);
 };
+
+const commuteTypes = [{ text: 'Vehicle', value: 'VEHICLE', icon: <MdDirectionsCar /> }, { text: 'Bicyle', value: 'BICYCLE', icon: <MdDirectionsBike /> }, { text: 'Walk', value: 'WALK', icon: <MdDirectionsWalk /> }, { text: 'Transit', value: 'PUBLIC_TRANSIT', icon: <MdTrain /> }]
+
+interface CommuteCheckBoxButtonProps extends FieldProps {
+	label: string,
+	icon: React.ReactNode,
+	value: string
+}
+
+const CommuteCheckBoxButton = ({ field, form, label, icon, value, ...props }: CommuteCheckBoxButtonProps) => {
+	const isSelected = form.values.commuteTypes.includes(value)
+	return (
+		<div className={`inline-flex w-full  ${isSelected ? 'bg-sky-100 border-sky-500' : 'bg-white border-zinc-300'} border w-auto p-3 hover:bg-sky-100 cursor-pointer select-none rounded flex items-center gap-2`} >
+			<input className='hidden' {...field} value={value} {...props} type='checkbox' />
+			<div className={`${isSelected ? 'text-sky-500' : 'text-black'}`}>{icon}</div>
+			<span className={`${isSelected ? 'text-sky-500 ' : 'text-black'} font-medium`}>{label}</span>
+
+		</div >
+	)
+}
