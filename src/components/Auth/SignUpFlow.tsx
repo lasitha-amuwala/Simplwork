@@ -9,7 +9,7 @@ import { StepProgressHeader } from '../StepProgressHeader';
 import { FieldControl } from '../FieldControl';
 import { FormStep, FormStepper } from '../FormStep';
 import { HiOutlinePlus } from 'react-icons/hi';
-import { MdTrain, MdDirectionsCar, MdDirectionsBike, MdDirectionsWalk } from 'react-icons/md'
+import { MdTrain, MdDirectionsCar, MdDirectionsBike, MdDirectionsWalk } from 'react-icons/md';
 import 'yup-phone-lite';
 
 type ValueTypes = {
@@ -24,7 +24,8 @@ type ValueTypes = {
 	// walk: number | string;
 	// bicycle: number | string;
 	// vehicle: number | string;
-	commuteTypes: string[]
+	commuteTypes: string[];
+	commuteTimes: { [key: string]: number | null };
 };
 
 export const SignUpFlow = () => {
@@ -38,7 +39,8 @@ export const SignUpFlow = () => {
 		phoneNumber: '',
 		location: '',
 		minimumHours: '',
-		commuteTypes: []
+		commuteTypes: [],
+		commuteTimes: {},
 	};
 
 	const validationSchemaStepOne = Yup.object().shape({
@@ -123,38 +125,33 @@ export const SignUpFlow = () => {
 									<ErrorMessage name='minimumHours' render={(msg) => <p className='text-sm font-medium text-red-700'>{msg}</p>} />
 								</div>
 								<h1 className='text-md pt-3 font-medium'>
-									Select the methods of transporation that  and the maximum distance you are willing to commute for a job:
+									Select the methods of transportation that apply to you, and enter the maximum amount of time for each.
 								</h1>
-								{/* <div className='flex flex-col gap-3 border-2 rounded-md border-zinc-200 px-3 py-3'>
-									<div className='flex items-center justify-between'>
-										<label className='font-normal leading-[35px]' htmlFor='vehicle'>
-											Maximum commute by vehicle
+								<div className='flex gap-3 w-[450px] justify-between'>
+									{Object.values(commuteTypes).map(({ value, text, icon }) => (
+										<label>
+											<Field type='checkbox' name='commuteTypes' value={value} label={text} icon={icon} component={CommuteCheckBoxButton} />
 										</label>
-										<div className='px-2 w-20'>
-											<Field type='number' name='vehicle' id='vehicle' required className='inputStyle' min={0} />
-										</div>
-									</div>
-									<div className='flex items-center justify-between'>
-										<label className='font-normal leading-[35px]' htmlFor='bicycle'>
-											Maximum commute by bicycle
-										</label>
-										<div className='px-2 w-20'>
-											<Field type='number' name='bicycle' id='bicycle' required className='inputStyle' min={0} />
-										</div>
-									</div>
-									<div className='flex items-center justify-between'>
-										<label className='font-normal leading-[35px]' htmlFor='publicTransit'>
-											Maximum commute by public transporation
-										</label>
-										<div className='px-2 w-20'>
-											<Field type='number' name='publicTransit' required className='inputStyle' min={0} />
-										</div>
-									</div>
-								</div> */}
-								<div className='flex gap-5 w-[450px]] justify-between'>
-									{commuteTypes.map(({ text, value, icon }) => <Field type='checkbox' name='commuteTypes' value={value} component={CommuteCheckBoxButton} label={text} icon={icon} />)}
+									))}
 								</div>
-								{values.commuteTypes}
+
+								<FieldArray
+									name='commuteTimes'
+									render={(arrayHelpers) => (
+										<div className='flex flex-col gap-5'>
+											{values.commuteTypes &&
+												values.commuteTypes.length > 0 &&
+												values.commuteTypes.map((commuteType, index) => (
+													<div key={index}>
+														<label className='flex flex-row gap-5 items-center w-full justify-between'>
+															<span className='font-medium'>Maximum commute time by {commuteTypes[commuteType].text}</span>
+															<Field type='number' min={0} name={`commuteTimes.${commuteType}`} placeholder='km' className='inputStyle w-20' />
+														</label>
+													</div>
+												))}
+										</div>
+									)}
+								/>
 								{JSON.stringify(values, null, 2)}
 							</FormStep>
 
@@ -174,23 +171,29 @@ export const SignUpFlow = () => {
 		</div>
 	);
 };
-
-const commuteTypes = [{ text: 'Vehicle', value: 'VEHICLE', icon: <MdDirectionsCar /> }, { text: 'Bicyle', value: 'BICYCLE', icon: <MdDirectionsBike /> }, { text: 'Walk', value: 'WALK', icon: <MdDirectionsWalk /> }, { text: 'Transit', value: 'PUBLIC_TRANSIT', icon: <MdTrain /> }]
+const commuteTypes: { [key: string]: { text: string; value: string; icon: React.ReactNode } } = {
+	VEHICLE: { text: 'Vehicle', value: 'VEHICLE', icon: <MdDirectionsCar /> },
+	WALK: { text: 'Walking', value: 'WALK', icon: <MdDirectionsWalk /> },
+	BICYCLE: { text: 'Bicyle', value: 'BICYCLE', icon: <MdDirectionsBike /> },
+	PUBLIC_TRANSIT: { text: 'Transit', value: 'PUBLIC_TRANSIT', icon: <MdTrain /> },
+};
 
 interface CommuteCheckBoxButtonProps extends FieldProps {
-	label: string,
-	icon: React.ReactNode,
-	value: string
+	label: string;
+	icon: React.ReactNode;
+	value: string;
 }
 
 const CommuteCheckBoxButton = ({ field, form, label, icon, value, ...props }: CommuteCheckBoxButtonProps) => {
-	const isSelected = form.values.commuteTypes.includes(value)
+	const isSelected = form.values.commuteTypes.includes(value);
 	return (
-		<div className={`inline-flex w-full  ${isSelected ? 'bg-sky-100 border-sky-500' : 'bg-white border-zinc-300'} border w-auto p-3 hover:bg-sky-100 cursor-pointer select-none rounded flex items-center gap-2`} >
+		<div
+			className={`inline-flex w-full  ${
+				isSelected ? 'bg-sky-100 shadow-sky-200' : 'bg-white shadow-zinc-300'
+			} shadow-[0_0_0_1.5px] hover:shadow-[0_0_0_3px] w-auto p-3 h-10 hover:shadow-sky-200 cursor-pointer select-none rounded-md flex items-center gap-2`}>
 			<input className='hidden' {...field} value={value} {...props} type='checkbox' />
 			<div className={`${isSelected ? 'text-sky-500' : 'text-black'}`}>{icon}</div>
 			<span className={`${isSelected ? 'text-sky-500 ' : 'text-black'} font-medium`}>{label}</span>
-
-		</div >
-	)
-}
+		</div>
+	);
+};
