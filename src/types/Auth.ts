@@ -27,7 +27,7 @@ export type GoogleToken = {
 };
 
 export type AuthContextType = {
-	user: GoogleProfileData | null;
+	user: GoogleProfileData;
 	handleSignIn: (credential: CredentialResponse) => void;
 	signOut: () => void;
 };

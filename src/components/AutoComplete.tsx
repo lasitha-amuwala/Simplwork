@@ -1,22 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCombobox } from 'downshift';
 import { SimplworkClient } from '../utils/simplwork';
 import { useAuth } from './Auth/AuthProvider';
-import { useQuery } from '@tanstack/react-query';
+import { CandidateLocation } from '../types/api/candidate';
 
-type Props = {};
+type Props = { update: (arg: CandidateLocation) => void };
 type ItemType = {
 	place_name: '';
 	center: number[];
+	context: any;
+	place_type: string[];
+	text: string;
 	id?: string;
 };
 
-const AutoComplete = (props: Props) => {
+export const AutoComplete = ({ update }: Props) => {
 	const { user } = useAuth();
 
-	const initalItem: ItemType = { place_name: '', center: [] };
+	const initalItem: ItemType = { place_name: '', center: [], context: null, place_type: [], text: '' };
 	const [items, setItems] = useState<ItemType[]>([initalItem]);
 	const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
+
+	useEffect(() => {
+		if (selectedItem) {
+			let postcode = ''
+			if (selectedItem.place_type.includes("postcode")) {
+				postcode = selectedItem.text
+			} else if (selectedItem.context && selectedItem.context.length) {
+				postcode = selectedItem.context.find((item: any) => item.id.toLowerCase().includes('postcode')).text
+			}
+			update({
+				latitude: selectedItem.center[0],
+				longitude: selectedItem.center[1],
+				postalCode: postcode,
+			})
+		}
+
+	}, [selectedItem])
+
 
 	const { isOpen, highlightedIndex, getInputProps, getMenuProps, getItemProps, getLabelProps } = useCombobox({
 		items,
@@ -33,7 +54,7 @@ const AutoComplete = (props: Props) => {
 			const query = inputValue.replaceAll(/[^a-zA-Z0-9 ]/g, '');
 			await SimplworkClient(user?.credential)
 				.get(`geocoding?query=${query}`)
-				.then(({ data }) => setItems(data.features.map(({ place_name, center }: ItemType) => ({ place_name, center }))))
+				.then(({ data }) => setItems(data.features.map(({ place_name, center, context, place_type, text }: ItemType) => ({ place_name, center, context, place_type, text }))))
 				.catch((err) => setItems([initalItem]));
 		}
 	};
@@ -55,9 +76,8 @@ const AutoComplete = (props: Props) => {
 								isOpen && (
 									<li
 										key={`${item.id}${index}`}
-										className={`truncate p-1 border-b  ${highlightedIndex === index && 'bg-sky-100'} ${
-											selectedItem?.place_name === item.place_name && 'text-sky-500'
-										}`}
+										className={`truncate p-1 border-b  ${highlightedIndex === index && 'bg-sky-100'} ${selectedItem?.place_name === item.place_name && 'text-sky-500'
+											}`}
 										{...getItemProps({ item, index })}>
 										<span className='font-semibold'>{`${item.place_name.split(',')[0]}`}</span>
 										<span className='text-sm'>{item.place_name.split(',').splice(1).join(',')}</span>
@@ -69,5 +89,3 @@ const AutoComplete = (props: Props) => {
 		</div>
 	);
 };
-
-export default AutoComplete;

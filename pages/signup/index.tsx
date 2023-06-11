@@ -5,11 +5,33 @@ import { ReactElement } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { SignUpFlow } from '@/src/components/Auth/SignUpFlow';
 import { useAuth } from '@/src/components/Auth/AuthProvider';
+import { SimplworkClient } from '@/src/utils/simplwork';
+
 
 const SignUp: NextPageWithLayout = () => {
 	const { user, handleSignIn } = useAuth();
 
-	if (user?.credential) return <SignUpFlow />;
+	const getCandidate = async (credential: string) => {
+		await SimplworkClient(credential).get('candidate').then(res => {
+			console.log(res)
+		}).catch(error => {
+			console.log(error)
+			if (error.response) {
+				if (error.response.status === 404) {
+					return true
+				}
+			} else if (error.request) {
+				console.log('hi5')
+			} else {
+				console.log('Error', error.message)
+			}
+		})
+	}
+
+	if (user?.credential) {
+		const candidate = getCandidate(user.credential)
+		console.log(candidate)
+	}
 
 	return (
 		<div className='flex flex-col w-full items-center justify-center'>

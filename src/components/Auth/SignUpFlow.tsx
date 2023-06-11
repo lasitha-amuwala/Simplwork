@@ -1,15 +1,17 @@
-import React from 'react';
-import Image from 'next/image';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ErrorMessage, Field, FieldArray, FieldProps, Formik, FormikValues } from 'formik';
-import * as Yup from 'yup';
-import AutoComplete from '../AutoComplete';
+import { AutoComplete } from '../AutoComplete';
 import { WorkExperience } from '../WorkExperience';
 import { StepProgressHeader } from '../StepProgressHeader';
 import { FieldControl } from '../FieldControl';
 import { FormStep, FormStepper } from '../FormStep';
 import { HiOutlinePlus } from 'react-icons/hi';
 import { MdTrain, MdDirectionsCar, MdDirectionsBike, MdDirectionsWalk } from 'react-icons/md';
+import { CandiatePostRequest, CandidateLocation, CandidateMaxTravelTimes } from '@/src/types/api/candidate';
+import { useAuth } from './AuthProvider';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+import * as Yup from 'yup';
 import 'yup-phone-lite';
 
 type ValueTypes = {
@@ -18,47 +20,74 @@ type ValueTypes = {
 	age: number | string;
 	gender: string;
 	phoneNumber: string;
-	location: string;
 	minimumHours: number | string;
-	// publicTransit: number | string;
-	// walk: number | string;
-	// bicycle: number | string;
-	// vehicle: number | string;
 	commuteTypes: string[];
-	commuteTimes: { [key: string]: number | null };
+	commuteTimes: CandidateMaxTravelTimes;
 };
 
+const initialValues: ValueTypes = {
+	firstName: '',
+	lastName: '',
+	gender: '',
+	age: '',
+	phoneNumber: '',
+	minimumHours: '',
+	commuteTypes: [],
+	commuteTimes: {},
+};
+
+const validationSchemaStepOne = Yup.object().shape({
+	firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('First name is required'),
+	lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name is required'),
+	age: Yup.number().min(14, 'You must be at least 14 years').max(60, 'You must be at most 60 years').required('Age is required'),
+	gender: Yup.string().required('Gender is required'),
+	phoneNumber: Yup.string().phone(['CA', 'US'], 'Please enter a valid phone number').required('A phone number is required'),
+});
+
+const validationSchemaStepTwo = Yup.object().shape({
+	homeAddress: Yup.string(),
+	minimumHours: Yup.number().min(0, 'Please enter a valid age').max(150, 'Please enter a valid age').required('You must enter this field.'),
+});
+
+const validationSchema = [validationSchemaStepOne, validationSchemaStepTwo];
+
+
 export const SignUpFlow = () => {
-	const [step, setStep] = useState(0);
+	const { user } = useAuth();
+	const router = useRouter();
+	if (!user?.credential) {
+		router.push('/signup')
+	}
 
-	const initialValues: ValueTypes = {
-		firstName: '',
-		lastName: '',
-		gender: '',
-		age: '',
-		phoneNumber: '',
-		location: '',
-		minimumHours: '',
-		commuteTypes: [],
-		commuteTimes: {},
-	};
+	const [step, setStep] = useState<number>(0);
+	const [autoCompleteSelection, setAutoCompleteSelection] = useState<CandidateLocation>({ latitude: 0, longitude: 0, postalCode: '' })
 
-	const validationSchemaStepOne = Yup.object().shape({
-		// firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('First name is required'),
-		// lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name is required'),
-		// age: Yup.number().min(14, 'You must be at least 14 years').max(60, 'You must be at most 60 years').required('Age is required'),
-		// gender: Yup.string().required('Gender is required'),
-		// phoneNumber: Yup.string().phone(['CA', 'US'], 'Please enter a valid phone number').required('A phone number is required'),
-	});
-
-	const validationSchemaStepTwo = Yup.object().shape({
-		// homeAddress: Yup.string(),
-		// minimumHours: Yup.number().min(0, 'Please enter a valid age').max(150, 'Please enter a valid age').required('You must enter this field.'),
-	});
-
-	const validationSchema = [validationSchemaStepOne, validationSchemaStepTwo];
+	const updateAutoCompleteSelection = (data: CandidateLocation) => setAutoCompleteSelection(data)
 
 	const onSubmit = (values: FormikValues) => {
+		if (step === 1) {
+			const requestBody: CandiatePostRequest = {
+				candidateProfile: {
+					workHistory: [],
+					minimumPay: 0,
+					minimumHours: values.minimumHours,
+					location: autoCompleteSelection,
+					maxLiftWeight: 0,
+					maxTravelTimes: values.commuteTimes,
+					autoMatch: true,
+				},
+				user: {
+					email: user.email,
+					age: values.age,
+					gender: values.gender,
+					phoneNumber: values.phoneNumber,
+					name: `${values.firstName} ${values.lastName}`,
+				}
+			}
+			alert(JSON.stringify(requestBody, null, 2)
+			)
+			setStep((step) => step + 1)
+		}
 		if (step === 2) {
 			// const candidateProfile: CandaidateProfile = {
 			// 	workHistory: [],
@@ -111,7 +140,7 @@ export const SignUpFlow = () => {
 							</FormStep>
 
 							<FormStep title='Add Work Availability' subtitle='Enter your details to create a profile'>
-								<AutoComplete />
+								<AutoComplete update={updateAutoCompleteSelection} />
 								<div className='flex flex-col gap-1'>
 									<div className='flex items-center'>
 										<label className='font-medium leading-[35px]' htmlFor='minimumHours'>
@@ -188,9 +217,8 @@ const CommuteCheckBoxButton = ({ field, form, label, icon, value, ...props }: Co
 	const isSelected = form.values.commuteTypes.includes(value);
 	return (
 		<div
-			className={`inline-flex w-full  ${
-				isSelected ? 'bg-sky-100 shadow-sky-200' : 'bg-white shadow-zinc-300'
-			} shadow-[0_0_0_1.5px] hover:shadow-[0_0_0_3px] w-auto p-3 h-10 hover:shadow-sky-200 cursor-pointer select-none rounded-md flex items-center gap-2`}>
+			className={`inline-flex w-full  ${isSelected ? 'bg-sky-100 shadow-sky-200' : 'bg-white shadow-zinc-300'
+				} shadow-[0_0_0_1.5px] hover:shadow-[0_0_0_3px] w-auto p-3 h-10 hover:shadow-sky-200 cursor-pointer select-none rounded-md flex items-center gap-2`}>
 			<input className='hidden' {...field} value={value} {...props} type='checkbox' />
 			<div className={`${isSelected ? 'text-sky-500' : 'text-black'}`}>{icon}</div>
 			<span className={`${isSelected ? 'text-sky-500 ' : 'text-black'} font-medium`}>{label}</span>
