@@ -1,59 +1,65 @@
+import { GoogleProfileData } from '../Auth';
+
 export type CandidateWorkHistory = {
-  positionTitle: string;
-  companyName: string;
-  details: string;
-  startDate: Date;
-  endDate: Date;
+	positionTitle: string;
+	companyName: string;
+	details: string;
+	startDate: Date;
+	endDate: Date;
 };
 
 export type CandidateLocation = {
-  latitude: number;
-  longitude: number;
-  postalCode: string;
+	latitude: number;
+	longitude: number;
+	postalCode: string;
 };
 
 export type CandaidateAvailibility = {
-  times: [];
+	times: [];
 };
 
 export type CandaidateProfile = {
-  workHistory: CandidateWorkHistory[] | [];
-  minimumPay: number;
-  minimumHours: number;
-  location: CandidateLocation;
-  availibility?: CandaidateAvailibility;
-  maxLiftWeight: number;
-  maxTravelTimes?: CandidateMaxTravelTimes;
-  autoMatch: boolean;
+	workHistory: CandidateWorkHistory[] | [];
+	minimumPay: number;
+	maximumHours: number;
+	location: CandidateLocation;
+	availability?: any;
+	maxLiftWeight: number;
+	maxTravelTimes?: CandidateMaxTravelTimes;
+	autoMatch: boolean;
 };
 
 export type CandidateMaxTravelTimes = {
-  [key: string]: number;
-};
-
-export type User = {
-  email: string;
-  age: number;
-  gender: string;
-  phoneNumber: string;
-  name: string;
+	[key: string]: number;
 };
 
 export type CandiatePostRequest = {
-  candidateProfile: CandaidateProfile;
-  user: User;
+	candidateProfile: CandaidateProfile;
+	user: UserData;
 };
 
 export type CandiateGetRequest = {
-  profileName: string;
-  candidateName: string;
-  phoneNumber: string;
-  email: string;
-  gender: string;
-  age: number;
-  maxTravelTimes: CandidateMaxTravelTimes;
-  workHistory: CandidateWorkHistory[];
-  postalCode: string;
-  availibility: CandaidateAvailibility;
-  autoMatch: boolean;
+	profileName: string;
+	candidateName: string;
+	phoneNumber: string;
+	email: string;
+	gender: string;
+	age: number;
+	maxTravelTimes: CandidateMaxTravelTimes;
+	workHistory: CandidateWorkHistory[];
+	postalCode: string;
+	availibility: CandaidateAvailibility;
+	autoMatch: boolean;
+};
+
+export type UserData = {
+	email: string;
+	age: number;
+	gender: string;
+	phoneNumber: string;
+	name: string;
+};
+
+export type User = GoogleProfileData & {
+	candidate: CandiateGetRequest;
 };

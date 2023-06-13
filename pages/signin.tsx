@@ -12,7 +12,7 @@ const SignIn: NextPageWithLayout = () => {
 
 	useEffect(() => {
 		if (user?.credential) router.push('/');
-	}, [user]);
+	}, [user, router]);
 
 	return (
 		<div className=' md:bg-white h-auto p-10 rounded-xl md:border border-neural-200'>

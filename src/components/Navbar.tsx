@@ -4,7 +4,6 @@ import * as Popover from '@radix-ui/react-popover';
 import { RiMenuFill } from 'react-icons/ri';
 import { RxCross2 } from 'react-icons/rx';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useAuth } from './Auth/AuthProvider';
 
 const NavControls = () => {
@@ -23,7 +22,7 @@ const NavControls = () => {
 		);
 	}
 
-	const initials = `${user.givenName.charAt(0)} ${user.familyName.charAt(0)}`;
+	const initials = `${user.candidate.candidateName.charAt(0)} ${user.candidate.candidateName.split(' ')[1].charAt(0)}`;
 
 	return (
 		<Popover.Root>
