@@ -1,15 +1,15 @@
 // import { FriendList } from '@/src/components/Example';
-// import { NextPage } from 'next';
-// import React from 'react';
+import { NextPage } from 'next';
+import React from 'react';
 
-// type Props = {};
+type Props = {};
 
-// const profile: NextPage = (props: Props) => {
-// 	return (
-// 		<div>
-// 			<FriendList />
-// 		</div>
-// 	);
-// };
+const profile: NextPage = (props: Props) => {
+	return (
+		<div>
+			{/* <FriendList /> */}
+		</div>
+	);
+};
 
-// export default profile;
+export default profile;
