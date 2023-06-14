@@ -4,7 +4,7 @@ import { MdDirectionsBike, MdDirectionsCar, MdDirectionsWalk, MdTrain } from 're
 export const commuteTypes: { [key: string]: { text: string; value: string; icon: React.ReactNode } } = {
 	CAR: { text: 'Driving', value: 'CAR', icon: <MdDirectionsCar /> },
 	WALK: { text: 'Walking', value: 'WALK', icon: <MdDirectionsWalk /> },
-	BICYCLE: { text: 'Cycling', value: 'BIKE', icon: <MdDirectionsBike /> },
+	BIKE: { text: 'Cycling', value: 'BIKE', icon: <MdDirectionsBike /> },
 	PUBLIC_TRANSIT: { text: 'Transit', value: 'PUBLIC_TRANSIT', icon: <MdTrain /> },
 };
 
