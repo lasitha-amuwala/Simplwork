@@ -6,7 +6,7 @@ import { StepProgressHeader } from './StepProgressHeader';
 import { FieldControl } from '../FieldControl';
 import { FormStep, FormStepper } from './FormStep';
 import { HiOutlinePlus } from 'react-icons/hi';
-import { CandiatePostRequest, CandidateLocation, CandidateMaxTravelTimes, User } from '@/src/types/api/candidate';
+import { CandiatePostRequest, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory, User } from '@/src/types/api/candidate';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import * as Yup from 'yup';
@@ -25,6 +25,7 @@ type ValueTypes = {
 	maximumHours: number | string;
 	commuteTypes: string[];
 	maxTravelTimes: CandidateMaxTravelTimes;
+	workHistory: CandidateWorkHistory[];
 };
 
 const initialValues: ValueTypes = {
@@ -35,7 +36,9 @@ const initialValues: ValueTypes = {
 	phoneNumber: '',
 	maximumHours: '',
 	commuteTypes: [],
-	maxTravelTimes: {},
+	maxTravelTimes: { WALK: 20, BIKE: 30, CAR: 90, PUBLIC_TRANSIT: 90 },
+	workHistory: [],
+	//{ positionTitle: '', companyName: '', details: '', startDate: '', endDate: '' }
 };
 
 const validationSchemaStepOne = Yup.object().shape({
@@ -51,7 +54,19 @@ const validationSchemaStepTwo = Yup.object().shape({
 	maximumHours: Yup.number().min(0, 'Please enter a valid age').max(150, 'Please enter a valid age').required('You must enter this field.'),
 });
 
-const validationSchema = [validationSchemaStepOne, validationSchemaStepTwo];
+const validationSchemaStepThree = Yup.object().shape({
+	workHistory: Yup.array().of(
+		Yup.object().shape({
+			positionTitle: Yup.string().required(),
+			companyName: Yup.string().required(),
+			details: Yup.string().required(),
+			startDate: Yup.string().required(),
+			endDate: Yup.string().required(),
+		})
+	),
+});
+
+const validationSchema = [validationSchemaStepOne, validationSchemaStepTwo, validationSchemaStepThree];
 
 type SignUpFlowProps = { userData: GoogleProfileData };
 
@@ -91,11 +106,11 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 					name: `${firstName} ${lastName}`,
 				},
 			};
-			console.log(requestBody);
+			// console.log(JSON.stringify(requestBody, null, 2));
 			await SimplworkClient(userData.credential as string)
 				.post('candidate', JSON.stringify(requestBody))
 				.then((res) => {
-					console.log(res);
+					// console.log(res);
 					const user: User = { ...userData, candidate: res.data };
 					setUser(user);
 				})
@@ -130,7 +145,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 						stepId={2}
 						currStep={step}
 					/>
-					{step}
+					{/* {step} */}
 				</div>
 			</div>
 			<div className='flex flex-col w-full h-full gap-3 items-center justify-center p-10'>
@@ -142,9 +157,14 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 								<FieldControl name='lastName' label='Last name' type='lname' />
 								<div className='flex w-full gap-5'>
 									<FieldControl name='age' label='Age' type='number' min={14} max={60} errorBelow />
-									<FieldControl name='gender' label='Gender' type='text' errorBelow />
+									<FieldControl as='select' name='gender' label='Gender' type='' errorBelow>
+										<option value='' label='Select a gender'></option>
+										<option value='MALE'>Male</option>
+										<option value='FEMALE'>Female</option>
+										<option value='OTHER'>Other</option>
+									</FieldControl>
 								</div>
-								<FieldControl name='phoneNumber' label='Phone Number' type='tel' />
+								<FieldControl name='phoneNumber' label='Phone Number' type='tel' placeholder='e.g. XXX-XXX-XXXX' />
 							</FormStep>
 							<FormStep title='Add Work Availability' subtitle='Enter your details to create a profile'>
 								<AutoComplete update={updateLocation} credential={userData?.credential as string} />
@@ -161,7 +181,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 									<ErrorMessage name='maximumHours' render={(msg) => <p className='text-sm font-medium text-red-700'>{msg}</p>} />
 								</div>
 								<h1 className='text-md pt-3 font-medium'>
-									Select the methods of transportation that apply to you, and enter the maximum amount of time for each.
+									Select the modes of transport available to you and the maximum amount of time you are willing to commute each way
 								</h1>
 								<div className='flex gap-3 w-[450px] justify-between'>
 									{Object.values(commuteTypes).map(({ value, text, icon }, index) => (
@@ -180,22 +200,24 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 													<div key={index}>
 														<label className='flex flex-row gap-5 items-center w-full justify-between'>
 															<span className='font-medium'>Maximum commute time by {commuteTypes[commuteType].text}</span>
-															<Field type='number' min={0} name={`maxTravelTimes.${commuteType}`} placeholder='km' className='inputStyle w-20' />
+															<Field type='number' min={0} name={`maxTravelTimes[${commuteType}]`} placeholder='min' className='inputStyle w-20' />
 														</label>
 													</div>
 												))}
 										</div>
 									)}
 								/>
+								{/* {JSON.stringify(values, null, 2)} */}
 							</FormStep>
 							<FormStep title='Add Experience' subtitle='Add your work experience'>
-								<WorkExperience />
+								<WorkExperience values={values} />
 								<button className='text-base bg-black p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-black/90 active:bg-black/80 disabled:bg-gray-300'>
 									<span className='flex gap-2 items-center'>
 										<HiOutlinePlus className='text-xl' />
 										<p className='tracking-wide'>Add Work Experience</p>
 									</span>
 								</button>
+								{/* {JSON.stringify(values, null, 2)} */}
 							</FormStep>
 						</FormStepper>
 					)}

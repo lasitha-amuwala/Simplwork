@@ -4,8 +4,8 @@ export type CandidateWorkHistory = {
 	positionTitle: string;
 	companyName: string;
 	details: string;
-	startDate: Date;
-	endDate: Date;
+	startDate: string;
+	endDate: string;
 };
 
 export type CandidateLocation = {
@@ -43,7 +43,7 @@ export type CandiateGetRequest = {
 	candidateName: string;
 	phoneNumber: string;
 	email: string;
-	gender: string;
+	gender: 'MALE' | 'FEMALE' | 'OTHER';
 	age: number;
 	maxTravelTimes: CandidateMaxTravelTimes;
 	workHistory: CandidateWorkHistory[];

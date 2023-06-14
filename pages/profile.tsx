@@ -5,11 +5,7 @@ import React from 'react';
 type Props = {};
 
 const profile: NextPage = (props: Props) => {
-	return (
-		<div>
-			{/* <FriendList /> */}
-		</div>
-	);
+	return <div>{/* <FriendList /> */}</div>;
 };
 
 export default profile;

@@ -2,9 +2,9 @@ import { FieldProps } from 'formik';
 import { MdDirectionsBike, MdDirectionsCar, MdDirectionsWalk, MdTrain } from 'react-icons/md';
 
 export const commuteTypes: { [key: string]: { text: string; value: string; icon: React.ReactNode } } = {
-	VEHICLE: { text: 'Vehicle', value: 'VEHICLE', icon: <MdDirectionsCar /> },
+	CAR: { text: 'Driving', value: 'CAR', icon: <MdDirectionsCar /> },
 	WALK: { text: 'Walking', value: 'WALK', icon: <MdDirectionsWalk /> },
-	BICYCLE: { text: 'Bicyle', value: 'BICYCLE', icon: <MdDirectionsBike /> },
+	BICYCLE: { text: 'Cycling', value: 'BIKE', icon: <MdDirectionsBike /> },
 	PUBLIC_TRANSIT: { text: 'Transit', value: 'PUBLIC_TRANSIT', icon: <MdTrain /> },
 };
 
