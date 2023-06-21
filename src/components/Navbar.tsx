@@ -57,14 +57,14 @@ const Navbar = () => {
 	const [open, setOpen] = useState(false);
 
 	const navlinks = [
-		{ name: 'Find Jobs', href: '/jobs' },
+		{ name: 'Find Jobs', href: '/' },
 		{ name: 'My Applications', href: '/applications' },
 		{ name: 'Profile', href: '/profile' },
 	];
 
 	return (
-		<nav className='flex justify-center h-16 bg-white w-full border-b border-neutral-200 px-2 md:px-5 fixed z-[9999] left-0 right-0'>
-			<div className='flex h-full w-full max-w-7xl items-center justify-between'>
+		<nav className='flex justify-center h-[var(--header-height)] bg-white w-full border-b border-neutral-200 px-2 md:px-5 fixed z-[9999] left-0 right-0'>
+			<div className='flex h-full w-full max-w-[1440px] items-center justify-between'>
 				<div className='md:hidden'>
 					<button
 						onClick={() => setOpen(!open)}
@@ -76,7 +76,7 @@ const Navbar = () => {
 							<ul>
 								{navlinks.map((link) => (
 									<li key={link.name} className='pl-6 p-2 border-b text-base font-medium'>
-										<Link className='text-neutral-600 hover:text-neutral-800' href={link.href} onClick={() => setOpen(false)}>
+										<Link className='text-gray-500 hover:text-gray-800' href={link.href} onClick={() => setOpen(false)}>
 											{link.name}
 										</Link>
 									</li>
@@ -92,7 +92,7 @@ const Navbar = () => {
 					<ul className='flex gap-10 font-medium'>
 						{navlinks.map((link) => (
 							<li key={link.name}>
-								<Link className='text-neutral-600 hover:text-neutral-800' href={link.href}>
+								<Link className='text-gray-500 hover:text-neutral-800' href={link.href}>
 									{link.name}
 								</Link>
 							</li>
