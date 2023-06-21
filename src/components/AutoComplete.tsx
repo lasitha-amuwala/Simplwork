@@ -33,8 +33,8 @@ export const AutoComplete = ({ credential, update }: Props) => {
 				if (findPostCode) postcode = findPostCode.text;
 			}
 			update({
-				latitude: selectedItem.center[0],
-				longitude: selectedItem.center[1],
+				longitude: selectedItem.center[0],
+				latitude: selectedItem.center[1],
 				postalCode: postcode.replace(/\s+/g, '').toUpperCase(),
 			});
 		}
