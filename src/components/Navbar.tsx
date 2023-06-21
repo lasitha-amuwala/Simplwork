@@ -5,11 +5,14 @@ import { RiMenuFill } from 'react-icons/ri';
 import { RxCross2 } from 'react-icons/rx';
 import Link from 'next/link';
 import { useAuth } from './Auth/AuthProvider';
+import { useQuery } from '@tanstack/react-query';
+import { simplwork } from '../utils/simplwork';
 
 const NavControls = () => {
 	const { user, signOut } = useAuth();
+	const { data: candidate } = useQuery(simplwork.candidate.getCandidate(user?.credential as string));
 
-	if (!user) {
+	if (!user?.credential) {
 		return (
 			<div className='flex gap-2 md:gap-3 tranistion-all duration-300'>
 				<Link href='/signin' className='bg-sky-500 px-2 md:px-3 py-1 rounded text-white font-medium hover:bg-sky-400 active:bg-sky-300 '>
@@ -22,13 +25,17 @@ const NavControls = () => {
 		);
 	}
 
-	const initials = `${user.candidate.candidateName.charAt(0)} ${user.candidate.candidateName.split(' ')[1].charAt(0)}`;
-
 	return (
 		<Popover.Root>
 			<Popover.Trigger asChild>
 				<Avatar.Root className='h-11 w-11 overflow-hidden rounded-full'>
-					<Avatar.Image className='w-full h-full object-cover rounded-full' src={user.picture} alt={initials} />
+					{candidate && (
+						<Avatar.Image
+							className='w-full h-full object-cover rounded-full'
+							src={user?.picture}
+							alt={`${candidate.data.candidateName.charAt(0)} ${candidate.data.candidateName.split(' ')[1].charAt(0)}`}
+						/>
+					)}
 					<Avatar.Fallback
 						className='h-11 w-11 flex items-center justify-center font-medium border border-neutral-300 bg-sky-500/20 rounded-full text-sky-600 tracking-wider'
 						delayMs={600}></Avatar.Fallback>
