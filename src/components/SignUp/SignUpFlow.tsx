@@ -6,7 +6,7 @@ import { StepProgressHeader } from './StepProgressHeader';
 import { FieldControl } from '../FieldControl';
 import { FormStep, FormStepper } from './FormStepper';
 import { HiOutlinePlus } from 'react-icons/hi';
-import { CandiatePostRequest, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory, User } from '@/src/types/api/candidate';
+import { CandiatePostRequest, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory } from '@/src/types/api/candidate';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import * as Yup from 'yup';
@@ -119,7 +119,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 				.post('candidate', JSON.stringify(requestBody))
 				.then((res) => {
 					// console.log(res);
-					const user: User = { ...userData, candidate: res.data };
+					const user: GoogleProfileData = { ...userData };
 					setUser(user);
 				})
 				.catch((err) => {

@@ -12,12 +12,12 @@ export const useAuth = () => useContext(AuthContext) as AuthContextType;
 export const decodeCredential = (credential: string) => {
 	const { email, picture } = jwt_decode(credential as string) as GoogleToken;
 	const googleProfile: GoogleProfileData = { credential: credential, email, picture };
-	// console.log(credential);
+	console.log(credential);
 	return googleProfile;
 };
 
 export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
-	const [user, setUser] = useState<User | null>(null);
+	const [user, setUser] = useState<GoogleProfileData | null>(null);
 
 	const handleSignIn = async (response: CredentialResponse) => {
 		const credential = response.credential as string;
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 			.get('candidate')
 			.then((res) => {
 				if (res.status >= 200 && res.status <= 299) {
-					const user = { ...googleProfile, candidate: res.data };
+					const user = { ...googleProfile };
 					setUser(user);
 				}
 			})
