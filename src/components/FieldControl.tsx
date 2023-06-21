@@ -17,12 +17,12 @@ export const FieldControl = ({ name, label, type, errorBelow, children, ...props
 				<label className='font-medium leading-[35px] flex-shrink-0 mr-5' htmlFor={name}>
 					{label}
 				</label>
-				{!errorBelow && <ErrorMessage name={name} render={(msg) => <p className={errorMsgStyle}>{msg}</p>} />}
+				{!errorBelow && <ErrorMessage name={name} render={(msg: string) => <p className={errorMsgStyle}>{msg}</p>} />}
 			</div>
 			<Field type={type} name={name} required className='inputStyle' {...props}>
 				{children}
 			</Field>
-			{errorBelow && <ErrorMessage name={name} render={(msg) => <p className={errorMsgStyle}>{msg}</p>} />}
+			{errorBelow && <ErrorMessage name={name} render={(msg: string) => <p className={errorMsgStyle}>{msg}</p>} />}
 		</div>
 	);
 };
