@@ -4,8 +4,8 @@ export type CandidateWorkHistory = {
 	positionTitle: string;
 	companyName: string;
 	details: string;
-	startDate: string;
-	endDate: string;
+	startDate?: string;
+	endDate?: string;
 };
 
 export type CandidateLocation = {
@@ -19,12 +19,12 @@ export type CandaidateAvailibility = {
 };
 
 export type CandaidateProfile = {
-	workHistory: CandidateWorkHistory[] | [];
+	workHistory?: CandidateWorkHistory[] | [];
 	minimumPay: number;
-	maximumHours: number;
+	maximumHours?: number;
 	location: CandidateLocation;
 	availability?: any;
-	maxLiftWeight: number;
+	maxLiftWeight?: number;
 	maxTravelTimes?: CandidateMaxTravelTimes;
 	autoMatch: boolean;
 };
@@ -53,11 +53,11 @@ export type CandiateGetRequest = {
 };
 
 export type UserData = {
-	email: string;
-	age: number;
-	gender: string;
-	phoneNumber: string;
-	name: string;
+	email?: string;
+	age?: number;
+	gender?: string;
+	phoneNumber?: string;
+	name?: string;
 };
 
 export type User = GoogleProfileData & {

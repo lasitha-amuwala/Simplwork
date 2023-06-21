@@ -1,5 +1,4 @@
 import { AuthCard } from '@/src/components/Auth/AuthCard';
-import { EmptyLayout } from '@/src/components/layout/EmptyLayout';
 import { NextPageWithLayout } from '@/src/types/NextPageWithLayout';
 import { ReactElement, useState } from 'react';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
@@ -9,6 +8,7 @@ import { SimplworkClient } from '@/src/utils/simplwork';
 import { useRouter } from 'next/router';
 import { GoogleProfileData } from '@/src/types/Auth';
 import { User } from '@/src/types/api/candidate';
+import { EmptyLayout } from '@/src/layouts/EmptyLayout';
 
 type Props = {};
 
@@ -44,17 +44,14 @@ const SignUp: NextPageWithLayout<Props> = () => {
 		}
 	};
 
-	if (renderSignUpFlow && userData) {
-		return <SignUpFlow userData={userData} />;
-	}
+	if (renderSignUpFlow && userData) return <SignUpFlow userData={userData} />;
+
 	return (
-		<div className='flex flex-col w-full items-center justify-center'>
-			<div className='w-auto bg-white p-10 flex justify-center items-center rounded-xl'>
-				<div className='flex items-center flex-col'>
-					<AuthCard title='Try Simplwork for free' subtitle='' linkText='Already have an account? Sign in' linkHref='/signin'>
-						<GoogleLogin useOneTap width='250' context='signup' shape='pill' onSuccess={handleSignUp} />
-					</AuthCard>
-				</div>
+		<div className='flex flex-col items-center justify-center h-screen w-screen'>
+			<div className='flex items-center flex-col w-auto bg-white p-10 justify-center rounded-xl border border-gray-200'>
+				<AuthCard title='Try Simplwork for free' subtitle='' linkText='Already have an account? Sign in' linkHref='/signin'>
+					<GoogleLogin useOneTap width='250' context='signup' shape='pill' onSuccess={handleSignUp} />
+				</AuthCard>
 			</div>
 		</div>
 	);

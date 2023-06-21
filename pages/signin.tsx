@@ -1,10 +1,10 @@
 import { ReactElement, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { EmptyLayout } from '@/src/components/layout/EmptyLayout';
 import { NextPageWithLayout } from '@/src/types/NextPageWithLayout';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { AuthCard } from '@/src/components/Auth/AuthCard';
+import { EmptyLayout } from '@/src/layouts/EmptyLayout';
 
 const SignIn: NextPageWithLayout = () => {
 	const router = useRouter();
@@ -15,10 +15,12 @@ const SignIn: NextPageWithLayout = () => {
 	}, [user, router]);
 
 	return (
-		<div className=' md:bg-white h-auto p-10 rounded-xl md:border border-neural-200'>
-			<AuthCard title='Welcome Back' subtitle='Please login to continue' linkText="Don't have an account? Sign up" linkHref='/signup'>
-				<GoogleLogin useOneTap width='250' shape='pill' onSuccess={handleSignIn} onError={() => console.log('Login Failed')} />
-			</AuthCard>
+		<div className='flex flex-col items-center justify-center h-screen w-screen'>
+			<div className='flex items-center flex-col w-auto bg-white p-10 justify-center rounded-xl border border-gray-200'>
+				<AuthCard title='Welcome Back' subtitle='Please login to continue' linkText="Don't have an account? Sign up" linkHref='/signup'>
+					<GoogleLogin useOneTap width='250' shape='pill' onSuccess={handleSignIn} onError={() => console.log('Login Failed')} />
+				</AuthCard>
+			</div>
 		</div>
 	);
 };

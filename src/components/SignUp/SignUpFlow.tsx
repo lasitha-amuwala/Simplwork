@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ErrorMessage, Field, FieldArray, Formik, FormikValues } from 'formik';
+import { ArrayHelpers, ErrorMessage, Field, FieldArray, Formik, FormikValues } from 'formik';
 import { AutoComplete } from '../AutoComplete';
 import { WorkExperience } from './WorkExperience';
 import { StepProgressHeader } from './StepProgressHeader';
 import { FieldControl } from '../FieldControl';
-import { FormStep, FormStepper } from './FormStep';
+import { FormStep, FormStepper } from './FormStepper';
 import { HiOutlinePlus } from 'react-icons/hi';
 import { CandiatePostRequest, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory, User } from '@/src/types/api/candidate';
 import { useRouter } from 'next/router';
@@ -51,7 +51,10 @@ const validationSchemaStepOne = Yup.object().shape({
 
 const validationSchemaStepTwo = Yup.object().shape({
 	homeAddress: Yup.string(),
-	maximumHours: Yup.number().min(0, 'Please enter a valid age').max(150, 'Please enter a valid age').required('You must enter this field.'),
+	maximumHours: Yup.number()
+		.min(0, 'Please enter a valid hour')
+		.max(168, 'Please enter a valid hour')
+		.required('You must enter this field.'),
 });
 
 const validationSchemaStepThree = Yup.object().shape({
@@ -79,6 +82,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 	const [step, setStep] = useState<number>(0);
 	const [location, setLocation] = useState<CandidateLocation>({ latitude: 0, longitude: 0, postalCode: '' });
 
+	const updateStep = (step: number) => setStep(step);
 	const updateLocation = (data: CandidateLocation) => setLocation(data);
 
 	const onSubmit = async ({ maximumHours, maxTravelTimes, age, gender, phoneNumber, firstName, lastName }: FormikValues) => {
@@ -90,9 +94,13 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 					maximumHours,
 					location,
 					availability: {
-						MONDAY: [],
-						TUESDAY: [],
-						WEDNESDAY: [],
+						SUNDAY: [{ startTime: 0, endTime: 900 }],
+						MONDAY: [{ startTime: 0, endTime: 900 }],
+						TUESDAY: [{ startTime: 0, endTime: 900 }],
+						WEDNESDAY: [{ startTime: 0, endTime: 900 }],
+						THURSDAY: [{ startTime: 0, endTime: 900 }],
+						FRIDAY: [{ startTime: 0, endTime: 900 }],
+						SATURDAY: [{ startTime: 0, endTime: 900 }],
 					},
 					maxLiftWeight: 0,
 					maxTravelTimes,
@@ -106,7 +114,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 					name: `${firstName} ${lastName}`,
 				},
 			};
-			// console.log(JSON.stringify(requestBody, null, 2));
+			console.log(JSON.stringify(requestBody, null, 2));
 			await SimplworkClient(userData.credential as string)
 				.post('candidate', JSON.stringify(requestBody))
 				.then((res) => {
@@ -126,7 +134,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 	};
 
 	return (
-		<div className='flex w-full h-full bg-white p-5'>
+		<div className='flex w-full h-screen bg-white p-5'>
 			<div className='bg-gray-100 titems-start rounded-xl w-1/3 min-w-[450px] px-7 py-10 overflow-hidden hidden md:block'>
 				<div className='pb-8'>
 					<Image src='/Logo-long.svg' alt='logo' width={145} height={30} />
@@ -151,7 +159,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 			<div className='flex flex-col w-full h-full gap-3 items-center justify-center p-10'>
 				<Formik initialValues={initialValues} onSubmit={(v) => onSubmit(v)} validationSchema={validationSchema[step]}>
 					{({ values, setFieldValue }) => (
-						<FormStepper step={step}>
+						<FormStepper step={step} updateStep={updateStep}>
 							<FormStep title='Create Profile' subtitle='Enter your details to create a profile'>
 								<FieldControl name='firstName' label='First name' type='fname' />
 								<FieldControl name='lastName' label='Last name' type='lname' />
@@ -178,7 +186,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 										</div>
 										<label className='font-medium leading-[35px]'>hours per week</label>
 									</div>
-									<ErrorMessage name='maximumHours' render={(msg) => <p className='text-sm font-medium text-red-700'>{msg}</p>} />
+									<ErrorMessage name='maximumHours' render={(msg: string) => <p className='text-sm font-medium text-red-700'>{msg}</p>} />
 								</div>
 								<h1 className='text-md pt-3 font-medium'>
 									Select the modes of transport available to you and the maximum amount of time you are willing to commute each way
@@ -192,7 +200,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 								</div>
 								<FieldArray
 									name='maxTravelTimes'
-									render={(arrayHelpers) => (
+									render={(arrayHelpers: ArrayHelpers) => (
 										<div className='flex flex-col gap-5'>
 											{values.commuteTypes &&
 												values.commuteTypes.length > 0 &&
