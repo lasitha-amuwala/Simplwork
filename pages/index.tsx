@@ -1,48 +1,58 @@
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { MdAttachMoney, MdMap } from 'react-icons/md';
 import { simplwork } from '@/src/utils/simplwork';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
 
 const Home = () => {
 	const { user, handleSignIn } = useAuth();
-
+	const router = useRouter();
 	const { data, isLoading, error } = useQuery(simplwork.candidate.getCandidatePostings(user?.credential as string));
 
 	const [selectedPost, setSelectedPost] = useState(null);
 
-	if (!user?.credential) return <div>Sign in</div>;
 	return (
-		<div className='flex w-full flex-col pt-20 gap-3'>
-			<div>
-				<h1 className='text-5xl font-semibold pb-2'>Find your dream job</h1>
-				<p className='text-slate-500 pb-2'>Looking for jobs? Browse our latest job openings to view and apply to the best jobs today</p>
-			</div>
-			<div className='flex w-full h-full'>
-				<div className='flex w-full'>
-					<button className='flex bg-white rounded-md border px-3 py-2 gap-2 items-center'>
-						<MdMap className='w-5 h-5' />
-						Map
-					</button>
-					<div className='w-full flex justify-center'>
-						<input className='inputStyle w-[600px] shadow-[0_0_0_1px] shadow-gray-200'></input>
+		<ProtectedPage>
+			<div className='flex w-full flex-col pt-20 gap-3'>
+				<div>
+					<h1 className='text-5xl font-semibold pb-2'>Find your dream job</h1>
+					<p className='text-slate-500 pb-2'>Looking for jobs? Browse our latest job openings to view and apply to the best jobs today</p>
+				</div>
+				<div className='flex w-full h-full'>
+					<div className='flex w-full'>
+						<button className='flex bg-white rounded-md border px-3 py-2 gap-2 items-center'>
+							<MdMap className='w-5 h-5' />
+							Map
+						</button>
+						<div className='w-full flex justify-center'>
+							<input className='inputStyle w-[600px] shadow-[0_0_0_1px] shadow-gray-200'></input>
+						</div>
+					</div>
+					<div></div>
+				</div>
+				<div className='flex gap-3'>
+					<div className='w-[15%] h-80 bg-white rounded-md border border-gray-200 mt-1 sticky top-[72px]'></div>
+
+					<div className='w-[35%] flex flex-col gap-3 px-1 pt-1'>
+						{isLoading && [...Array(10).fill(0)].map((key, i) => <PostSkeleton key={i} />)}
+						{!isLoading &&
+							data &&
+							data.data.map(({ posting, candidateStatus, i }: any) => <Post key={`${posting.id}${i}`} post={posting} status={candidateStatus} />)}
+					</div>
+					<div className='w-[50%] min-h-[800px] h-full bg-white rounded-md border border-gray-200 mt-1 sticky top-[72px] overflow-hidden'>
+						<div className='h-28 bg-[#64B1EC]/10 flex items-center p-4 gap-4'>
+							<div className='h-20 w-20 bg-blue-300 rounded-md'></div>
+							<div className='h-full'>
+								<h1 className='font-bold text-xl'>{data?.data[0].posting.employer.companyName}</h1>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div></div>
 			</div>
-			<div className='flex gap-3'>
-				<div className='w-[15%] h-80 bg-white rounded-md border border-gray-200 mt-1 sticky top-20'></div>
-
-				<div className='w-[35%] flex flex-col gap-3 px-1 pt-1'>
-					{isLoading && [...Array(10).fill(0)].map((key, i) => <PostSkeleton key={i} />)}
-					{!isLoading && data && data.data.map(({ posting, i }: any) => <Post key={`${posting.id}${i}`} post={posting} />)}
-				</div>
-				<div className='w-[50%] h-80 bg-white rounded-md border border-gray-200 mt-1 sticky top-20'>
-					<h1>{data && data.data[0].posting.positionTitle}</h1>
-				</div>
-			</div>
-		</div>
+		</ProtectedPage>
 	);
 };
 
@@ -55,13 +65,13 @@ const PostTag = ({ text, icon }: { text: string; icon: ReactNode }) => (
 	</div>
 );
 
-const Post = ({ post }: any) => {
+const Post = ({ post, status }: any) => {
 	return (
 		<Link
 			scroll={false}
 			prefetch={false}
 			href={{ pathname: '/', query: { id: post.id } }}
-			className='w-full h-auto bg-white rounded-md border border-gray-200 p-4 text-start hover:ring-blue-300 hover:ring'>
+			className='w-full h-auto bg-white rounded-md border border-gray-200 p-4 text-start hover:ring-blue-300 hover:ring transition-shadow duration-150'>
 			<div className='w-full flex flex-col gap-3'>
 				<div className='flex gap-4'>
 					<div className='w-[50px] h-[50px] bg-blue-300 rounded-md'></div>
@@ -70,7 +80,11 @@ const Post = ({ post }: any) => {
 						<p className='font-medium text-gray-500'>{post.employer.companyName}</p>
 					</div>
 					<div className=''>
-						<button className=''>Apply</button>
+						{status && status === 'APPLIED' ? (
+							<div className='bg-green-100 text-green-500 text-sm font-medium px-2 py-1 rounded-md'>Applied</div>
+						) : (
+							<button className='bg-sky-100 text-sky-500 text-sm font-medium px-2 py-1 rounded-md'>Apply</button>
+						)}
 					</div>
 				</div>
 				<div className='flex gap-2 w-full'>
