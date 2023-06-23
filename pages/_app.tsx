@@ -17,6 +17,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function App({ Component, pageProps }: CustomAppProps) {
 	const getLayout = Component.getLayout ?? ((page) => <BaseLayout>{page}</BaseLayout>);
+
 	return (
 		<QueryClientProvider client={queryClient}>
 			<AuthProvider>

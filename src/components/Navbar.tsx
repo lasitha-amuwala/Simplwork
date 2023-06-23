@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import * as Avatar from '@radix-ui/react-avatar';
-import * as Popover from '@radix-ui/react-popover';
-import { RiMenuFill } from 'react-icons/ri';
-import { RxCross2 } from 'react-icons/rx';
 import Link from 'next/link';
 import { useAuth } from './Auth/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import { simplwork } from '../utils/simplwork';
+import * as Popover from '@radix-ui/react-popover';
+import * as Avatar from '@radix-ui/react-avatar';
+import { RxCross2 } from 'react-icons/rx';
+import { RiMenuFill } from 'react-icons/ri';
 
 const NavControls = () => {
 	const { user, signOut } = useAuth();
