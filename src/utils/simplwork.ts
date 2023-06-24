@@ -20,13 +20,20 @@ const { get } = {
 
 export const simplwork = {
 	candidate: {
-		getCandidatePostings: (credential: string) => ({
-			queryKey: ['candidate-postings'],
+		searchCandidatePostings: (credential: string) => ({
+			queryKey: ['search-candidate-postings'],
 			queryFn: () => get(credential, 'candidate/postings/search'),
+			enabled: !!credential,
 		}),
 		getCandidate: (credential: string) => ({
 			queryKey: ['candidate'],
 			queryFn: (): Promise<any> => get(credential, 'candidate'),
+			enabled: !!credential,
+		}),
+		getCandidatePostings: (credential: string) => ({
+			queryKey: ['personal-candidate-postings'],
+			queryFn: (): Promise<any> => get(credential, 'candidate/postings/personal'),
+			enabled: !!credential,
 		}),
 	},
 };

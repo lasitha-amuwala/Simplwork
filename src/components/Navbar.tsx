@@ -7,11 +7,10 @@ import * as Popover from '@radix-ui/react-popover';
 import * as Avatar from '@radix-ui/react-avatar';
 import { RxCross2 } from 'react-icons/rx';
 import { RiMenuFill } from 'react-icons/ri';
-import Image from 'next/image';
 
 const NavControls = () => {
 	const { user, signOut } = useAuth();
-	const { data: candidate } = useQuery({ ...simplwork.candidate.getCandidate(user?.credential as string), enabled: !!user });
+	const { data: candidate } = useQuery(simplwork.candidate.getCandidate(user?.credential as string));
 
 	// if (!user?.credential) {
 	// 	return (
@@ -94,7 +93,7 @@ const Navbar = () => {
 					)}
 				</div>
 				<div>
-					<Image src='/Logo-long.svg' alt='Simplwork logo' />
+					<img src='/Logo-long.svg' alt='Simplwork logo' />
 				</div>
 				<div className='hidden md:block'>
 					<ul className='flex gap-10 font-medium'>

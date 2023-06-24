@@ -8,13 +8,13 @@ import { Post, PostSkeleton } from '@/src/components/Post';
 
 const Home = () => {
 	const { user } = useAuth();
-	const { data, isLoading } = useQuery({ ...simplwork.candidate.getCandidatePostings(user?.credential as string), enabled: !!user });
+	const { data, isLoading } = useQuery(simplwork.candidate.searchCandidatePostings(user?.credential as string));
 
 	const [selectedPost, setSelectedPost] = useState(null);
 
 	useEffect(() => {
 		if (data) setSelectedPost(data[0]);
-	}, [data, user]);
+	}, [data]);
 
 	if (!user) return <SignInCard />;
 	return (
@@ -46,10 +46,11 @@ const Home = () => {
 				<div className='w-[50%] min-h-[800px] h-full bg-white rounded-md border border-gray-200 mt-1 sticky top-[72px] overflow-hidden'>
 					<div className='h-28 bg-[#64B1EC]/10 flex items-center p-4 gap-4'>
 						<div className='h-20 w-20 bg-blue-300 rounded-md'></div>
-						<div className='h-full'>
-							{/* {selectedPost && <h1 className='font-bold text-xl'>{selectedPost?.posting.employer.companyName}</h1>}
-							{selectedPost && <h1 className='font-bold text-xl'>{selectedPost?.posting.employer.companyDescription}</h1>} */}
-						</div>
+						<div className='h-full'>{selectedPost && <h1 className='font-bold text-xl'>Compnay Name</h1>}</div>
+					</div>
+					<div className='p-5'>
+						<h1 className='font-semibold text-lg'>Job Description</h1>
+						{/* <p>{selectedPost?.posting.jobDescription}</p> */}
 					</div>
 				</div>
 			</div>

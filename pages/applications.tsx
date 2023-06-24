@@ -22,9 +22,9 @@ const Applications: NextPage = (props: Props) => {
 					<div className='w-full flex flex-col gap-5 max-w-2xl'>
 						<h1 className='text-3xl font-bold px-1'>{`Applied (${candidate.length})`}</h1>
 						<div className='w-full flex flex-col overflow-y-scroll max-h-96 p-1 gap-5'>
-							{candidate.map(({ posting, candidateStatus }: any) => {
+							{candidate.map(({ posting, candidateStatus }: any, i: number) => {
 								return (
-									<div className='w-full flex'>
+									<div key={`${posting.id}${i}`} className='w-full flex'>
 										<Post post={posting} status={candidateStatus}></Post>
 									</div>
 								);
@@ -36,9 +36,9 @@ const Applications: NextPage = (props: Props) => {
 					<div className='w-full flex flex-col gap-5 max-w-2xl'>
 						<h1 className='text-3xl font-bold px-1'>{`Applied (${candidate.length})`}</h1>
 						<div className='w-full flex flex-col overflow-y-scroll max-h-96 p-1 gap-5'>
-							{candidate.map(({ posting, candidateStatus }: any) => {
+							{candidate.map(({ posting, candidateStatus }: any, i: number) => {
 								return (
-									<div className='w-full flex'>
+									<div key={`${posting.id}${i}`} className='w-full flex'>
 										<Post post={posting} status={candidateStatus}></Post>
 									</div>
 								);

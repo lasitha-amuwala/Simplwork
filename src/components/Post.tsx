@@ -7,7 +7,7 @@ export const Post = ({ post, status }: any) => {
 		<Link
 			scroll={false}
 			prefetch={false}
-			href={{ pathname: '/', query: { id: post.id } }}
+			href={{ pathname: '/', query: { id: 0 } }}
 			className='w-full h-auto bg-white rounded-md border border-gray-200 p-4 text-start hover:ring-blue-300 hover:ring transition-shadow duration-150'>
 			<div className='w-full flex flex-col gap-3'>
 				<div className='flex gap-4'>
