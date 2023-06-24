@@ -15,7 +15,7 @@ const { get } = {
 	get: (credential: string, url: string) =>
 		SimplworkClient(credential)
 			.get(url)
-			.then((res) => res),
+			.then((res) => res.data),
 };
 
 export const simplwork = {

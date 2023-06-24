@@ -49,8 +49,8 @@ const SignUp: NextPageWithLayout<Props> = () => {
 	return (
 		<div className='flex flex-col items-center justify-center h-screen w-screen'>
 			<div className='flex items-center flex-col w-auto bg-white p-10 justify-center rounded-xl border border-gray-200'>
-				<AuthCard title='Try Simplwork for free' subtitle='' linkText='Already have an account? Sign in' linkHref='/signin'>
-					<GoogleLogin useOneTap width='250' context='signup' shape='pill' onSuccess={handleSignUp} />
+				<AuthCard title='Try Simplwork for free' subtitle='Sign up today!' linkText='Already have an account? Sign in' linkHref='/'>
+					<GoogleLogin useOneTap width='250' text='signup_with' context='signup' shape='pill' onSuccess={handleSignUp} />
 				</AuthCard>
 			</div>
 		</div>

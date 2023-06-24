@@ -2,7 +2,7 @@ import { CredentialResponse } from '@react-oauth/google';
 import { User } from './api/candidate';
 
 export type GoogleProfileData = {
-	credential: string | undefined;
+	credential: string;
 	email: string;
 	picture: string;
 };
@@ -27,6 +27,6 @@ export type GoogleToken = {
 export type AuthContextType = {
 	user: GoogleProfileData | null;
 	setUser: (user: GoogleProfileData) => void;
-	handleSignIn: (credential: CredentialResponse) => void;
+	onSignIn: (credential: CredentialResponse) => void;
 	signOut: () => void;
 };

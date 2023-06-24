@@ -10,10 +10,10 @@ export const ProtectedPage = ({ children }: PropsWithChildren<Props>) => {
 	const { user } = useAuth();
 
 	useEffect(() => {
-		if (!user?.credential) router.push('/signin');
+		if (!user) router.push('/');
 	}, [user, router]);
 
-	if (!user?.credential)
+	if (!user)
 		return (
 			<div className='flex items-center justify-center w-full h-screen animate-spin'>
 				<CgSpinner className='w-12 h-12 text-[#64B1EC]' />

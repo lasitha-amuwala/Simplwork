@@ -1,9 +1,8 @@
 import { createContext, useContext, useState, PropsWithChildren } from 'react';
 import { CredentialResponse, GoogleOAuthProvider, googleLogout } from '@react-oauth/google';
 import { AuthContextType, GoogleProfileData, GoogleToken } from '@/src/types/Auth';
-import jwt_decode from 'jwt-decode';
 import { SimplworkClient } from '@/src/utils/simplwork';
-import { User } from '@/src/types/api/candidate';
+import jwt_decode from 'jwt-decode';
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -19,21 +18,16 @@ export const decodeCredential = (credential: string) => {
 export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	const [user, setUser] = useState<GoogleProfileData | null>(null);
 
-	const handleSignIn = async (response: CredentialResponse) => {
-		const credential = response.credential as string;
-		const googleProfile = decodeCredential(credential);
+	const getCandidate = async (credential: string): Promise<any> => {
+		return await SimplworkClient(credential).get('candidate');
+	};
 
-		await SimplworkClient(credential)
-			.get('candidate')
-			.then((res) => {
-				if (res.status >= 200 && res.status <= 299) {
-					const user = { ...googleProfile };
-					setUser(user);
-				}
-			})
-			.catch((error) => {
-				alert('User does not exist, Sign up');
-			});
+	const onSignIn = ({ credential }: CredentialResponse) => {
+		if (!credential) return;
+
+		getCandidate(credential)
+			.then((res) => res.status >= 200 && res.status <= 299 && setUser({ ...decodeCredential(credential) }))
+			.catch((error) => alert('User does not exist, Sign up'));
 	};
 
 	const signOut = () => {
@@ -42,7 +36,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	};
 
 	return (
-		<AuthContext.Provider value={{ user, setUser, handleSignIn, signOut }}>
+		<AuthContext.Provider value={{ user, setUser, onSignIn, signOut }}>
 			<GoogleOAuthProvider clientId='869487513689-u4hhunj2o95cf404asivk737j91fddgq.apps.googleusercontent.com'>{children}</GoogleOAuthProvider>
 		</AuthContext.Provider>
 	);

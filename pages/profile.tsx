@@ -9,11 +9,8 @@ import React from 'react';
 type Props = {};
 
 const Profile: NextPage = (props: Props) => {
-
 	const { user } = useAuth();
-	const { data: candidate, isLoading } = useQuery(simplwork.candidate.getCandidate(user?.credential as string));
-
-	if (isLoading) return <div>loading</div>;
+	const { data: candidate } = useQuery({ ...simplwork.candidate.getCandidate(user?.credential as string), enabled: !!user });
 
 	return (
 		<ProtectedPage>

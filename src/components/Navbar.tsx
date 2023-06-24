@@ -7,23 +7,24 @@ import * as Popover from '@radix-ui/react-popover';
 import * as Avatar from '@radix-ui/react-avatar';
 import { RxCross2 } from 'react-icons/rx';
 import { RiMenuFill } from 'react-icons/ri';
+import Image from 'next/image';
 
 const NavControls = () => {
 	const { user, signOut } = useAuth();
-	const { data: candidate } = useQuery(simplwork.candidate.getCandidate(user?.credential as string));
+	const { data: candidate } = useQuery({ ...simplwork.candidate.getCandidate(user?.credential as string), enabled: !!user });
 
-	if (!user?.credential) {
-		return (
-			<div className='flex gap-2 md:gap-3 tranistion-all duration-300'>
-				<Link href='/signin' className='bg-sky-500 px-2 md:px-3 py-1 rounded text-white font-medium hover:bg-sky-400 active:bg-sky-300 '>
-					Sign in
-				</Link>
-				<Link href='/signup' className='bg-black px-2 md:px-3 py-1  rounded text-white font-medium hover:bg-neutral-800 active:bg-neutral-700'>
-					Sign up
-				</Link>
-			</div>
-		);
-	}
+	// if (!user?.credential) {
+	// 	return (
+	// 		<div className='flex gap-2 md:gap-3 tranistion-all duration-300'>
+	// 			<Link href='/' className='bg-sky-500 px-2 md:px-3 py-1 rounded text-white font-medium hover:bg-sky-400 active:bg-sky-300 '>
+	// 				Sign in
+	// 			</Link>
+	// 			<Link href='/signup' className='bg-black px-2 md:px-3 py-1  rounded text-white font-medium hover:bg-neutral-800 active:bg-neutral-700'>
+	// 				Sign up
+	// 			</Link>
+	// 		</div>
+	// 	);
+	// }
 
 	return (
 		<Popover.Root>
@@ -33,7 +34,7 @@ const NavControls = () => {
 						<Avatar.Image
 							className='w-full h-full object-cover rounded-full'
 							src={user?.picture}
-							alt={`${candidate.data.candidateName.charAt(0)} ${candidate.data.candidateName.split(' ')[1].charAt(0)}`}
+							alt={`${candidate.candidateName.charAt(0)} ${candidate.candidateName.split(' ')[1].charAt(0)}`}
 						/>
 					)}
 					<Avatar.Fallback
@@ -93,7 +94,7 @@ const Navbar = () => {
 					)}
 				</div>
 				<div>
-					<img src='/Logo-long.svg' alt='Simplwork logo' />
+					<Image src='/Logo-long.svg' alt='Simplwork logo' />
 				</div>
 				<div className='hidden md:block'>
 					<ul className='flex gap-10 font-medium'>
