@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { ArrayHelpers, ErrorMessage, Field, FieldArray, Formik, FormikValues } from 'formik';
-import { AutoComplete } from '../AutoComplete';
-import { WorkExperience } from './WorkExperience';
-import { StepProgressHeader } from './StepProgressHeader';
-import { FieldControl } from '../FieldControl';
-import { FormStep, FormStepper } from './FormStepper';
-import { HiOutlinePlus } from 'react-icons/hi';
-import { CandiatePostRequest, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory } from '@/src/types/api/candidate';
-import { useRouter } from 'next/router';
+import { useState } from 'react';
 import Image from 'next/image';
-import * as Yup from 'yup';
-import 'yup-phone-lite';
-import { SimplworkClient } from '@/src/utils/simplwork';
-import { GoogleProfileData } from '@/src/types/Auth';
-import { CommuteCheckBoxButton, commuteTypes } from './CommuteCheckBox';
+import { useRouter } from 'next/router';
 import { useAuth } from '../Auth/AuthProvider';
+import { HiOutlinePlus } from 'react-icons/hi';
+import { string, object, number, array } from 'yup';
+import { ArrayHelpers, ErrorMessage, Field, FieldArray, Formik, FormikValues } from 'formik';
+
+import { AutoComplete } from '../AutoComplete';
+import { FieldControl } from '../FieldControl';
+import { WorkExperience } from './WorkExperience';
+import { GoogleProfileData } from '@/src/types/Auth';
+import { FormStep, FormStepper } from './FormStepper';
+import { SimplworkClient } from '@/src/utils/simplwork';
+import { StepProgressHeader } from './StepProgressHeader';
+import { CommuteCheckBoxButton, commuteTypes } from './CommuteCheckBox';
+import { CandiatePostRequest, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory } from '@/src/types/api/candidate';
 
 type ValueTypes = {
 	firstName: string;
@@ -41,30 +41,29 @@ const initialValues: ValueTypes = {
 	//{ positionTitle: '', companyName: '', details: '', startDate: '', endDate: '' }
 };
 
-const validationSchemaStepOne = Yup.object().shape({
-	firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('First name is required'),
-	lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name is required'),
-	age: Yup.number().min(14, 'You must be at least 14 years').max(60, 'You must be at most 60 years').required('Age is required'),
-	gender: Yup.string().required('Gender is required'),
-	phoneNumber: Yup.string().phone(['CA', 'US'], 'Please enter a valid phone number').required('A phone number is required'),
+const validationSchemaStepOne = object().shape({
+	firstName: string().min(2, 'Too Short!').max(50, 'Too Long!').required('First name is required'),
+	lastName: string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name is required'),
+	age: number().min(14, 'You must be at least 14 years').max(60, 'You must be at most 60 years').required('Age is required'),
+	gender: string().required('Gender is required'),
+	phoneNumber: string()
+		.matches(/^([0-9]{3})[-]([0-9]{3})[-]([0-9]{4})$/, 'Invalid format ex. 123-456-7890')
+		.required('A phone number is required'),
 });
 
-const validationSchemaStepTwo = Yup.object().shape({
-	homeAddress: Yup.string(),
-	maximumHours: Yup.number()
-		.min(0, 'Please enter a valid hour')
-		.max(168, 'Please enter a valid hour')
-		.required('You must enter this field.'),
+const validationSchemaStepTwo = object().shape({
+	homeAddress: string(),
+	maximumHours: number().min(0, 'Please enter a valid hour').max(168, 'Please enter a valid hour').required('You must enter this field.'),
 });
 
-const validationSchemaStepThree = Yup.object().shape({
-	workHistory: Yup.array().of(
-		Yup.object().shape({
-			positionTitle: Yup.string().required(),
-			companyName: Yup.string().required(),
-			details: Yup.string().required(),
-			startDate: Yup.string().required(),
-			endDate: Yup.string().required(),
+const validationSchemaStepThree = object().shape({
+	workHistory: array().of(
+		object().shape({
+			positionTitle: string().required(),
+			companyName: string().required(),
+			details: string().required(),
+			startDate: string().required(),
+			endDate: string().required(),
 		})
 	),
 });
@@ -117,12 +116,12 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 			console.log(JSON.stringify(requestBody, null, 2));
 			await SimplworkClient(userData.credential as string)
 				.post('candidate', JSON.stringify(requestBody))
-				.then((res) => {
+				.then((res: any) => {
 					// console.log(res);
 					const user: GoogleProfileData = { ...userData };
 					setUser(user);
 				})
-				.catch((err) => {
+				.catch((err: any) => {
 					console.log('error', err);
 				});
 		}
@@ -172,7 +171,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 										<option value='OTHER'>Other</option>
 									</FieldControl>
 								</div>
-								<FieldControl name='phoneNumber' label='Phone Number' type='tel' placeholder='e.g. XXX-XXX-XXXX' />
+								<FieldControl name='phoneNumber' label='Phone Number' type='tel' placeholder='XXX-XXX-XXXX' />
 							</FormStep>
 							<FormStep title='Add Work Availability' subtitle='Enter your details to create a profile'>
 								<AutoComplete update={updateLocation} credential={userData?.credential as string} />
