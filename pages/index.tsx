@@ -8,7 +8,7 @@ import { Post, PostSkeleton } from '@/src/components/Post';
 
 const Home = () => {
 	const { user } = useAuth();
-	const { data, isLoading } = useQuery(simplwork.candidate.searchCandidatePostings(user?.credential as string));
+	const { data, isLoading } = useQuery(simplwork.candidate.searchCandidatePostings(user));
 
 	const [selectedPost, setSelectedPost] = useState(null);
 

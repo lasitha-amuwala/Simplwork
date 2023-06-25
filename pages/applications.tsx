@@ -1,19 +1,16 @@
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
 import { Post } from '@/src/components/Post';
-import { PostTag } from '@/src/components/PostTag';
 import { simplwork } from '@/src/utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
-import Link from 'next/link';
 import React from 'react';
-import { MdAttachMoney } from 'react-icons/md';
 
 type Props = {};
 
 const Applications: NextPage = (props: Props) => {
 	const { user } = useAuth();
-	const { data: candidate, isLoading } = useQuery(simplwork.candidate.getCandidatePostings(user?.credential as string));
+	const { data: candidate, isLoading } = useQuery(simplwork.candidate.getCandidatePostings(user));
 
 	return (
 		<ProtectedPage>

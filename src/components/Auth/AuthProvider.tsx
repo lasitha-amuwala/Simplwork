@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, PropsWithChildren } from 'react';
+import { createContext, useContext, useState, useEffect, PropsWithChildren } from 'react';
 import { CredentialResponse, GoogleOAuthProvider, googleLogout } from '@react-oauth/google';
 import { AuthContextType, GoogleProfileData, GoogleToken } from '@/src/types/Auth';
 import { SimplworkClient } from '@/src/utils/simplwork';
@@ -16,7 +16,14 @@ export const decodeCredential = (credential: string) => {
 };
 
 export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
-	const [user, setUser] = useState<GoogleProfileData | null>(null);
+	const [user, setUser] = useState<string>('');
+
+	useEffect(() => {
+		const credential = localStorage.getItem('token');
+		if (credential) {
+			setUser(credential);
+		}
+	}, []);
 
 	const getCandidate = async (credential: string): Promise<any> => {
 		return await SimplworkClient(credential).get('candidate');
@@ -26,12 +33,18 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 		if (!credential) return;
 
 		getCandidate(credential)
-			.then((res) => res.status >= 200 && res.status <= 299 && setUser({ ...decodeCredential(credential) }))
+			.then((res) => {
+				if (res.status >= 200 && res.status <= 299) {
+					setUser(credential);
+					localStorage.setItem('token', credential);
+				}
+			})
 			.catch((error) => alert('User does not exist, Sign up'));
 	};
 
 	const signOut = () => {
-		setUser(null);
+		setUser('');
+		localStorage.removeItem('token');
 		googleLogout();
 	};
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from './Auth/AuthProvider';
+import { decodeCredential, useAuth } from './Auth/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import { simplwork } from '../utils/simplwork';
 import * as Popover from '@radix-ui/react-popover';
@@ -10,7 +10,7 @@ import { RiMenuFill } from 'react-icons/ri';
 
 const NavControls = () => {
 	const { user, signOut } = useAuth();
-	const { data: candidate } = useQuery(simplwork.candidate.getCandidate(user?.credential as string));
+	const { data: candidate } = useQuery(simplwork.candidate.getCandidate(user));
 
 	// if (!user?.credential) {
 	// 	return (
@@ -25,6 +25,8 @@ const NavControls = () => {
 	// 	);
 	// }
 
+	const googleProfile = decodeCredential(user);
+
 	return (
 		<Popover.Root>
 			<Popover.Trigger asChild>
@@ -32,7 +34,7 @@ const NavControls = () => {
 					{candidate && (
 						<Avatar.Image
 							className='w-full h-full object-cover rounded-full'
-							src={user?.picture}
+							src={googleProfile?.picture}
 							alt={`${candidate.candidateName.charAt(0)} ${candidate.candidateName.split(' ')[1].charAt(0)}`}
 						/>
 					)}

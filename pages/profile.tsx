@@ -10,7 +10,7 @@ type Props = {};
 
 const Profile: NextPage = (props: Props) => {
 	const { user } = useAuth();
-	const { data: candidate } = useQuery(simplwork.candidate.getCandidate(user?.credential as string));
+	const { data: candidate } = useQuery(simplwork.candidate.getCandidate(user));
 
 	return (
 		<ProtectedPage>

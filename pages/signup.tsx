@@ -28,9 +28,7 @@ const SignUp: NextPageWithLayout<Props> = () => {
 			await SimplworkClient(googleProfile.credential)
 				.get('candidate')
 				.then((res) => {
-					// console.log(res);
-					const user: User = { ...googleProfile, candidate: res.data };
-					setUser(user);
+					setUser(googleProfile.credential as string);
 					router.push('/');
 				})
 				.catch((error) => {
