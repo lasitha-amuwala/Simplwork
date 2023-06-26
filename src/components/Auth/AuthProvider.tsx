@@ -16,7 +16,7 @@ export const decodeCredential = (credential: string) => {
 };
 
 export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
-	const [user, setUser] = useState<string>('');
+	const [user, setUser] = useState<string | null>(null);
 
 	useEffect(() => {
 		const credential = localStorage.getItem('token');
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	};
 
 	const signOut = () => {
-		setUser('');
+		setUser(null);
 		localStorage.removeItem('token');
 		googleLogout();
 	};
