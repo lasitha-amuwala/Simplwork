@@ -35,7 +35,7 @@ const NavControls = () => {
 						<Avatar.Image
 							className='w-full h-full object-cover rounded-full'
 							src={googleProfile?.picture}
-							alt={`${candidate.candidateName.charAt(0)} ${candidate.candidateName.split(' ')[1].charAt(0)}`}
+							alt={`${candidate.candidateName.charAt(0) ?? ''}`}
 						/>
 					)}
 					<Avatar.Fallback

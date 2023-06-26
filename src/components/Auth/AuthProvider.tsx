@@ -20,9 +20,8 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 
 	useEffect(() => {
 		const credential = localStorage.getItem('token');
-		if (credential) {
-			setUser(credential);
-		}
+		console.log(credential)
+		if (credential) setUser(credential);
 	}, []);
 
 	const getCandidate = async (credential: string): Promise<any> => {
