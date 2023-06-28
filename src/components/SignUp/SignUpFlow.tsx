@@ -159,7 +159,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 								<FieldControl name='firstName' label='First name' type='fname' />
 								<FieldControl name='lastName' label='Last name' type='lname' />
 								<div className='flex w-full gap-5'>
-									<FieldControl name='age' label='Age' type='number' min={14} max={60} errorBelow />
+									<FieldControl name='age' label='Age' type='number' min={14} max={100} errorBelow />
 									<FieldControl as='select' name='gender' label='Gender' type='' errorBelow>
 										<option value='' label='Select a gender'></option>
 										<option value='MALE'>Male</option>

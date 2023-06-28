@@ -25,8 +25,8 @@ export type GoogleToken = {
 };
 
 export type AuthContextType = {
-	user: string;
-	setUser: (user: string) => void;
+	user: GoogleProfileData | null;
+	setUser: (user: GoogleProfileData | null) => void;
 	onSignIn: (credential: CredentialResponse) => void;
 	signOut: () => void;
 };

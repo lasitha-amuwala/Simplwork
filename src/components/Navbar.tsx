@@ -10,7 +10,7 @@ import { RiMenuFill } from 'react-icons/ri';
 
 const NavControls = () => {
 	const { user, signOut } = useAuth();
-	const { data: candidate } = useQuery(simplwork.candidate.getCandidate(user));
+	const { data: candidate } = useQuery(simplwork.candidate.getCandidate(user?.credential ?? ''));
 
 	// if (!user?.credential) {
 	// 	return (
@@ -25,8 +25,6 @@ const NavControls = () => {
 	// 	);
 	// }
 
-	const googleProfile = decodeCredential(user);
-
 	return (
 		<Popover.Root>
 			<Popover.Trigger asChild>
@@ -34,7 +32,7 @@ const NavControls = () => {
 					{candidate && (
 						<Avatar.Image
 							className='w-full h-full object-cover rounded-full'
-							src={googleProfile?.picture}
+							src={user?.picture}
 							alt={`${candidate.candidateName.charAt(0) ?? ''}`}
 						/>
 					)}

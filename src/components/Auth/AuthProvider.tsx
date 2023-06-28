@@ -9,19 +9,20 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 export const useAuth = () => useContext(AuthContext) as AuthContextType;
 
 export const decodeCredential = (credential: string) => {
-	const { email, picture } = jwt_decode(credential as string) as GoogleToken;
+	const { email, picture } = jwt_decode(credential) as GoogleToken;
 	const googleProfile: GoogleProfileData = { credential: credential, email, picture };
 	console.log(credential);
 	return googleProfile;
 };
 
 export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
-	const [user, setUser] = useState<string>('');
+	const [user, setUser] = useState<GoogleProfileData | null>(null);
 
 	useEffect(() => {
 		const credential = localStorage.getItem('token');
-		console.log(credential)
-		if (credential) setUser(credential);
+		if (credential) {
+			setUser({ ...decodeCredential(credential) });
+		}
 	}, []);
 
 	const getCandidate = async (credential: string): Promise<any> => {
@@ -29,12 +30,13 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	};
 
 	const onSignIn = ({ credential }: CredentialResponse) => {
+		console.log(credential);
 		if (!credential) return;
 
 		getCandidate(credential)
 			.then((res) => {
 				if (res.status >= 200 && res.status <= 299) {
-					setUser(credential);
+					setUser({ ...decodeCredential(credential) });
 					localStorage.setItem('token', credential);
 				}
 			})
@@ -42,7 +44,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	};
 
 	const signOut = () => {
-		setUser('');
+		setUser(null);
 		localStorage.removeItem('token');
 		googleLogout();
 	};
