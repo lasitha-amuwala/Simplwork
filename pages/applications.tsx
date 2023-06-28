@@ -10,7 +10,7 @@ type Props = {};
 
 const Applications: NextPage = (props: Props) => {
 	const { user } = useAuth();
-	const { data: candidate, isLoading } = useQuery(simplwork.candidate.getCandidatePostings(user));
+	const { data: candidate } = useQuery(simplwork.candidate.getCandidatePostings(user?.credential ?? ''));
 
 	return (
 		<ProtectedPage>
@@ -22,7 +22,7 @@ const Applications: NextPage = (props: Props) => {
 							{candidate.map(({ posting, candidateStatus }: any, i: number) => {
 								return (
 									<div key={`${posting.id}${i}`} className='w-full flex'>
-										<Post post={posting} status={candidateStatus}></Post>
+										<Post post={posting} status={candidateStatus} />
 									</div>
 								);
 							})}
@@ -36,7 +36,7 @@ const Applications: NextPage = (props: Props) => {
 							{candidate.map(({ posting, candidateStatus }: any, i: number) => {
 								return (
 									<div key={`${posting.id}${i}`} className='w-full flex'>
-										<Post post={posting} status={candidateStatus}></Post>
+										<Post post={posting} status={candidateStatus} />
 									</div>
 								);
 							})}

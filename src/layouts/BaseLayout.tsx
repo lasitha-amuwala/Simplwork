@@ -12,7 +12,7 @@ export const BaseLayout = ({ children }: Props) => {
 	return (
 		<>
 			{user && <Navbar />}
-			<main className={`flex w-full justify-center ${user && 'pt-[var(--header-height)] mb-20'} px-2 md:px-5`}>
+			<main className={`flex w-full justify-center ${user && 'pt-[var(--header-height)]'} px-2 md:px-5`}>
 				<div className='max-w-[1440px] w-full'>{children}</div>
 			</main>
 		</>

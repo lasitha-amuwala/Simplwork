@@ -1,19 +1,23 @@
-import Link from 'next/link';
 import { PostTag } from './PostTag';
 import { MdAttachMoney } from 'react-icons/md';
 
-export const Post = ({ post, status }: any) => {
+type PostProps = {
+	post: any;
+	status: string;
+	active?: boolean;
+};
+
+export const Post = ({ post, status, active }: PostProps) => {
 	return (
-		<Link
-			scroll={false}
-			prefetch={false}
-			href={{ pathname: '/', query: { id: 0 } }}
-			className='w-full h-auto bg-white rounded-md border border-gray-200 p-4 text-start hover:ring-blue-300 hover:ring transition-shadow duration-150'>
+		<div
+			className={`w-full h-auto bg-white rounded-md border border-gray-200 p-4 text-start ring-sky-300/50 hover:ring ${
+				active && 'ring'
+			} transition-shadow duration-150`}>
 			<div className='w-full flex flex-col gap-3'>
 				<div className='flex gap-4'>
-					<div className='w-[50px] h-[50px] bg-blue-300 rounded-md'></div>
+					{/* <div className='w-[50px] h-[50px] bg-sky-300 rounded-md'></div> */}
 					<div className='flex flex-col flex-grow'>
-						<h5 className='font-bold'>{post.positionTitle}</h5>
+						<h5 className='font-semibold'>{post.positionTitle}</h5>
 						<p className='font-medium text-gray-500'>{post.employer.companyName}</p>
 					</div>
 					<div className=''>
@@ -29,7 +33,7 @@ export const Post = ({ post, status }: any) => {
 				</div>
 				<p className='w-full text-gray-600 line-clamp-2'>{post.jobDescription}</p>
 			</div>
-		</Link>
+		</div>
 	);
 };
 
