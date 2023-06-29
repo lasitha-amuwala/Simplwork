@@ -48,13 +48,14 @@ const Home = () => {
 			<div className='flex gap-3'>
 				<div className='w-[15%] h-80 bg-white rounded-md border border-gray-200 mt-1 sticky top-[72px]'></div>
 				<div className='w-[35%] flex flex-col gap-3 px-1 pt-1'>
-					{isLoading
-						? [...Array(20).fill(0)].map((key, i) => <PostSkeleton key={i} />)
-						: data.map(({ posting, candidateStatus }: any, i: number) => (
-								<Link key={`${posting.id}${i}`} scroll={false} prefetch={false} href={{ pathname: '/', query: { id: i } }} className='w-full'>
-									<Post post={posting} status={candidateStatus} active={selectedPost === i} />
-								</Link>
-						  ))}
+					{isLoading && [...Array(20).fill(0)].map((key, i) => <PostSkeleton key={i} />)}{' '}
+					{!isLoading &&
+						data &&
+						data.map(({ posting, candidateStatus }: any, i: number) => (
+							<Link key={`${posting.id}${i}`} scroll={false} prefetch={false} href={{ pathname: '/', query: { id: i } }} className='w-full'>
+								<Post post={posting} status={candidateStatus} active={selectedPost === i} />
+							</Link>
+						))}
 				</div>
 				<div className='w-[50%]'>
 					{isLoading ? <JobPostSkeleton /> : isError ? <div>ERROR</div> : <JobPost postData={data[selectedPost]} />}
