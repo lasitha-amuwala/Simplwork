@@ -20,7 +20,7 @@ const Profile: NextPage = (props: Props) => {
 					<div className='h-36 flex justify-between bg-white py-5 px-5'>
 						<div className='flex flex-col ml-56'>
 							{candidate && <h1 className='text-4xl font-semibold'>{candidate.candidateName}</h1>}
-							<p className='text-lg text-gray-500'>I'm a web developer based in Toronto</p>
+							<p className='text-lg text-gray-500'>{'tagline'}</p>
 						</div>
 						<div>
 							<button className='bg-black text-white py-2 px-3 rounded-xl'>Edit Profile</button>

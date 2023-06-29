@@ -116,7 +116,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 			console.log(JSON.stringify(requestBody, null, 2));
 			await SimplworkClient(userData.credential as string)
 				.post('candidate', JSON.stringify(requestBody))
-				.then((res: any) => setUser(userData.credential))
+				.then((res: any) => setUser({ ...userData }))
 				.catch((err: any) => {
 					console.log('error', err);
 				});
