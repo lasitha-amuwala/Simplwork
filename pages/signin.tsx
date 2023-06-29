@@ -37,7 +37,7 @@ export const SignInCard = () => {
 					</div>
 					<Link
 						href='/signup'
-						className='mt-3 w-full bg-[#64B1EC] p-3 text-white font-semibold text-center items-center rounded-md cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
+						className='mt-3 w-[250px] bg-[#64B1EC] p-3 text-white font-semibold text-center items-center rounded-md cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
 						Create an account
 					</Link>
 				</AuthCard>
