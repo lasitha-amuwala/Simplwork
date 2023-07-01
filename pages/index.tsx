@@ -1,31 +1,55 @@
-import react, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import { MdMap } from 'react-icons/md';
 import { simplwork } from '@/src/utils/simplwork';
-import { SignInCard } from './signin';
-import { Post, PostSkeleton } from '@/src/components/Post';
 import { useRouter } from 'next/router';
-import { JobPost, JobPostSkeleton } from '@/src/components/JobPost';
-import Link from 'next/link';
+import { SignInCard } from './signin';
+import { PostsList } from '@/src/components/Posts/PostsList';
+import { JobPost } from '@/src/components/JobPost';
 
 const Home = () => {
 	const router = useRouter();
 	const { user } = useAuth();
 	const [selectedPost, setSelectedPost] = useState<number>(0);
+	const [searchInput, setSearchInput] = useState<string>('');
+	const [searchQuery, setSearchQuery] = useState<string>('');
 
-	const { data, isLoading, isError } = useQuery(simplwork.candidate.searchCandidatePostings(user?.credential ?? ''));
+	const {
+		data: posts,
+		isLoading,
+		isError,
+	} = useQuery(
+		simplwork.candidate.searchCandidatePostings(user?.credential ?? '', { queryString: searchQuery, pageSize: '20', pageNo: '0' })
+	);
 
 	useEffect(() => {
-		if (data) setSelectedPost(parseInt((router.query.id as string) ?? 0));
-	}, [data, router]);
+		if (router.query.search) setSearchQuery(router.query.search as string);
+	}, [router]);
+
+	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+		e.preventDefault();
+		setSearchInput(e.target.value);
+	};
+
+	const handleSearchSubmit = () => {
+		if (!searchInput) return;
+		router.query.search = searchInput;
+		router.push(router);
+	};
+
+	useEffect(() => {
+		setSelectedPost(parseInt((router.query.id as string) ?? 0));
+	}, [router]);
 
 	if (!user) return <SignInCard />;
 
 	if (isError)
-		<div className='w-full text-center font-semibold text-5xl flex justify-center items-center h-[calc(100vh-var(--header-height))]'>
-			Opps...Something went wrong
-		</div>;
+		return (
+			<div className='w-full text-center font-semibold text-5xl flex justify-center items-center h-[calc(100vh-var(--header-height))]'>
+				Opps... Something went wrong
+			</div>
+		);
 
 	return (
 		<div className='flex w-full flex-col pt-20 gap-3 pb-20'>
@@ -39,25 +63,27 @@ const Home = () => {
 						<MdMap className='w-5 h-5' />
 						Map
 					</button>
-					<div className='w-full flex justify-center'>
-						<input className='inputStyle w-[600px] shadow-[0_0_0_1px] shadow-gray-200'></input>
+					<div className='w-full flex justify-center gap-5'>
+						<input
+							type='search'
+							value={searchInput}
+							className='inputStyle w-[600px] shadow-[0_0_0_1px] shadow-gray-200'
+							placeholder='Search postings'
+							onChange={handleSearch}
+						/>
+						<button type='submit' className='button' onClick={handleSearchSubmit}>
+							Search
+						</button>
 					</div>
 				</div>
-				<div></div>
 			</div>
 			<div className='flex gap-3'>
 				<div className='w-[15%] h-80 bg-white rounded-md border border-gray-200 mt-1 sticky top-[72px]'></div>
 				<div className='w-[35%] flex flex-col gap-3 px-1 pt-1'>
-					{isLoading
-						? [...Array(20).fill(0)].map((key, i) => <PostSkeleton key={i} />)
-						: data.map(({ posting, candidateStatus }: any, i: number) => (
-								<Link key={`${posting.id}${i}`} scroll={false} prefetch={false} href={{ pathname: '/', query: { id: i } }} className='w-full'>
-									<Post post={posting} status={candidateStatus} active={selectedPost === i} />
-								</Link>
-						  ))}
+					<PostsList posts={posts?.data} selectedPost={selectedPost} isLoading={isLoading} />
 				</div>
 				<div className='w-[50%]'>
-					{isLoading ? <JobPostSkeleton /> : isError ? <div>ERROR</div> : <JobPost postData={data[selectedPost]} />}
+					<JobPost postData={posts?.data[selectedPost]} isLoading={isLoading} />
 				</div>
 			</div>
 		</div>

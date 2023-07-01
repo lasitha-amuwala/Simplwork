@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { memo } from 'react';
+import { JobPostSkeleton } from './Skeletons/JobPostSkeleton';
 
-type Props = {
+type JobPostSkeletonProps = {
 	postData: any;
+	isLoading: boolean;
 };
 
-export const JobPost = ({ postData }: Props) => {
+export const JobPost = memo(({ postData, isLoading }: JobPostSkeletonProps) => {
+	if (isLoading) return <JobPostSkeleton />;
 	return (
 		<div className='h-auto bg-white rounded-md border border-gray-200 mt-1 sticky top-[72px] overflow-hidden'>
 			<div className='h-28 bg-[#64B1EC]/10 flex items-center p-4 gap-4'>
@@ -20,29 +23,4 @@ export const JobPost = ({ postData }: Props) => {
 			</div>
 		</div>
 	);
-};
-
-export const JobPostSkeleton = () => (
-	<div className='bg-white rounded-md border border-gray-200 animate-pulse mt-1'>
-		<div className='p-4 grid grid-cols-12 gap-3'>
-			<div className='h-20 w-20 bg-gray-300 rounded col-span-2 row-span-2' />
-			<div className='h-5 bg-gray-300 rounded col-span-7' />
-			<div className='h-4 bg-gray-300 rounded col-span-6' />
-		</div>
-		<div className='p-4 gap-3 grid grid-cols-12'>
-			<div className='h-4 bg-gray-300 rounded col-span-4 col-start-1' />
-			<div className='h-2 bg-gray-300 rounded col-span-12' />
-			<div className='h-2 bg-gray-300 rounded col-span-12' />
-			<div className='h-2 bg-gray-300 rounded col-span-12' />
-			<div className='h-2 bg-gray-300 rounded col-span-12' />
-			<div className='h-2 bg-gray-300 rounded col-span-12' />
-			<div className='h-2 bg-gray-300 rounded col-span-12' />
-			<div className='h-2 bg-gray-300 rounded col-span-12' />
-			<div className='h-2 bg-gray-300 rounded col-span-12' />
-			<div className='h-2 bg-gray-300 rounded col-span-12' />
-			<div className='h-2 bg-gray-300 rounded col-span-12' />
-			<div className='h-2 bg-gray-300 rounded col-span-12' />
-			<div className='h-2 bg-gray-300 rounded col-span-12' />
-		</div>
-	</div>
-);
+});
