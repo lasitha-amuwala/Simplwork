@@ -6,7 +6,7 @@ import { simplwork } from '@/src/utils/simplwork';
 import { useRouter } from 'next/router';
 import { SignInCard } from './signin';
 import { PostsList } from '@/src/components/Posts/PostsList';
-import { JobPost } from '@/src/components/JobPost';
+import { JobPost } from '@/src/components/Posts/JobPost';
 
 const Home = () => {
 	const router = useRouter();

@@ -8,7 +8,7 @@ type PostProps = {
 	active?: boolean;
 };
 
-export const Post = memo(({ post, status, active }: PostProps) => {
+export const Post = ({ post, status, active }: PostProps) => {
 	return (
 		<div
 			className={`w-full h-auto bg-white rounded-md border border-gray-200 p-4 text-start ring-sky-300/50 hover:ring ${
@@ -31,9 +31,12 @@ export const Post = memo(({ post, status, active }: PostProps) => {
 				</div>
 				<div className='flex gap-2 w-full'>
 					<PostTag text={`$${post.pay}/hr`} icon={<MdAttachMoney />} />
+					<PostTag text={`$${post.pay}/hr`} icon={<MdAttachMoney />} />
 				</div>
 				<p className='w-full text-gray-600 line-clamp-2'>{post.jobDescription}</p>
 			</div>
 		</div>
 	);
-});
+};
+
+export const MemoizedPost = memo(Post);

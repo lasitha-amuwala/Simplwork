@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { PostSkeleton } from '../Skeletons/PostSkeleton';
-import { Post } from './Post';
+import { MemoizedPost } from './Post';
 
 type PostListProps = {
 	posts: any[];
@@ -15,7 +15,7 @@ export const PostsList = ({ posts, isLoading, selectedPost }: PostListProps) => 
 		<>
 			{posts.map(({ posting, candidateStatus }: any, i: number) => (
 				<Link key={`${posting.id}${i}`} scroll={false} prefetch={false} href={{ pathname: '/', query: { id: i } }} className='w-full'>
-					<Post post={posting} status={candidateStatus} active={selectedPost === i} />
+					<MemoizedPost post={posting} status={candidateStatus} active={selectedPost === i} />
 				</Link>
 			))}
 		</>

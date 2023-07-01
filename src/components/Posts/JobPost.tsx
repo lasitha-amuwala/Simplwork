@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
-import { JobPostSkeleton } from './Skeletons/JobPostSkeleton';
+import { JobPostSkeleton } from '../Skeletons/JobPostSkeleton';
 
 type JobPostSkeletonProps = {
 	postData: any;
 	isLoading: boolean;
 };
 
-export const JobPost = memo(({ postData, isLoading }: JobPostSkeletonProps) => {
+export const JobPost = ({ postData, isLoading }: JobPostSkeletonProps) => {
 	if (isLoading) return <JobPostSkeleton />;
 	return (
 		<div className='h-auto bg-white rounded-md border border-gray-200 mt-1 sticky top-[72px] overflow-hidden'>
@@ -23,4 +23,6 @@ export const JobPost = memo(({ postData, isLoading }: JobPostSkeletonProps) => {
 			</div>
 		</div>
 	);
-});
+};
+
+export const MemoizedJobPost = memo(JobPost);
