@@ -11,7 +11,7 @@ import { FieldControl } from '../FieldControl';
 import { WorkExperience } from './WorkExperience';
 import { GoogleProfileData } from '@/src/types/Auth';
 import { FormStep, FormStepper } from './FormStepper';
-import { SimplworkClient } from '@/src/utils/simplwork';
+import { SimplworkApi } from '@/src/utils/simplwork';
 import { StepProgressHeader } from './StepProgressHeader';
 import { CommuteCheckBoxButton, commuteTypes } from './CommuteCheckBox';
 import { CandiatePostRequest, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory } from '@/src/types/api/candidate';
@@ -114,8 +114,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 				},
 			};
 			console.log(JSON.stringify(requestBody, null, 2));
-			await SimplworkClient(userData.credential as string)
-				.post('candidate', JSON.stringify(requestBody))
+			await SimplworkApi.post('candidate', JSON.stringify(requestBody))
 				.then((res: any) => setUser({ ...userData }))
 				.catch((err: any) => console.log('error', err));
 		}

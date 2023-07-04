@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useCombobox } from 'downshift';
-import { SimplworkClient } from '../utils/simplwork';
+import { SimplworkApi } from '../utils/simplwork';
 import { CandidateLocation } from '../types/api/candidate';
 
 type Props = { update: (arg: CandidateLocation) => void; credential: string };
@@ -49,8 +49,7 @@ export const AutoComplete = ({ credential, update }: Props) => {
 
 		if (inputValue && inputValue.length > 3 && credential) {
 			const query = inputValue.replaceAll(/[^a-zA-Z0-9 ]/g, '');
-			await SimplworkClient(credential)
-				.get(`geocoding?query=${query}`)
+			await SimplworkApi.get(`geocoding?query=${query}`)
 				.then(({ data }) =>
 					setItems(
 						data.features.map((item: ItemType) => ({

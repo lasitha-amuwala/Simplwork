@@ -1,8 +1,9 @@
 import { createContext, useContext, useState, useEffect, PropsWithChildren } from 'react';
 import { CredentialResponse, GoogleOAuthProvider, googleLogout } from '@react-oauth/google';
 import { AuthContextType, GoogleProfileData, GoogleToken } from '@/src/types/Auth';
-import { SimplworkClient } from '@/src/utils/simplwork';
+import { SimplworkApi } from '@/src/utils/simplwork';
 import jwt_decode from 'jwt-decode';
+import axios from 'axios';
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -25,14 +26,23 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 		}
 	}, []);
 
-	const getCandidate = async (credential: string): Promise<any> => {
-		return await SimplworkClient(credential).get('candidate');
-	};
+	useEffect(() => {
+		SimplworkApi.interceptors.response.use(
+			(response) => response,
+			(error) => {
+				if (error.response.status === 401) setUser(null);
+			}
+		);
+	}, [setUser]);
+
+	const getCandidate = async (): Promise<any> => await SimplworkApi.get('candidate');
 
 	const onSignIn = ({ credential }: CredentialResponse) => {
 		if (!credential) return;
 
-		getCandidate(credential)
+		SimplworkApi.defaults.headers.common.Authorization = `Bearer ${credential}`;
+
+		getCandidate()
 			.then((res) => {
 				if (res.status >= 200 && res.status <= 299) {
 					setUser({ ...decodeCredential(credential) });

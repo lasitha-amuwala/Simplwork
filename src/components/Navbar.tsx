@@ -8,6 +8,7 @@ import * as Avatar from '@radix-ui/react-avatar';
 import { RxCross2 } from 'react-icons/rx';
 import { RiMenuFill } from 'react-icons/ri';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 const NavControls = () => {
 	const { user, signOut } = useAuth();
@@ -32,6 +33,7 @@ const NavControls = () => {
 				<Avatar.Root className='h-11 w-11 overflow-hidden rounded-full'>
 					{candidate && (
 						<Avatar.Image
+							asChild
 							className='w-full h-full object-cover rounded-full'
 							src={user?.picture}
 							alt={`${candidate.candidateName.charAt(0) ?? ''}`}
@@ -95,7 +97,7 @@ const Navbar = () => {
 					)}
 				</div>
 				<div>
-					<img src='/Logo-long.svg' alt='Simplwork logo' />
+					<Image src='/Logo-long.svg' alt='Simplwork logo' width={120} height={29.13}/>
 				</div>
 				<div className='hidden md:block h-full'>
 					<ul className='flex gap-10 font-medium h-full'>
