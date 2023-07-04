@@ -97,7 +97,7 @@ const Navbar = () => {
 					)}
 				</div>
 				<div>
-					<Image src='/Logo-long.svg' alt='Simplwork logo' width={120} height={30}/>
+					<Image src='/Logo-long.svg' alt='Simplwork logo' width={120} height={29.13}/>
 				</div>
 				<div className='hidden md:block h-full'>
 					<ul className='flex gap-10 font-medium h-full'>

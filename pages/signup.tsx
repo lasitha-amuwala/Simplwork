@@ -4,7 +4,7 @@ import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { ReactElement, useState } from 'react';
 import { GoogleProfileData } from '@/src/types/Auth';
 import { EmptyLayout } from '@/src/layouts/EmptyLayout';
-import { SimplworkClient } from '@/src/utils/simplwork';
+import { SimplworkApi } from '@/src/utils/simplwork';
 import { AuthCard } from '@/src/components/Auth/AuthCard';
 import { SignUpFlow } from '@/src/components/SignUp/SignUpFlow';
 import { NextPageWithLayout } from '@/src/types/NextPageWithLayout';
@@ -23,8 +23,7 @@ const SignUp: NextPageWithLayout<Props> = () => {
 
 		setUserData(googleProfile);
 		if (googleProfile.credential) {
-			await SimplworkClient(googleProfile.credential)
-				.get('candidate')
+			await SimplworkApi.get('candidate')
 				.then((res) => {
 					setUser({ ...googleProfile });
 					router.push('/');
