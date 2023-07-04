@@ -6,9 +6,9 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import React from 'react';
 
-type Props = {};
+type ProfileProps = {};
 
-const Profile: NextPage = (props: Props) => {
+const Profile: NextPage = (props: ProfileProps) => {
 	const { user } = useAuth();
 	const { data: candidate } = useQuery(simplwork.candidate.getCandidate(user?.credential ?? ''));
 
@@ -19,7 +19,7 @@ const Profile: NextPage = (props: Props) => {
 					<div className='h-36 bg-gradient-to-r from-white to-[#69BEFF]/60 w-full'></div>
 					<div className='h-36 flex justify-between bg-white py-5 px-5'>
 						<div className='flex flex-col ml-56'>
-							{candidate && <h1 className='text-4xl font-semibold'>{candidate.candidateName}</h1>}
+							{candidate && <h1 className='text-4xl font-semibold'>{candidate.data.candidateName}</h1>}
 							<p className='text-lg text-gray-500'>{'tagline'}</p>
 						</div>
 						<div>

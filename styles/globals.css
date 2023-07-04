@@ -20,6 +20,9 @@ body {
 	.label {
 		@apply font-medium leading-[35px];
 	}
+	.button {
+		@apply bg-sky-500 px-2 md:px-3 h-10 rounded text-white font-medium hover:bg-sky-400 active:bg-sky-300;
+	}
 }
 
 .PopoverContent {

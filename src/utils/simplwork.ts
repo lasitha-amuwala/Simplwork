@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { CandiateGetRequest } from '../types/api/candidate';
 
 export const SimplworkClient = (token: string) => {
 	return axios.create({
@@ -11,6 +10,14 @@ export const SimplworkClient = (token: string) => {
 	});
 };
 
+const createURL = (endpoint: string, params?: any) => {
+	const query = new URLSearchParams({ ...params });
+	query.forEach((val, key) => {
+		if (val == '' || val == 'undefined') query.delete(key);
+	});
+	return `${endpoint}?${query}`;
+};
+
 const { get } = {
 	get: (credential: string, url: string) =>
 		SimplworkClient(credential)
@@ -20,9 +27,9 @@ const { get } = {
 
 export const simplwork = {
 	candidate: {
-		searchCandidatePostings: (credential: string) => ({
-			queryKey: ['search-candidate-postings'],
-			queryFn: () => get(credential, 'candidate/postings/search'),
+		searchCandidatePostings: (credential: string, params: { [x: string]: string }) => ({
+			queryKey: ['search-candidate-postings', params],
+			queryFn: () => get(credential, createURL('candidate/postings/search', params)),
 			enabled: !!credential,
 		}),
 		getCandidate: (credential: string) => ({

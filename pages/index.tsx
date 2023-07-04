@@ -24,7 +24,14 @@ const Home = () => {
 	);
 
 	useEffect(() => {
-		if (router.query.search) setSearchQuery(router.query.search as string);
+		if (router.query.search) {
+			setSearchQuery(router.query.search as string);
+			setSearchInput(router.query.search as string);
+		}
+	}, [router]);
+
+	useEffect(() => {
+		setSelectedPost(parseInt((router.query.id as string) ?? 0));
 	}, [router]);
 
 	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,24 +40,13 @@ const Home = () => {
 	};
 
 	const handleSearchSubmit = () => {
-		if (!searchInput) return;
-		router.query.search = searchInput;
+		const input = searchInput.replace(/[^A-Za-z0-9]/g, '');
+		if (!input) return;
+		router.query.search = input;
 		router.push(router);
 	};
 
-	useEffect(() => {
-		setSelectedPost(parseInt((router.query.id as string) ?? 0));
-	}, [router]);
-
 	if (!user) return <SignInCard />;
-
-	if (isError)
-		return (
-			<div className='w-full text-center font-semibold text-5xl flex justify-center items-center h-[calc(100vh-var(--header-height))]'>
-				Opps... Something went wrong
-			</div>
-		);
-
 	return (
 		<div className='flex w-full flex-col pt-20 gap-3 pb-20'>
 			<div>
@@ -63,7 +59,7 @@ const Home = () => {
 						<MdMap className='w-5 h-5' />
 						Map
 					</button>
-					<div className='w-full flex justify-center gap-5'>
+					<div className='w-full flex justify-center gap-3'>
 						<input
 							type='search'
 							value={searchInput}
@@ -77,15 +73,19 @@ const Home = () => {
 					</div>
 				</div>
 			</div>
-			<div className='flex gap-3'>
-				<div className='w-[15%] h-80 bg-white rounded-md border border-gray-200 mt-1 sticky top-[72px]'></div>
-				<div className='w-[35%] flex flex-col gap-3 px-1 pt-1'>
-					<PostsList posts={posts?.data} selectedPost={selectedPost} isLoading={isLoading} />
+			{isError ? (
+				<div className='w-full text-center font-semibold text-5xl flex justify-center items-center pt-20'>Opps... Something went wrong</div>
+			) : (
+				<div className='flex gap-3'>
+					<div className='w-[15%] h-80 bg-white rounded-md border border-gray-200 mt-1 sticky top-[72px]'></div>
+					<div className='w-[35%] flex flex-col gap-3 px-1 pt-1'>
+						<PostsList posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
+					</div>
+					<div className='w-[50%]'>
+						<JobPost posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
+					</div>
 				</div>
-				<div className='w-[50%]'>
-					<JobPost postData={posts?.data[selectedPost]} isLoading={isLoading} />
-				</div>
-			</div>
+			)}
 		</div>
 	);
 };
