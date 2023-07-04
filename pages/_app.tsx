@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }: CustomAppProps) {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<AuthProvider>
-				<main className={inter.className}>{getLayout(<Component {...pageProps} />)} </main>
+				<main className={inter.className}>{getLayout(<Component {...pageProps} />)}</main>
 			</AuthProvider>
 			<ReactQueryDevtools initialIsOpen={false} />
 		</QueryClientProvider>

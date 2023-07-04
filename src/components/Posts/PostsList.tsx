@@ -10,7 +10,7 @@ type PostListProps = {
 };
 
 export const PostsList = ({ posts, isLoading, selectedPost }: PostListProps) => {
-	if (isLoading) return [...Array(20).fill(0)].map((key, i) => <PostSkeleton key={i} />);
+	if (isLoading) return [...Array(20).fill(0)].map((_key, i) => <PostSkeleton key={i} />);
 	return (
 		<>
 			{posts.map(({ posting, candidateStatus }: any, i: number) => (

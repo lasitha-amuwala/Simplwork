@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { decodeCredential, useAuth } from './Auth/AuthProvider';
+import { useAuth } from './Auth/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import { simplwork } from '../utils/simplwork';
 import * as Popover from '@radix-ui/react-popover';
@@ -108,7 +108,7 @@ const Navbar = () => {
 										{link.name}
 									</Link>
 								</div>
-								<div className={`${pathname === link.href ? 'visible' : 'invisible'} bg-sky-300 h-[3px] w-14 rounded-t-2xl`}></div>
+								<div className={`${pathname === link.href ? 'visible' : 'invisible'} bg-sky-500 h-[3px] w-14 rounded-t-2xl`}></div>
 							</li>
 						))}
 					</ul>

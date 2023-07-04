@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	};
 
 	const onSignIn = ({ credential }: CredentialResponse) => {
-		console.log(credential);
 		if (!credential) return;
 
 		getCandidate(credential)

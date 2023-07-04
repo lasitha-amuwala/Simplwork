@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useCombobox } from 'downshift';
 import { SimplworkClient } from '../utils/simplwork';
-import { useAuth } from './Auth/AuthProvider';
 import { CandidateLocation } from '../types/api/candidate';
 
 type Props = { update: (arg: CandidateLocation) => void; credential: string };
@@ -16,8 +15,6 @@ type ItemType = {
 };
 
 export const AutoComplete = ({ credential, update }: Props) => {
-	const { user } = useAuth();
-
 	const initalItem: ItemType = { place_name: '', center: [], context: null, place_type: [], text: '' };
 	const [items, setItems] = useState<ItemType[]>([initalItem]);
 	const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
@@ -28,7 +25,6 @@ export const AutoComplete = ({ credential, update }: Props) => {
 			if (selectedItem.place_type.includes('postcode')) {
 				postcode = selectedItem.text;
 			} else if (selectedItem.context && selectedItem.context.length) {
-				console.log(selectedItem);
 				const findPostCode = selectedItem.context.find((item: any) => item.id.toLowerCase().includes('postcode'));
 				if (findPostCode) postcode = findPostCode.text;
 			}
