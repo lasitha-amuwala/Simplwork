@@ -46,7 +46,7 @@ const Home = () => {
 		router.push(router);
 	};
 
-	if (!user) return <SignInCard />;
+	if (!user?.credential) return <SignInCard />;
 	return (
 		<div className='flex w-full flex-col pt-20 gap-3 pb-20'>
 			<div>

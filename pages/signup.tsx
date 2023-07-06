@@ -8,7 +8,7 @@ import { SimplworkApi } from '@/src/utils/simplwork';
 import { AuthCard } from '@/src/components/Auth/AuthCard';
 import { SignUpFlow } from '@/src/components/SignUp/SignUpFlow';
 import { NextPageWithLayout } from '@/src/types/NextPageWithLayout';
-import { decodeCredential, useAuth } from '@/src/components/Auth/AuthProvider';
+import { getGoogleProfile, useAuth } from '@/src/components/Auth/AuthProvider';
 
 type Props = {};
 
@@ -19,7 +19,7 @@ const SignUp: NextPageWithLayout<Props> = () => {
 	const [renderSignUpFlow, setRenderSignUpFlow] = useState<boolean>(false);
 
 	const handleSignUp = async (response: CredentialResponse) => {
-		const googleProfile = decodeCredential(response.credential as string);
+		const googleProfile = getGoogleProfile(response.credential as string);
 
 		setUserData(googleProfile);
 		if (googleProfile.credential) {
@@ -41,7 +41,7 @@ const SignUp: NextPageWithLayout<Props> = () => {
 		}
 	};
 
-	if (renderSignUpFlow && userData) return <SignUpFlow userData={userData} />;
+	if (renderSignUpFlow && userData) return ;
 
 	return (
 		<div className='flex flex-col items-center justify-center h-screen w-screen'>

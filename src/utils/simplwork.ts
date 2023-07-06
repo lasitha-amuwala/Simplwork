@@ -5,8 +5,9 @@ export const SimplworkApi = axios.create({
 	headers: { 'Content-Type': 'application/json' },
 });
 
-const createURL = (endpoint: string, params?: any) => {
+const createURL = (endpoint: string, c: any, params?: any) => {
 	const query = new URLSearchParams({ ...params });
+	console.log(c);
 	query.forEach((val, key) => {
 		if (val == '' || val == 'undefined') query.delete(key);
 	});
@@ -21,7 +22,7 @@ export const simplwork = {
 	candidate: {
 		searchCandidatePostings: (credential: string, params: { [x: string]: string }) => ({
 			queryKey: ['candidate/postings/search', params],
-			queryFn: () => get(createURL('candidate/postings/search', params)),
+			queryFn: () => get(createURL('candidate/postings/search', credential,params)),
 			enabled: !!credential,
 		}),
 		getCandidate: (credential: string) => ({

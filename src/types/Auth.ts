@@ -3,6 +3,7 @@ import { User } from './api/candidate';
 
 export type GoogleProfileData = {
 	credential: string;
+	exp: number;
 	email: string;
 	picture: string;
 };
