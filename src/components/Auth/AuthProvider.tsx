@@ -8,7 +8,11 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const useAuth = () => useContext(AuthContext) as AuthContextType;
 
-export const decodeCredential = (credential: string): GoogleToken => jwt_decode(credential);
+const decodeCredential = (credential: string): GoogleToken => jwt_decode(credential);
+
+const setAuthorization = (credential: string) => (SimplworkApi.defaults.headers.common.Authorization = `Bearer ${credential}`);
+
+// const getCandidate = async (): Promise<any> => await SimplworkApi.get('candidate');
 
 export const getGoogleProfile = (credential: string): GoogleProfileData => {
 	const { exp, email, picture } = decodeCredential(credential);
@@ -20,15 +24,16 @@ export const isTokenExpired = (credential: string): boolean => {
 	return Date.now() >= exp * 1000;
 };
 
-// const getCandidate = async (): Promise<any> => await SimplworkApi.get('candidate');
-
 export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	const [user, setUser] = useState<GoogleProfileData | null>(null);
 
+	const signOut = () => removeUser();
+
 	const removeUser = () => {
 		setUser(null);
+		setAuthorization('');
+		googleLogout();
 		localStorage.removeItem('token');
-		SimplworkApi.defaults.headers.common.Authorization = '';
 	};
 
 	const handleSignIn = (credential: string): void => {
@@ -40,7 +45,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	const onSignIn = ({ credential }: CredentialResponse) => {
 		if (!credential) return;
 
-		SimplworkApi.defaults.headers.common.Authorization = `Bearer ${credential}`;
+		setAuthorization(credential);
 		SimplworkApi.get('candidate')
 			.then((res) => {
 				if (res.status >= 200 && res.status <= 299) {
@@ -54,17 +59,11 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 			});
 	};
 
-	const signOut = () => {
-		removeUser();
-		googleLogout();
-	};
-
 	// on refresh or new window open, log the user in automatically
 	useEffect(() => {
 		const credential = localStorage.getItem('token');
-		console.log('localStorage', credential);
 		if (credential && !isTokenExpired(credential)) {
-			SimplworkApi.defaults.headers.common.Authorization = `Bearer ${credential}`;
+			setAuthorization(credential);
 			setUser(getGoogleProfile(credential));
 		}
 	}, []);
