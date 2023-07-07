@@ -11,7 +11,7 @@ type PostProps = {
 export const Post = ({ post, status, active }: PostProps) => {
 	return (
 		<div
-			className={`w-full h-auto bg-white rounded-md border border-gray-200 p-4 text-start ring-sky-300/50 hover:ring ${
+			className={`w-full h-auto  bg-white rounded-md border border-gray-200 p-4 text-start ring-sw hover:ring ${
 				active && 'ring'
 			} transition-shadow duration-150`}>
 			<div className='w-full flex flex-col gap-3'>
@@ -25,7 +25,7 @@ export const Post = ({ post, status, active }: PostProps) => {
 						{status && status === 'APPLIED' ? (
 							<div className='bg-green-100 text-green-500 text-sm font-medium px-2 py-1 rounded-md'>Applied</div>
 						) : (
-							<button className='bg-sky-100 text-sky-500 text-sm font-medium px-2 py-1 rounded-md'>Apply</button>
+							<button className='bg-sw-50 text-sw-400 text-sm font-medium px-2 py-1 rounded-md'>Click to apply</button>
 						)}
 					</div>
 				</div>
