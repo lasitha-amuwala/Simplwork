@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from './Auth/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
-import { simplwork } from '../utils/simplwork';
+import { queries } from '../utils/simplwork';
 import * as Popover from '@radix-ui/react-popover';
 import * as Avatar from '@radix-ui/react-avatar';
 import { RxCross2 } from 'react-icons/rx';
@@ -12,7 +12,7 @@ import Image from 'next/image';
 
 const NavControls = () => {
 	const { user, signOut } = useAuth();
-	const { data: candidate } = useQuery(simplwork.candidate.getCandidate(user?.credential ?? ''));
+	const { data: candidate } = useQuery(queries.candidate.getCandidate(user?.credential ?? ''));
 
 	// if (!user?.credential) {
 	// 	return (

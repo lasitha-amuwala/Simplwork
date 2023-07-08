@@ -1,6 +1,6 @@
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
-import { simplwork } from '@/src/utils/simplwork';
+import { queries } from '@/src/utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
 import Image from 'next/image';
@@ -10,7 +10,7 @@ type ProfileProps = {};
 
 const Profile: NextPage = (props: ProfileProps) => {
 	const { user } = useAuth();
-	const { data: candidate } = useQuery(simplwork.candidate.getCandidate(user?.credential ?? ''));
+	const { data: candidate } = useQuery(queries.candidate.getCandidate(user?.credential ?? ''));
 
 	return (
 		<ProtectedPage>

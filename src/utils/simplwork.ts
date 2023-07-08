@@ -1,30 +1,14 @@
 import axios from 'axios';
+import { createURL } from './httpUtils';
+import { get, post } from './http';
 
 export const SimplworkApi = axios.create({
 	baseURL: 'https://simplwork.com/api/',
 	headers: { 'Content-Type': 'application/json' },
 });
 
-const createURL = (endpoint: string, c: any, params?: any) => {
-	const query = new URLSearchParams({ ...params });
-	console.log(c);
-	query.forEach((val, key) => {
-		if (val == '' || val == 'undefined') query.delete(key);
-	});
-	return `${endpoint}?${query}`;
-};
-
-const { get } = {
-	get: (url: string) => SimplworkApi.get(url).then((res) => res.data),
-};
-
-export const simplwork = {
+export const queries = {
 	candidate: {
-		searchCandidatePostings: (credential: string, params: { [x: string]: string }) => ({
-			queryKey: ['candidate/postings/search', params],
-			queryFn: () => get(createURL('candidate/postings/search', credential,params)),
-			enabled: !!credential,
-		}),
 		getCandidate: (credential: string) => ({
 			queryKey: ['candidate'],
 			queryFn: (): Promise<any> => get('candidate'),
@@ -35,5 +19,18 @@ export const simplwork = {
 			queryFn: (): Promise<any> => get('candidate/postings/personal'),
 			enabled: !!credential,
 		}),
+		searchCandidatePostings: (credential: string, params: { [x: string]: string }) => ({
+			queryKey: ['candidate/postings/search', params],
+			queryFn: () => get(createURL('candidate/postings/search', credential, params)),
+			enabled: !!credential,
+		}),
+	},
+};
+
+export const mutations = {
+	candidate: {
+		setPostStatus: {
+			mutationFn: (id: string, status: string) => post('candidate/postings/setStatus', { id, status }),
+		},
 	},
 };

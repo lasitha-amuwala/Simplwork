@@ -1,5 +1,4 @@
 import { CredentialResponse } from '@react-oauth/google';
-import { User } from './api/candidate';
 
 export type GoogleProfileData = {
 	credential: string;
