@@ -12,12 +12,12 @@ type PostListProps = {
 export const PostsList = ({ posts, isLoading, selectedPost }: PostListProps) => {
 	if (isLoading) return [...Array(20).fill(0)].map((_key, i) => <PostSkeleton key={i} />);
 	return (
-		<>
+		<div className='flex flex-col gap-3'>
 			{posts.map(({ posting, candidateStatus }: any, i: number) => (
 				<Link key={`${posting.id}${i}`} scroll={false} prefetch={false} href={{ pathname: '/', query: { id: i } }} className='w-full'>
 					<MemoizedPost post={posting} status={candidateStatus} active={selectedPost === i} />
 				</Link>
 			))}
-		</>
+		</div>
 	);
 };

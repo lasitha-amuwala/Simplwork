@@ -8,6 +8,7 @@ import { SignInCard } from './signin';
 import { PostsList } from '@/src/components/Posts/PostsList';
 import { JobPost } from '@/src/components/Posts/JobPost';
 import { SearchBar } from '@/src/components/SearchBar';
+import { Filter } from '@/src/components/Filter';
 
 const Home = () => {
 	const router = useRouter();
@@ -20,9 +21,7 @@ const Home = () => {
 		data: posts,
 		isLoading,
 		isError,
-	} = useQuery(
-		queries.candidate.searchCandidatePostings(user?.credential ?? '', { queryString: searchQuery, pageSize: '20', pageNo: '0' })
-	);
+	} = useQuery(queries.candidate.searchCandidatePostings(user?.credential ?? '', { queryString: searchQuery, pageSize: '20', pageNo: '0' }));
 
 	useEffect(() => {
 		if (router.query.search) {
@@ -60,8 +59,10 @@ const Home = () => {
 				<div className='w-full text-center font-semibold text-5xl flex justify-center items-center pt-20'>Opps... Something went wrong</div>
 			) : (
 				<div className='flex gap-3'>
-					<div className='w-[15%] h-80 bg-white rounded-md border border-gray-200 mt-1 sticky top-[72px]'></div>
-					<div className='w-[35%] flex flex-col gap-3 px-1 pt-1'>
+					<div className='w-[15%]'>
+						<Filter />
+					</div>
+					<div className='w-[35%] pt-1'>
 						<PostsList posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
 					</div>
 					<div className='w-[50%]'>

@@ -38,7 +38,7 @@ export type CandiatePostRequest = {
 	user: UserData;
 };
 
-export type CandiateGetRequest = {
+export type Candiate = {
 	profileName: string;
 	candidateName: string;
 	phoneNumber: string;
@@ -61,5 +61,5 @@ export type UserData = {
 };
 
 export type User = GoogleProfileData & {
-	candidate: CandiateGetRequest;
+	candidate: Candiate;
 };
