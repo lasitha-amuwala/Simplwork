@@ -14,34 +14,36 @@ type Props = {};
 
 const SignUp: NextPageWithLayout<Props> = () => {
 	const router = useRouter();
-	const { setUser } = useAuth();
+	const { onSignUp } = useAuth();
 	const [userData, setUserData] = useState<GoogleProfileData>();
 	const [renderSignUpFlow, setRenderSignUpFlow] = useState<boolean>(false);
 
 	const handleSignUp = async (response: CredentialResponse) => {
 		const googleProfile = getGoogleProfile(response.credential as string);
-
+		console.log(googleProfile);
 		setUserData(googleProfile);
-		if (googleProfile.credential) {
-			await SimplworkApi.get('candidate')
-				.then((res) => {
-					setUser({ ...googleProfile });
-					router.push('/');
-				})
-				.catch((error) => {
-					if (error.response) {
-						setRenderSignUpFlow(true);
-					} else if (error.request) {
-						alert('There was a problem. Try Again.');
-						console.log(error.request);
-					} else {
-						console.log('Error', error.message);
-					}
-				});
-		}
+
+		console.log(onSignUp(response));
+		// if (googleProfile.credential) {
+		// 	await SimplworkApi.get('candidate')
+		// 		.then((res) => {
+		// 			setUser({ ...googleProfile });
+		// 			router.push('/');
+		// 		})
+		// 		.catch((error) => {
+		// 			if (error.response) {
+		// 				setRenderSignUpFlow(true);
+		// 			} else if (error.request) {
+		// 				alert('There was a problem. Try Again.');
+		// 				console.log(error.request);
+		// 			} else {
+		// 				console.log('Error', error.message);
+		// 			}
+		// 		});
+		// }
 	};
 
-	if (renderSignUpFlow && userData) return ;
+	if (renderSignUpFlow && userData) return;
 
 	return (
 		<div className='flex flex-col items-center justify-center h-screen w-screen'>

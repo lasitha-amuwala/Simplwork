@@ -10,19 +10,21 @@ type PostProps = {
 };
 
 export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
+	const applyToPost = async (data: any) => {
+		console.log(JSON.stringify(data));
+		const res = await SimplworkApi.post(`candidate/postings/setStatus?id=${data.id}&status=${data.status}`);
+		console.log('res', JSON.stringify(res.data, null, 2));
+		return res;
+	};
+	
+	const mutation = useMutation(applyToPost);
+
 	if (isLoading) return <PostSkeleton />;
 	const post = posts[selectedPost];
 
-	// const applyToPost = async (id: string, status: string) => {
-	// 	return await SimplworkApi.post(`candidate/postings/setStatus?id=${id}&status=${status}`).then((res) => res.data);
-	// };
-
-	// const mutation = useMutation(async ({ id, status }) => {
-	// 	return applyToPost(id, status);
-	// });
-
 	const handleOnClick = () => {
-		// mutation.mutate({ id: post.posting.id, status: 'APPLIED' });
+		console.log('clicked: ', post.posting.id);
+		mutation.mutate({ id: post.posting.id, status: 'APPLIED' });
 		// console.log(post.posting.id);
 	};
 
