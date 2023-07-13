@@ -9,49 +9,52 @@ import { RxCross2 } from 'react-icons/rx';
 import { RiMenuFill } from 'react-icons/ri';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { getInitials } from '../utils/helpers';
+
+const LogoutButton = () => {
+	const { signOut } = useAuth();
+	return (
+		<button
+			className='bg-black px-3 py-1 rounded text-white font-medium w-auto text-center cursor-pointer hover:bg-neutral-800 active:bg-neutral-700'
+			onClick={signOut}>
+			Sign Out
+		</button>
+	);
+};
+
+const SigninButton = () => {
+	return (
+		<Link href='/' className='bg-sw-700 px-2 md:px-3 py-1 rounded text-white font-medium hover:bg-sky-400 active:bg-sky-300 '>
+			Sign in
+		</Link>
+	);
+};
 
 const NavControls = () => {
-	const { user, signOut } = useAuth();
+	const { user } = useAuth();
 	const { data: candidate } = useQuery(queries.candidate.getCandidate(user?.credential ?? ''));
-
-	// if (!user?.credential) {
-	// 	return (
-	// 		<div className='flex gap-2 md:gap-3 tranistion-all duration-300'>
-	// 			<Link href='/' className='bg-sky-500 px-2 md:px-3 py-1 rounded text-white font-medium hover:bg-sky-400 active:bg-sky-300 '>
-	// 				Sign in
-	// 			</Link>
-	// 			<Link href='/signup' className='bg-black px-2 md:px-3 py-1  rounded text-white font-medium hover:bg-neutral-800 active:bg-neutral-700'>
-	// 				Sign up
-	// 			</Link>
-	// 		</div>
-	// 	);
-	// }
 
 	return (
 		<Popover.Root>
 			<Popover.Trigger asChild>
-				<Avatar.Root className='h-11 w-11 overflow-hidden rounded-full'>
-					{candidate && (
-						<Avatar.Image
-							asChild
-							className='w-full h-full object-cover rounded-full'
-							src={user?.picture}
-							alt={`${candidate.candidateName.charAt(0) ?? ''}`}
-						/>
-					)}
-					<Avatar.Fallback
-						className='h-11 w-11 flex items-center justify-center font-medium border border-neutral-300 bg-sky-500/20 rounded-full text-sky-600 tracking-wider'
-						delayMs={600}></Avatar.Fallback>
-				</Avatar.Root>
+				{candidate ? (
+					<Avatar.Root className='h-11 w-11 overflow-hidden rounded-full'>
+						{candidate.picture ? (
+							<Avatar.Image asChild className='w-full h-full object-cover rounded-full' src={user?.picture} alt={candidate.candidateName} />
+						) : (
+							<Avatar.Fallback className='text-sw-500 leading-1 flex h-full w-full items-center justify-center bg-sw-50 text-[15px] font-medium'>
+								{getInitials(candidate?.candidateName)}
+							</Avatar.Fallback>
+						)}
+					</Avatar.Root>
+				) : (
+					<SigninButton />
+				)}
 			</Popover.Trigger>
 			<Popover.Portal>
 				<Popover.Content className='PopoverContent' sideOffset={5}>
 					<div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-						<button
-							className='bg-black px-3 py-1 rounded text-white font-medium w-auto text-center cursor-pointer hover:bg-neutral-800 active:bg-neutral-700'
-							onClick={signOut}>
-							Sign Out
-						</button>
+						<LogoutButton />
 					</div>
 					<Popover.Close className='PopoverClose' aria-label='Close'>
 						<RxCross2 />
