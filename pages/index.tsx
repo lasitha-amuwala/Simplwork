@@ -6,7 +6,7 @@ import { queries } from '@/src/utils/simplwork';
 import { useRouter } from 'next/router';
 import { SignInCard } from './signin';
 import { PostsList } from '@/src/components/Posts/PostsList';
-import { JobPost } from '@/src/components/Posts/JobPost';
+import { Post } from '@/src/components/Posts/Post';
 import { SearchBar } from '@/src/components/SearchBar';
 import { Filter } from '@/src/components/Filter';
 
@@ -66,7 +66,7 @@ const Home = () => {
 						<PostsList posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
 					</div>
 					<div className='w-[50%]'>
-						<JobPost posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
+						<Post posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
 					</div>
 				</div>
 			)}

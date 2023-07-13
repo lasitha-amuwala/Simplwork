@@ -1,6 +1,6 @@
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
-import { Post } from '@/src/components/Posts/Post';
+import { PostsListItem } from '@/src/components/Posts/PostsListItem';
 import { queries } from '@/src/utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
@@ -24,7 +24,7 @@ const Applications: NextPage = (props: Props) => {
 							{candidate.map(({ posting, candidateStatus }: any, i: number) => {
 								return (
 									<div key={`${posting.id}${i}`} className='w-full flex'>
-										<Post post={posting} status={candidateStatus} />
+										<PostsListItem post={posting} status={candidateStatus} />
 									</div>
 								);
 							})}
