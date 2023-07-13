@@ -1,11 +1,37 @@
 import { memo } from 'react';
 import { PostTag } from './PostTag';
-import { MdAttachMoney } from 'react-icons/md';
+import { MdAttachMoney, MdCalendarMonth } from 'react-icons/md';
 
 type PostProps = {
 	post: any;
 	status: string;
 	active?: boolean;
+};
+
+type CharsOfWeekArray = { day: string; available: boolean }[];
+
+const AvailableDayOfWeek = (weekAvailability: { dayOfWeek: number }[]) => {
+	const days = weekAvailability.map(({ dayOfWeek }) => dayOfWeek);
+	const charsOfWeek: CharsOfWeekArray = [
+		{ day: 'M', available: false },
+		{ day: 'T', available: false },
+		{ day: 'W', available: false },
+		{ day: 'T', available: false },
+		{ day: 'F', available: false },
+		{ day: 'S', available: false },
+		{ day: 'S', available: false },
+	];
+
+	days.forEach((num: number) => (charsOfWeek[num - 1].available = true));
+	charsOfWeek.unshift(charsOfWeek.pop()!);
+
+	return (
+		<div className='flex gap-0.5 font-medium'>
+			{charsOfWeek.map(({ day, available }, i) => (
+				<p className={`${available ? 'text-sw-300 font-bold' : 'text-gray-700'}`}>{day}</p>
+			))}
+		</div>
+	);
 };
 
 export const Post = ({ post, status, active }: PostProps) => {
@@ -30,8 +56,8 @@ export const Post = ({ post, status, active }: PostProps) => {
 					</div>
 				</div>
 				<div className='flex gap-2 w-full'>
-					<PostTag text={`$${post.pay}/hr`} icon={<MdAttachMoney />} />
-					<PostTag text={`$${post.pay}/hr`} icon={<MdAttachMoney />} />
+					<PostTag icon={<MdAttachMoney />}>{`$${post.pay}/hr`}</PostTag>
+					<PostTag icon={<MdCalendarMonth />}>{AvailableDayOfWeek(post.shifts)}</PostTag>
 				</div>
 				<p className='w-full text-gray-600 line-clamp-2'>{post.jobDescription}</p>
 			</div>
