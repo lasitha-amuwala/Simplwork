@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { PostTag } from './PostTag';
 import { MdAttachMoney, MdCalendarMonth } from 'react-icons/md';
 
-type PostsListItemProps = {
+type PostListItemProps = {
 	post: any;
 	status: string;
 	active?: boolean;
@@ -26,15 +26,17 @@ const AvailableDayOfWeek = (weekAvailability: { dayOfWeek: number }[]) => {
 	charsOfWeek.unshift(charsOfWeek.pop()!);
 
 	return (
-		<div className='flex gap-0.5 font-medium'>
+		<div className='flex gap-0.5 font-medium text-gray-700'>
 			{charsOfWeek.map(({ day, available }, i) => (
-				<p className={`${available ? 'text-sw-300 font-bold' : 'text-gray-700'}`}>{day}</p>
+				<p key={`${i}${day}`} className={`${available && 'text-sw-300 font-bold'}`}>
+					{day}
+				</p>
 			))}
 		</div>
 	);
 };
 
-export const PostsListItem = ({ post, status, active }: PostsListItemProps) => {
+export const PostListItem = ({ post, status, active }: PostListItemProps) => {
 	return (
 		<div
 			className={`w-full h-auto  bg-white rounded-md border border-gray-200 p-4 text-start ring-sw hover:ring ${
@@ -65,4 +67,4 @@ export const PostsListItem = ({ post, status, active }: PostsListItemProps) => {
 	);
 };
 
-export const MemoizedPostsListItem = memo(PostsListItem);
+export const MemoizedPostListItem = memo(PostListItem);

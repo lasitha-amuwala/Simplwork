@@ -5,7 +5,7 @@ import { MdMap } from 'react-icons/md';
 import { queries } from '@/src/utils/simplwork';
 import { useRouter } from 'next/router';
 import { SignInCard } from './signin';
-import { PostsList } from '@/src/components/Posts/PostsList';
+import { PostList } from '@/src/components/Posts/PostList';
 import { Post } from '@/src/components/Posts/Post';
 import { SearchBar } from '@/src/components/SearchBar';
 import { Filter } from '@/src/components/Filter';
@@ -63,7 +63,7 @@ const Home = () => {
 						<Filter />
 					</div>
 					<div className='w-[35%] pt-1'>
-						<PostsList posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
+						<PostList posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
 					</div>
 					<div className='w-[50%]'>
 						<Post posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
