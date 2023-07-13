@@ -56,8 +56,8 @@ export const Post = ({ post, status, active }: PostProps) => {
 					</div>
 				</div>
 				<div className='flex gap-2 w-full'>
-					<PostTag icon={<MdAttachMoney />}>{`$${post.pay}/hr`}</PostTag>
-					<PostTag icon={<MdCalendarMonth />}>{AvailableDayOfWeek(post.shifts)}</PostTag>
+					{post.pay && <PostTag icon={<MdAttachMoney />}>{`$${post.pay}/hr`}</PostTag>}
+					{post.shifts.length > 0 && <PostTag icon={<MdCalendarMonth />}>{AvailableDayOfWeek(post.shifts)}</PostTag>}
 				</div>
 				<p className='w-full text-gray-600 line-clamp-2'>{post.jobDescription}</p>
 			</div>
