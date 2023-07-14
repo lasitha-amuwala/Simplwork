@@ -43,29 +43,25 @@ const Home = () => {
 
 	if (!user) return <SignInCard />;
 	return (
-		<div className='flex w-full flex-col pt-20 gap-3 pb-20'>
-			<div>
-				<h1 className='text-5xl font-semibold pb-2'>Find your dream job</h1>
-				<p className='text-slate-500 pb-2'>Looking for jobs? Browse our latest job openings to view and apply to the best jobs today</p>
-			</div>
-			<div className='flex w-full'>
+		<div className='flex w-full flex-col pt-5 md:pt-14 gap-3 pb-20'>
+			<div className='flex w-full gap-4'>
 				<button className='flex bg-white rounded-md border px-3 py-2 gap-2 items-center'>
 					<MdMap className='w-5 h-5' />
-					Map
+					<span className='hidden md:block'>Map</span>
 				</button>
 				<SearchBar value={searchInput} onChange={handleSearch} onClick={handleSearchSubmit} />
 			</div>
 			{isError ? (
 				<div className='w-full text-center font-semibold text-5xl flex justify-center items-center pt-20'>Opps... Something went wrong</div>
 			) : (
-				<div className='flex gap-3'>
-					<div className='w-[15%]'>
+				<div className='flex gap-4'>
+					<div className='w-[15%] hidden md:block'>
 						<Filter />
 					</div>
-					<div className='w-[35%] pt-1'>
+					<div className='w-full md:w-[35%] pt-1'>
 						<PostList posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
 					</div>
-					<div className='w-[50%]'>
+					<div className='w-[50%] hidden md:block'>
 						<Post posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
 					</div>
 				</div>

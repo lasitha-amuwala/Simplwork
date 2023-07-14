@@ -18,9 +18,9 @@ const Applications: NextPage = (props: Props) => {
 		<ProtectedPage>
 			<div className='flex flex-col gap-10 items-center justify-center w-full h-full pt-20'>
 				{candidate && (
-					<div className='w-full flex flex-col gap-5 max-w-2xl'>
+					<div className='w-full flex flex-col gap-4 max-w-2xl'>
 						<h1 className='text-3xl font-bold px-1'>{`Applied (${candidate.length})`}</h1>
-						<div className='w-full flex flex-col overflow-y-scroll max-h-[500px] p-1 gap-5'>
+						<div className='w-full flex flex-col overflow-y-scroll max-h-[500px] p-1 gap-4'>
 							{candidate.map(({ posting, candidateStatus }: any, i: number) => {
 								return (
 									<div key={`${posting.id}${i}`} className='w-full flex'>

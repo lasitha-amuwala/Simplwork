@@ -16,7 +16,7 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 		console.log('res', JSON.stringify(res.data, null, 2));
 		return res;
 	};
-	
+
 	const mutation = useMutation(applyToPost);
 
 	if (isLoading) return <PostSkeleton />;
@@ -29,7 +29,7 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 	};
 
 	return (
-		<div className='h-auto bg-white rounded-md border border-gray-200 mt-1 sticky top-[72px] overflow-hidden'>
+		<div className='h-auto bg-white rounded-md border border-gray-200 mt-1 sticky top-[80px] overflow-hidden'>
 			<div className='h-28 bg-[#64B1EC]/10 flex items-center p-4 gap-4 border-b'>
 				<div className='h-20 w-20 bg-blue-300 rounded-md'></div>
 				<div className='h-full grow'>
@@ -44,9 +44,13 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 					<div className='bg-green-100 self-start text-green-500 font-medium px-2 py-1 rounded-md'>Applied</div>
 				)}
 			</div>
-			<div className='p-5 flex flex-col gap-2'>
+			<div className='m-5 flex flex-col gap-2'>
 				<h1 className='font-semibold text-lg'>Job Description</h1>
 				<p className='text-gray-500'>{post.posting.jobDescription}</p>
+			</div>
+			<div className='m-5 flex flex-col gap-2'>
+				<h1 className='font-semibold text-lg'>Benefits</h1>
+				<p className='text-gray-500'>{post.posting.benefits}</p>
 			</div>
 		</div>
 	);

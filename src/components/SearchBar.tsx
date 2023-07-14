@@ -6,11 +6,11 @@ type SearchBarProps = {
 
 export const SearchBar = ({ value, onChange, onClick }: SearchBarProps) => {
 	return (
-		<div className='w-full flex justify-center gap-3'>
+		<div className='w-full flex justify-center gap-4'>
 			<input
 				type='search'
 				value={value}
-				className='inputStyle w-[600px] shadow-[0_0_0_1px] shadow-gray-200 h-[42px]'
+				className='inputStyle max-w-[600px] shadow-[0_0_0_1px] shadow-gray-200 h-[42px]'
 				placeholder='Search postings'
 				onChange={onChange}
 			/>

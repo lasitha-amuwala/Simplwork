@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-	--foreground: #fff;
-	--background: #f3f4f6;
-	--header-height: 55px;
+	--foreground: #ffffff;
+	--background: #f6f7f8;
+	--header-height: 64px;
 }
 
 body {
