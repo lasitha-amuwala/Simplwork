@@ -28,6 +28,6 @@ export type AuthContextType = {
 	user: GoogleProfileData | null;
 	setUser: (user: GoogleProfileData | null) => void;
 	onSignIn: (credential: CredentialResponse) => void;
-	onSignUp: (credential: CredentialResponse) => boolean;
+	onSignUp: (credential: CredentialResponse) => Promise<boolean>;
 	signOut: () => void;
 };

@@ -4,7 +4,6 @@ import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { ReactElement, useState } from 'react';
 import { GoogleProfileData } from '@/src/types/Auth';
 import { EmptyLayout } from '@/src/layouts/EmptyLayout';
-import { SimplworkApi } from '@/src/utils/simplwork';
 import { AuthCard } from '@/src/components/Auth/AuthCard';
 import { SignUpFlow } from '@/src/components/SignUp/SignUpFlow';
 import { NextPageWithLayout } from '@/src/types/NextPageWithLayout';
@@ -19,31 +18,12 @@ const SignUp: NextPageWithLayout<Props> = () => {
 	const [renderSignUpFlow, setRenderSignUpFlow] = useState<boolean>(false);
 
 	const handleSignUp = async (response: CredentialResponse) => {
-		const googleProfile = getGoogleProfile(response.credential as string);
-		console.log(googleProfile);
-		setUserData(googleProfile);
-
-		console.log(onSignUp(response));
-		// if (googleProfile.credential) {
-		// 	await SimplworkApi.get('candidate')
-		// 		.then((res) => {
-		// 			setUser({ ...googleProfile });
-		// 			router.push('/');
-		// 		})
-		// 		.catch((error) => {
-		// 			if (error.response) {
-		// 				setRenderSignUpFlow(true);
-		// 			} else if (error.request) {
-		// 				alert('There was a problem. Try Again.');
-		// 				console.log(error.request);
-		// 			} else {
-		// 				console.log('Error', error.message);
-		// 			}
-		// 		});
-		// }
+		setUserData(getGoogleProfile(response.credential as string));
+		const isNewUser = await onSignUp(response);
+		if (isNewUser) setRenderSignUpFlow(true);
 	};
 
-	if (renderSignUpFlow && userData) return;
+	if (renderSignUpFlow && userData) return <SignUpFlow userData={userData} />;
 
 	return (
 		<div className='flex flex-col items-center justify-center h-screen w-screen'>
