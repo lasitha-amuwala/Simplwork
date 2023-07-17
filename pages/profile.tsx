@@ -1,5 +1,6 @@
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
+import { EditProfileDialog } from '@/src/components/EditProfileDialog';
 import { queries } from '@/src/utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
@@ -23,7 +24,7 @@ const Profile: NextPage = (props: ProfileProps) => {
 							<p className='text-lg text-gray-500'>{'tagline'}</p>
 						</div>
 						<div>
-							<button className='bg-black text-white py-2 px-3 rounded-xl'>Edit Profile</button>
+							<EditProfileDialog />
 						</div>
 					</div>
 					<div className='absolute top-1/2 -translate-y-1/3 left-10 rounded-full w-[175px] h-[175px] bg-sw-100 overflow-hidden flex justify-center items-center shadow-lg '>
