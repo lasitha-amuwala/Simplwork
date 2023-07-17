@@ -77,7 +77,7 @@ const Navbar = () => {
 	];
 
 	return (
-		<nav className='flex justify-center h-[var(--header-height)] bg-white w-full border-b border-neutral-200 px-2 md:px-5 fixed z-[9999] left-0 right-0'>
+		<nav className='flex justify-center h-[var(--header-height)] bg-white w-full border-b border-neutral-200 px-2 md:px-5 fixed left-0 right-0'>
 			<div className='flex h-full w-full max-w-[1300px] items-center justify-between'>
 				<div className='md:hidden'>
 					<button

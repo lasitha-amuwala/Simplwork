@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 		SimplworkApi.interceptors.response.use(
 			(response) => response,
 			(error) => {
-				if (error.response.status === 401) removeUser();
+				if (error.response?.status === 401) removeUser();
 				return Promise.reject(error);
 			}
 		);

@@ -14,6 +14,7 @@ export const FormStepper = ({ children, step, updateStep }: React.PropsWithChild
 			<div className='flex w-full pt-7 gap-3'>
 				{step > 0 && (
 					<button
+						type='button'
 						onClick={() => updateStep(step - 1)}
 						className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
 						Back
