@@ -15,6 +15,7 @@ import { SimplworkApi } from '@/src/utils/simplwork';
 import { StepProgressHeader } from './StepProgressHeader';
 import { CommuteCheckBoxButton, commuteTypes } from './CommuteCheckBox';
 import { CandiatePostRequest, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory } from '@/src/types/api/candidate';
+import { GenderSelect } from '../GenderSelect';
 
 type ValueTypes = {
 	firstName: string;
@@ -41,7 +42,7 @@ const initialValues: ValueTypes = {
 	//{ positionTitle: '', companyName: '', details: '', startDate: '', endDate: '' }
 };
 
-const validationSchemaStepOne = object().shape({
+export const ProfileValidationSchema = object().shape({
 	firstName: string().min(2, 'Too Short!').max(50, 'Too Long!').required('First name is required'),
 	lastName: string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name is required'),
 	age: number().min(14, 'You must be at least 14 years').max(60, 'You must be at most 60 years').required('Age is required'),
@@ -68,7 +69,7 @@ const validationSchemaStepThree = object().shape({
 	),
 });
 
-const validationSchema = [validationSchemaStepOne, validationSchemaStepTwo, validationSchemaStepThree];
+const validationSchema = [ProfileValidationSchema, validationSchemaStepTwo, validationSchemaStepThree];
 
 type SignUpFlowProps = { userData: GoogleProfileData };
 
@@ -153,16 +154,11 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 					{({ values, setFieldValue }) => (
 						<FormStepper step={step} updateStep={updateStep}>
 							<FormStep title='Create Profile' subtitle='Enter your details to create a profile'>
-								<FieldControl name='firstName' label='First name' type='fname' />
-								<FieldControl name='lastName' label='Last name' type='lname' />
+								<FieldControl name='firstName' label='First name' type='text' />
+								<FieldControl name='lastName' label='Last name' type='text' />
 								<div className='flex w-full gap-5'>
 									<FieldControl name='age' label='Age' type='number' min={14} max={100} errorBelow />
-									<FieldControl as='select' name='gender' label='Gender' type='' errorBelow>
-										<option value='' label='Select a gender'></option>
-										<option value='MALE'>Male</option>
-										<option value='FEMALE'>Female</option>
-										<option value='OTHER'>Other</option>
-									</FieldControl>
+									<GenderSelect />
 								</div>
 								<FieldControl name='phoneNumber' label='Phone Number' type='tel' placeholder='XXX-XXX-XXXX' />
 							</FormStep>
