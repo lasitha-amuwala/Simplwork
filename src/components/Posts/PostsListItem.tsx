@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { PostTag } from './PostTag';
-import { MdAttachMoney, MdCalendarMonth } from 'react-icons/md';
+import { MdAttachMoney, MdCalendarMonth, MdOutlineAccessTime } from 'react-icons/md';
 import { PostedDate } from './PostedDate';
 
 type PostListItemProps = {
@@ -61,7 +61,7 @@ export const PostListItem = ({ post, status, active }: PostListItemProps) => {
 				<div className='flex gap-2 w-full'>
 					{post.pay && <PostTag icon={<MdAttachMoney />}>{`$${post.pay}/hr`}</PostTag>}
 					{post.shifts.length > 0 && <PostTag icon={<MdCalendarMonth />}>{AvailableDayOfWeek(post.shifts)}</PostTag>}
-					{post.isFixedSchedule && <PostTag icon={<MdCalendarMonth />}>{post.estimatedHours}</PostTag>}
+					{!post.isFixedSchedule && post.estimatedHours >= 0 && <PostTag icon={<MdOutlineAccessTime />}>{`${post.estimatedHours} hrs`}</PostTag>}
 				</div>
 				<p className='w-full text-gray-600 line-clamp-2'>{post.jobDescription}</p>
 			</div>
