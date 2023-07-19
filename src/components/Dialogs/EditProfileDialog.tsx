@@ -1,8 +1,8 @@
-import { queries } from '../utils/simplwork';
-import { useAuth } from './Auth/AuthProvider';
+import { queries } from '../../utils/simplwork';
+import { useAuth } from '../Auth/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { ProfileForm } from './ProfileForm';
+import { ProfileForm } from '../ProfileForm';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from './Dialog';
 
 export const EditProfileDialog = () => {
