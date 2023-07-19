@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { CgSpinner } from 'react-icons/cg';
-import { DialogClose } from './Dialog';
+import { DialogClose } from './Dialogs/Dialog';
 import { FieldControl } from './FieldControl';
 import { GenderSelect } from './GenderSelect';
 import { SimplworkApi } from '../utils/simplwork';
 import { Form, Formik, FormikValues } from 'formik';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { ProfileValidationSchema } from './SignUp/SignUpFlow';
 
 type ProfileForm = { profileData: any; afterSave: () => void };
 
@@ -16,7 +17,7 @@ export const ProfileForm = ({ profileData, afterSave }: ProfileForm) => {
 
 	if (profileData) {
 		initialValues = {
-			name: profileData.candidateName,
+			fullName: profileData.candidateName,
 			gender: profileData.gender,
 			phoneNumber: profileData.phoneNumber,
 			age: profileData.age,
@@ -36,11 +37,11 @@ export const ProfileForm = ({ profileData, afterSave }: ProfileForm) => {
 		},
 	});
 
-	const onSubmit = async ({ name, age, gender, phoneNumber }: FormikValues) => {
+	const onSubmit = async ({ fullName, age, gender, phoneNumber }: FormikValues) => {
 		setSaving(true);
 
 		const data = [
-			{ op: 'replace', path: '/user/name', value: name },
+			{ op: 'replace', path: '/user/name', value: fullName },
 			{ op: 'replace', path: '/user/age', value: age },
 			{ op: 'replace', path: '/user/gender', value: gender },
 			{ op: 'replace', path: '/user/phoneNumber', value: phoneNumber },
@@ -51,12 +52,12 @@ export const ProfileForm = ({ profileData, afterSave }: ProfileForm) => {
 	};
 
 	return (
-		<Formik initialValues={initialValues} onSubmit={onSubmit}>
+		<Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={ProfileValidationSchema}>
 			{({ values, setFieldValue }) => (
 				<Form noValidate>
 					<fieldset disabled={saving} className='group'>
 						<div className='flex flex-col gap-2 my-5'>
-							<FieldControl name='name' label='Name' type='text' />
+							<FieldControl name='fullName' label='Name' type='text' />
 							<div className='flex gap-5'>
 								<FieldControl name='age' label='Age' type='number' min={14} max={100} errorBelow />
 								<GenderSelect />

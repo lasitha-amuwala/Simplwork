@@ -1,6 +1,6 @@
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
-import { EditProfileDialog } from '@/src/components/EditProfileDialog';
+import { EditProfileDialog } from '@/src/components/Dialogs/EditProfileDialog';
 import { queries } from '@/src/utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
@@ -18,7 +18,7 @@ const Profile: NextPage = (props: ProfileProps) => {
 			<div className='bg-white rounded-3xl border mt-7 w-full overflow-hidden'>
 				<div className='relative'>
 					<div className='h-36 bg-gradient-to-r from-white to-sw-300 w-full'></div>
-					<div className='h-36 flex justify-between bg-white py-5 px-5'>
+					<div className='h-auto flex justify-between bg-white pt-5 px-5'>
 						<div className='flex flex-col ml-56'>
 							{candidate && <h1 className='text-4xl font-semibold'>{candidate.candidateName}</h1>}
 							<p className='text-lg text-gray-500'>{'tagline'}</p>
@@ -44,7 +44,27 @@ const Profile: NextPage = (props: ProfileProps) => {
 						</div>
 					</div>
 				</div>
-				<div></div>
+				<div className='p-5 flex'>
+					<div className='w-3/5 h-10'></div>
+					<div className=' bg-sw-50 p-5 rounded-md flex flex-col gap-3 w-2/5'>
+						<div className=''>
+							<h1 className='font-semibold'>Email:</h1>
+							<p>{candidate.email}</p>
+						</div>
+						<div>
+							<h1 className='font-semibold'>Gender:</h1>
+							<p>{candidate.gender.charAt(0) + candidate.gender.slice(1).toLowerCase()}</p>
+						</div>
+						<div>
+							<h1 className='font-semibold'>Age:</h1>
+							<p>{candidate.age}</p>
+						</div>
+						<div>
+							<h1 className='font-semibold'>Phone Number:</h1>
+							<p>{candidate.phoneNumber}</p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</ProtectedPage>
 	);

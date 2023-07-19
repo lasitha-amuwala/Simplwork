@@ -18,8 +18,7 @@ import { CandiatePostRequest, CandidateLocation, CandidateMaxTravelTimes, Candid
 import { GenderSelect } from '../GenderSelect';
 
 type ValueTypes = {
-	firstName: string;
-	lastName: string;
+	fullName: string;
 	age: number | string;
 	gender: string;
 	phoneNumber: string;
@@ -30,8 +29,7 @@ type ValueTypes = {
 };
 
 const initialValues: ValueTypes = {
-	firstName: '',
-	lastName: '',
+	fullName: '',
 	gender: '',
 	age: '',
 	phoneNumber: '',
@@ -43,8 +41,7 @@ const initialValues: ValueTypes = {
 };
 
 export const ProfileValidationSchema = object().shape({
-	firstName: string().min(2, 'Too Short!').max(50, 'Too Long!').required('First name is required'),
-	lastName: string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name is required'),
+	fullName: string().min(2, 'Too Short!').max(50, 'Too Long!').required('Full name is required'),
 	age: number().min(14, 'You must be at least 14 years').max(60, 'You must be at most 60 years').required('Age is required'),
 	gender: string().required('Gender is required'),
 	phoneNumber: string()
@@ -85,7 +82,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 	const updateStep = (step: number) => setStep(step);
 	const updateLocation = (data: CandidateLocation) => setLocation(data);
 
-	const onSubmit = async ({ maximumHours, maxTravelTimes, age, gender, phoneNumber, firstName, lastName }: FormikValues) => {
+	const onSubmit = async ({ maximumHours, maxTravelTimes, age, gender, phoneNumber, fullName }: FormikValues) => {
 		if (step === 1) {
 			const requestBody: CandiatePostRequest = {
 				candidateProfile: {
@@ -111,7 +108,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 					age,
 					gender: gender.toUpperCase(),
 					phoneNumber,
-					name: `${firstName} ${lastName}`,
+					name: fullName,
 				},
 			};
 			console.log(JSON.stringify(requestBody, null, 2));
@@ -154,8 +151,7 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 					{({ values, setFieldValue }) => (
 						<FormStepper step={step} updateStep={updateStep}>
 							<FormStep title='Create Profile' subtitle='Enter your details to create a profile'>
-								<FieldControl name='firstName' label='First name' type='text' />
-								<FieldControl name='lastName' label='Last name' type='text' />
+								<FieldControl name='fullName' label='Full name' type='text' />
 								<div className='flex w-full gap-5'>
 									<FieldControl name='age' label='Age' type='number' min={14} max={100} errorBelow />
 									<GenderSelect />
