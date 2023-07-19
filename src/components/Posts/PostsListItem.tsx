@@ -54,11 +54,11 @@ export const PostListItem = ({ post, status, active }: PostListItemProps) => {
 						{status && status === 'APPLIED' ? (
 							<div className='bg-green-100 text-green-600 text-sm font-medium px-2 py-1 rounded-md'>Applied</div>
 						) : (
-							<button className='bg-sw-50 text-sw-400 text-sm font-medium px-2 py-1 rounded-md'>Click to apply</button>
+							<button className='bg-sw-50 text-sw-400 text-sm font-medium px-2 py-1 rounded-md text-now whitespace-nowrap'>Click to apply</button>
 						)}
 					</div>
 				</div>
-				<div className='flex gap-2 w-full'>
+				<div className='flex gap-2 w-full flex-wrap'>
 					{post.pay && <PostTag icon={<MdAttachMoney />}>{`$${post.pay}/hr`}</PostTag>}
 					{post.shifts.length > 0 && <PostTag icon={<MdCalendarMonth />}>{AvailableDayOfWeek(post.shifts)}</PostTag>}
 					{!post.isFixedSchedule && post.estimatedHours >= 0 && <PostTag icon={<MdOutlineAccessTime />}>{`${post.estimatedHours} hrs`}</PostTag>}
