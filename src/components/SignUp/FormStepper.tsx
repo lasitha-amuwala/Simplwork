@@ -1,11 +1,11 @@
-import React from 'react';
+import { PropsWithChildren, ReactElement, Children } from 'react';
 import { Form, FormikConfig, FormikValues } from 'formik';
 import { StepHeader } from './StepHeader';
 
 type FormStepperProps = { step: number; updateStep: (step: number) => void };
 
-export const FormStepper = ({ children, step, updateStep }: React.PropsWithChildren<FormStepperProps>) => {
-	const arrayChildren = React.Children.toArray(children) as React.ReactElement<FormikStepProps>[];
+export const FormStepper = ({ children, step, updateStep }: PropsWithChildren<FormStepperProps>) => {
+	const arrayChildren = Children.toArray(children) as ReactElement<FormikStepProps>[];
 	const currentChild = arrayChildren[step];
 
 	return (

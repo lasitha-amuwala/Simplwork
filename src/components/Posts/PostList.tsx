@@ -1,4 +1,3 @@
-import React from 'react';
 import Link from 'next/link';
 import { PostListItemSkeleton } from '../Skeletons/PostListItemSkeleton';
 import { MemoizedPostListItem } from './PostsListItem';

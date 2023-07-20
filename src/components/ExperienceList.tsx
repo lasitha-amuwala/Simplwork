@@ -1,4 +1,3 @@
-import React from 'react';
 import { ExperienceListItem } from './ExperienceListItem';
 
 export type WorkHistory = {

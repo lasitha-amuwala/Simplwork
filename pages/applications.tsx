@@ -4,7 +4,6 @@ import { PostListItem } from '@/src/components/Posts/PostsListItem';
 import { queries } from '@/src/utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
-import React from 'react';
 
 type Props = {};
 

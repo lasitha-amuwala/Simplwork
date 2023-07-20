@@ -1,12 +1,10 @@
-import React from 'react';
+import { PropsWithChildren } from 'react';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../components/Auth/AuthProvider';
 
-type Props = {
-	children: React.ReactNode;
-};
+type Props = {};
 
-export const BaseLayout = ({ children }: Props) => {
+export const BaseLayout = ({ children }: PropsWithChildren<Props>) => {
 	const { user } = useAuth();
 
 	return (

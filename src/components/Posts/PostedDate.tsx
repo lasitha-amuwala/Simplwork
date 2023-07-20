@@ -1,4 +1,3 @@
-import React from 'react';
 import dayjs from 'dayjs';
 import relativeTIme from 'dayjs/plugin/relativeTime';
 import customParseFormat from 'dayjs/plugin/customParseFormat';

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren, forwardRef } from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { RxCross2 } from 'react-icons/rx';
 
@@ -6,7 +6,7 @@ type DialogContentProps = { className?: string };
 type DialogTitleProps = { children: string };
 type DialogDescriptionProps = { children: string };
 
-const DialogContent = React.forwardRef<HTMLDivElement, PropsWithChildren<DialogContentProps>>(
+const DialogContent = forwardRef<HTMLDivElement, PropsWithChildren<DialogContentProps>>(
 	({ className, children, ...props }, forwardedRef) => {
 		return (
 			<DialogPrimitive.Portal>

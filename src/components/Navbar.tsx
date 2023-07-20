@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
+import { useState } from 'react';
 import { useAuth } from './Auth/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import { queries } from '../utils/simplwork';
@@ -8,8 +7,9 @@ import * as Avatar from '@radix-ui/react-avatar';
 import { RxCross2 } from 'react-icons/rx';
 import { RiMenuFill } from 'react-icons/ri';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { getInitials } from '../utils/helpers';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const LogoutButton = () => {
 	const { signOut } = useAuth();

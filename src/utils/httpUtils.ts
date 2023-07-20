@@ -1,5 +1,3 @@
-import { SimplworkApi } from './simplwork';
-
 export const createURL = (endpoint: string, c: any, params?: any) => {
 	const query = new URLSearchParams({ ...params });
 	query.forEach((val, key) => {

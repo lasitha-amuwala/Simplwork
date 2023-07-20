@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCombobox } from 'downshift';
 import { SimplworkApi } from '../utils/simplwork';
 import { CandidateLocation } from '../types/api/candidate';

@@ -1,7 +1,7 @@
-import React from 'react';
+import { PropsWithChildren } from 'react';
 import Image from 'next/image';
 
-type AuthCardProps = React.PropsWithChildren<{
+type AuthCardProps = PropsWithChildren<{
 	title: string;
 	subtitle: string;
 }>;

@@ -2,8 +2,8 @@ import { createContext, useContext, useState, PropsWithChildren, useEffect } fro
 import { CredentialResponse, GoogleOAuthProvider, googleLogout } from '@react-oauth/google';
 import { AuthContextType, GoogleProfileData, GoogleToken } from '@/src/types/Auth';
 import { SimplworkApi } from '@/src/utils/simplwork';
-import jwt_decode from 'jwt-decode';
 import { useRouter } from 'next/router';
+import jwt_decode from 'jwt-decode';
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 export const useAuth = () => useContext(AuthContext) as AuthContextType;

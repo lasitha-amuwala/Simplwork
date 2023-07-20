@@ -1,5 +1,4 @@
-import { Field, FieldArray, Form, FormikValues } from 'formik';
-import React from 'react';
+import { Field, FormikValues } from 'formik';
 
 type Props = { values: FormikValues };
 

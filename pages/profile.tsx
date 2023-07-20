@@ -2,13 +2,11 @@ import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
 import { AddExperienceDialog } from '@/src/components/Dialogs/AddExperienceDialog';
 import { EditProfileDialog } from '@/src/components/Dialogs/EditProfileDialog';
-import { WorkExperience } from '@/src/components/SignUp/WorkExperience';
 import { WorkExperienceList } from '@/src/components/ExperienceList';
 import { queries } from '@/src/utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
 import Image from 'next/image';
-import React from 'react';
 
 type ProfileProps = {};
 

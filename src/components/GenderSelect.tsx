@@ -1,4 +1,3 @@
-import React from 'react';
 import { FieldControl } from './FieldControl';
 
 type Props = {};
