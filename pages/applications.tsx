@@ -16,21 +16,55 @@ const Applications: NextPage = (props: Props) => {
 	if (isError) return <div>error</div>;
 	return (
 		<ProtectedPage>
-			<div className='flex flex-col gap-10 items-center justify-center w-full h-full pt-20'>
-				{candidate && (
-					<div className='w-full flex flex-col gap-4 max-w-2xl'>
-						<h1 className='text-3xl font-bold px-1'>{`Applied (${candidate.length})`}</h1>
-						<div className='w-full flex flex-col overflow-y-scroll max-h-[500px] p-1 gap-4'>
-							{candidate.map(({ posting, candidateStatus }: any, i: number) => {
-								return (
-									<div key={`${posting.id}${i}`} className='w-full flex'>
-										<PostListItem post={posting} status={candidateStatus} />
-									</div>
-								);
-							})}
+			<div className='flex mx-5 gap-2'>
+				<div className='flex flex-col gap-10 items-center justify-center w-full h-full pt-20'>
+					{candidate && (
+						<div className='w-full flex flex-col gap-4 max-w-2xl'>
+							<h1 className='text-3xl font-bold px-1'>{`Applied (${candidate.length})`}</h1>
+							<div className='w-full flex flex-col overflow-y-auto max-h-[1000px] p-1 gap-4'>
+								{candidate.map(({ posting, candidateStatus }: any, i: number) => {
+									return (
+										<div key={`${posting.id}${i}`} className='w-full flex'>
+											<PostListItem post={posting} status={candidateStatus} />
+										</div>
+									);
+								})}
+							</div>
 						</div>
-					</div>
-				)}
+					)}
+				</div>
+				<div className='flex flex-col gap-10 items-center justify-center w-full h-full pt-20'>
+					{candidate && (
+						<div className='w-full flex flex-col gap-4 max-w-2xl'>
+							<h1 className='text-3xl font-bold px-1'>{`Interview (${candidate.length})`}</h1>
+							<div className='w-full flex flex-col overflow-y-auto max-h-[1000px] p-1 gap-4'>
+								{candidate.map(({ posting, candidateStatus }: any, i: number) => {
+									return (
+										<div key={`${posting.id}${i}`} className='w-full flex'>
+											<PostListItem post={posting} status={candidateStatus} />
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					)}
+				</div>
+				<div className='flex flex-col gap-10 items-center justify-center w-full h-full pt-20'>
+					{candidate && (
+						<div className='w-full flex flex-col gap-4 max-w-2xl'>
+							<h1 className='text-3xl font-bold px-1'>{`Withdrawn (${candidate.length})`}</h1>
+							<div className='w-full flex flex-col overflow-y-auto max-h-[1000px] p-1 gap-4'>
+								{candidate.map(({ posting, candidateStatus }: any, i: number) => {
+									return (
+										<div key={`${posting.id}${i}`} className='w-full flex'>
+											<PostListItem post={posting} status={candidateStatus} />
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					)}
+				</div>
 			</div>
 		</ProtectedPage>
 	);
