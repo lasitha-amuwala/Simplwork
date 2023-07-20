@@ -1,28 +1,25 @@
 import { useState } from 'react';
 import { CgSpinner } from 'react-icons/cg';
-import { DialogClose } from './Dialogs/Dialog';
-import { FieldControl } from './FieldControl';
-import { GenderSelect } from './GenderSelect';
-import { SimplworkApi } from '../utils/simplwork';
+import { DialogClose } from '../Dialog';
+import { FieldControl } from '../../FieldControl';
+import { GenderSelect } from '../../GenderSelect';
+import { SimplworkApi } from '../../../utils/simplwork';
 import { Form, Formik, FormikValues } from 'formik';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ProfileValidationSchema } from './SignUp/SignUpFlow';
+import { ProfileValidationSchema } from '../../SignUp/SignUpFlow';
 
 type ProfileForm = { profileData: any; afterSave: () => void };
 
 export const ProfileForm = ({ profileData, afterSave }: ProfileForm) => {
-	let initialValues = {};
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
 
-	if (profileData) {
-		initialValues = {
-			fullName: profileData.candidateName,
-			gender: profileData.gender,
-			phoneNumber: profileData.phoneNumber,
-			age: profileData.age,
-		};
-	}
+	const initialValues = {
+		fullName: profileData.candidateName ?? '',
+		gender: profileData.gender ?? '',
+		phoneNumber: profileData.phoneNumber ?? '',
+		age: profileData.age ?? '',
+	};
 
 	const patchCandidate = (data: any) => {
 		return SimplworkApi.patch('candidate', JSON.stringify(data), { headers: { 'Content-Type': 'application/json-patch+json' } });
