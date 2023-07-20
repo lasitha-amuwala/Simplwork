@@ -1,25 +1,20 @@
-import { queries } from '../../utils/simplwork';
-import { useAuth } from '../Auth/AuthProvider';
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { ProfileForm } from '../ProfileForm';
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from './Dialog';
+import { PropsWithChildren, useState } from 'react';
+import { ProfileForm } from './Forms/ProfileForm';
+import { DialogTemplate } from './DialogTemplate';
 
-export const EditProfileDialog = () => {
-	const { user } = useAuth();
-	const { data } = useQuery(queries.candidate.getCandidate(user?.credential ?? ''));
+type EditProfileDialogProps = { profileData: any };
+
+export const EditProfileDialog = ({ profileData }: PropsWithChildren<EditProfileDialogProps>) => {
 	const [open, setOpen] = useState(false);
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger asChild>
-				<button className='button'>Edit Profile</button>
-			</DialogTrigger>
-			<DialogContent>
-				<DialogTitle>Edit Profile</DialogTitle>
-				<DialogDescription>Make changes to your profile here. Click save when you're done.</DialogDescription>
-				<ProfileForm profileData={data} afterSave={() => setOpen(false)} />
-			</DialogContent>
-		</Dialog>
+		<DialogTemplate
+			open={open}
+			setOpen={setOpen}
+			triggerLabel='Edit Profile'
+			title='Edit Profile'
+			description={`Make changes to your profile here. Click save when you're done.`}>
+			<ProfileForm profileData={profileData} afterSave={() => setOpen(false)} />
+		</DialogTemplate>
 	);
 };
