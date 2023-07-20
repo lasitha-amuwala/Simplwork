@@ -3,6 +3,7 @@ import { Form, Formik, FormikValues } from 'formik';
 import { FieldControl } from '../../FieldControl';
 import { CgSpinner } from 'react-icons/cg';
 import { DialogClose } from '../Dialog';
+import { workHistoryValidationSchema } from '../../SignUp/SignUpFlow';
 
 type Props = {
 	initialValues: FormikValues;
@@ -12,7 +13,7 @@ type Props = {
 
 export const ExperienceForm = ({ initialValues, onSubmit, disabled }: Props) => {
 	return (
-		<Formik initialValues={initialValues} onSubmit={onSubmit}>
+		<Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={workHistoryValidationSchema}>
 			{({ values, setFieldValue }) => (
 				<Form noValidate>
 					<fieldset disabled={disabled} className='group'>

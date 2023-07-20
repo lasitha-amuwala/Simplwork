@@ -6,7 +6,7 @@ import { GenderSelect } from '../../GenderSelect';
 import { SimplworkApi } from '../../../utils/simplwork';
 import { Form, Formik, FormikValues } from 'formik';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ProfileValidationSchema } from '../../SignUp/SignUpFlow';
+import { profileValidationSchema } from '../../SignUp/SignUpFlow';
 
 type ProfileForm = { profileData: any; afterSave: () => void };
 
@@ -49,7 +49,7 @@ export const ProfileForm = ({ profileData, afterSave }: ProfileForm) => {
 	};
 
 	return (
-		<Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={ProfileValidationSchema}>
+		<Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={profileValidationSchema}>
 			{({ values, setFieldValue }) => (
 				<Form noValidate>
 					<fieldset disabled={saving} className='group'>

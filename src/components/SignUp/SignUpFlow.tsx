@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useAuth } from '../Auth/AuthProvider';
 import { HiOutlinePlus } from 'react-icons/hi';
-import { string, object, number, array } from 'yup';
+import { string, object, number, date } from 'yup';
 import { ArrayHelpers, ErrorMessage, Field, FieldArray, Formik, FormikValues } from 'formik';
 
 import { AutoComplete } from '../AutoComplete';
@@ -37,10 +37,9 @@ const initialValues: ValueTypes = {
 	commuteTypes: [],
 	maxTravelTimes: { WALK: 20, BIKE: 30, CAR: 90, PUBLIC_TRANSIT: 90 },
 	workHistory: [],
-	//{ positionTitle: '', companyName: '', details: '', startDate: '', endDate: '' }
 };
 
-export const ProfileValidationSchema = object().shape({
+export const profileValidationSchema = object().shape({
 	fullName: string().min(2, 'Too Short!').max(50, 'Too Long!').required('Full name is required'),
 	age: number().min(14, 'You must be at least 14 years').max(60, 'You must be at most 60 years').required('Age is required'),
 	gender: string().required('Gender is required'),
@@ -50,23 +49,19 @@ export const ProfileValidationSchema = object().shape({
 });
 
 const validationSchemaStepTwo = object().shape({
-	homeAddress: string(),
+	homeAddress: string().required('You must enter this field.'),
 	maximumHours: number().min(0, 'Please enter a valid hour').max(168, 'Please enter a valid hour').required('You must enter this field.'),
 });
 
-const validationSchemaStepThree = object().shape({
-	workHistory: array().of(
-		object().shape({
-			positionTitle: string().required(),
-			companyName: string().required(),
-			details: string().required(),
-			startDate: string().required(),
-			endDate: string().required(),
-		})
-	),
+export const workHistoryValidationSchema = object().shape({
+	positionTitle: string().required('Position title is required.'),
+	companyName: string().required('Compnay name is required.'),
+	details: string().required('Position details is required.'),
+	startDate: date(),
+	endDate: date(),
 });
 
-const validationSchema = [ProfileValidationSchema, validationSchemaStepTwo, validationSchemaStepThree];
+const validationSchema = [profileValidationSchema, validationSchemaStepTwo, workHistoryValidationSchema];
 
 type SignUpFlowProps = { userData: GoogleProfileData };
 
@@ -91,13 +86,13 @@ export const SignUpFlow = ({ userData }: SignUpFlowProps) => {
 					maximumHours,
 					location,
 					availability: {
-						SUNDAY: [{ startTime: 0, endTime: 900 }],
-						MONDAY: [{ startTime: 0, endTime: 900 }],
-						TUESDAY: [{ startTime: 0, endTime: 900 }],
-						WEDNESDAY: [{ startTime: 0, endTime: 900 }],
-						THURSDAY: [{ startTime: 0, endTime: 900 }],
-						FRIDAY: [{ startTime: 0, endTime: 900 }],
-						SATURDAY: [{ startTime: 0, endTime: 900 }],
+						SUNDAY: [{ startTime: 0, endTime: 1439 }],
+						MONDAY: [{ startTime: 0, endTime: 1439 }],
+						TUESDAY: [{ startTime: 0, endTime: 1439 }],
+						WEDNESDAY: [{ startTime: 0, endTime: 1439 }],
+						THURSDAY: [{ startTime: 0, endTime: 1439 }],
+						FRIDAY: [{ startTime: 0, endTime: 1439 }],
+						SATURDAY: [{ startTime: 0, endTime: 1439 }],
 					},
 					maxLiftWeight: 0,
 					maxTravelTimes,
