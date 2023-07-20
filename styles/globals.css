@@ -26,6 +26,12 @@ body {
 	.btn-blue {
 		@apply bg-sw px-2 md:px-3 py-2 rounded text-white font-medium hover:bg-sw-400 active:bg-sw-300;
 	}
+	.baby-blue-btn {
+		@apply bg-sw-50 text-sw-400 hover:bg-sw-100;
+	}
+	.baby-red-btn {
+		@apply bg-red-50 text-red-600 hover:bg-red-100;
+	}
 }
 
 .PopoverContent {

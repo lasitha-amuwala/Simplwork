@@ -34,3 +34,7 @@ export const mutations = {
 		},
 	},
 };
+
+export const patchCandidate = (data: any) => {
+	return SimplworkApi.patch('candidate', JSON.stringify(data), { headers: { 'Content-Type': 'application/json-patch+json' } });
+};
