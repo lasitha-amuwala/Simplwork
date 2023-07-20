@@ -15,7 +15,7 @@ export const DeleteExperienceDialog = ({ index, data }: { index: number; data: W
 			setOpen={setOpen}
 			triggerLabel={<MdDelete />}
 			triggerClassName='p-2 rounded baby-red-btn'
-			title='Are you sure'
+			title='Are You Sure?'
 			description={`This cannot be undone.`}>
 			<DeleteFormButtons afterDelete={() => setOpen(false)} index={index} />
 		</DialogTemplate>
