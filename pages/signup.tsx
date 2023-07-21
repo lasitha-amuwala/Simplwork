@@ -12,18 +12,19 @@ import { getGoogleProfile, useAuth } from '@/src/components/Auth/AuthProvider';
 type Props = {};
 
 const SignUp: NextPageWithLayout<Props> = () => {
-	const router = useRouter();
 	const { onSignUp } = useAuth();
-	const [userData, setUserData] = useState<GoogleProfileData>();
+	const [credential, setCredential] = useState<string>('');
 	const [renderSignUpFlow, setRenderSignUpFlow] = useState<boolean>(false);
 
+	const resetSignUp = () => setRenderSignUpFlow(false);
+
 	const handleSignUp = async (response: CredentialResponse) => {
-		setUserData(getGoogleProfile(response.credential as string));
+		setCredential(response.credential as string);
 		const isNewUser = await onSignUp(response);
 		if (isNewUser) setRenderSignUpFlow(true);
 	};
 
-	if (renderSignUpFlow && userData) return <SignUpFlow userData={userData} />;
+	if (renderSignUpFlow && credential) return <SignUpFlow credential={credential} resetSignUp={resetSignUp} />;
 
 	return (
 		<div className='flex flex-col items-center justify-center h-screen w-screen'>

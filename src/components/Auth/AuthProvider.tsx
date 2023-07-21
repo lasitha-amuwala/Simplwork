@@ -13,6 +13,7 @@ const decodeCredential = (credential: string): GoogleToken => jwt_decode(credent
 
 // set axios authorization header to credential
 const setAuthorization = (credential: string) => (SimplworkApi.defaults.headers.common.Authorization = `Bearer ${credential}`);
+const setTokenLocalStorage = (credential: string) => localStorage.setItem('token', credential);
 
 const getCandidate = async (): Promise<any> => await SimplworkApi.get('candidate');
 
@@ -31,28 +32,36 @@ export const isTokenExpired = (credential: string): boolean => {
 export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	const router = useRouter();
 	const [user, setUser] = useState<GoogleProfileData | null>(null);
-	const signOut = () => removeUser();
+	const signOut = () => signOutUser();
 
-	const removeUser = () => {
-		setUser(null);
+	const signOutUser = () => {
+		localStorage.removeItem('token');
 		setAuthorization('');
 		googleLogout();
-		localStorage.removeItem('token');
+		setUser(null);
+	};
+
+	const signInUser = (credential: string) => {
+		if (!credential) return;
+		if (isTokenExpired(credential)) {
+			alert('Session Expired, Please try again.');
+			return;
+		}
+		setAuthorization(credential);
+		setTokenLocalStorage(credential);
+		setUser(getGoogleProfile(credential));
 	};
 
 	const onSignIn = ({ credential }: CredentialResponse) => {
 		if (!credential) return;
 
 		setAuthorization(credential);
-		SimplworkApi.get('candidate')
+		getCandidate()
 			.then((res) => {
-				if (res.status >= 200 && res.status <= 299) {
-					setUser(getGoogleProfile(credential));
-					localStorage.setItem('token', credential);
-				}
+				if (res.status >= 200 && res.status <= 299) signInUser(credential);
 			})
 			.catch((error) => {
-				removeUser();
+				signOutUser();
 				alert('User does not exist, Sign up');
 			});
 	};
@@ -65,17 +74,13 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 		return getCandidate()
 			.then((res: any) => {
 				if (res.status >= 200 && res.status <= 299) {
-					setUser(getGoogleProfile(credential));
-					localStorage.setItem('token', credential);
+					signInUser(credential);
 					router.push('/');
 				}
 				return false;
 			})
 			.catch((error: any) => {
-				if (error.response.status == 404) {
-					console.log('first');
-					return true;
-				}
+				if (error.response.status == 404) return true;
 				return false;
 			});
 	};
@@ -83,10 +88,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	// on refresh or new window open, log the user in automatically
 	useEffect(() => {
 		const credential = localStorage.getItem('token');
-		if (credential && !isTokenExpired(credential)) {
-			setAuthorization(credential);
-			setUser(getGoogleProfile(credential));
-		}
+		if (credential && !isTokenExpired(credential)) signInUser(credential);
 	}, []);
 
 	// set an interceptor to catch 401 errors and remove user
@@ -94,14 +96,14 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 		SimplworkApi.interceptors.response.use(
 			(response) => response,
 			(error) => {
-				if (error.response?.status === 401) removeUser();
+				if (error.response?.status === 401) signOutUser();
 				return Promise.reject(error);
 			}
 		);
-	}, [setUser, removeUser]);
+	}, [signOutUser]);
 
 	return (
-		<AuthContext.Provider value={{ user, setUser, onSignIn, onSignUp, signOut }}>
+		<AuthContext.Provider value={{ user, signInUser, onSignIn, onSignUp, signOut }}>
 			<GoogleOAuthProvider clientId='869487513689-u4hhunj2o95cf404asivk737j91fddgq.apps.googleusercontent.com'>{children}</GoogleOAuthProvider>
 		</AuthContext.Provider>
 	);
