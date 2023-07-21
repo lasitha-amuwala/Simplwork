@@ -5,6 +5,7 @@ import { WorkHistory } from '../ExperienceList';
 import { DialogTemplate } from './DialogTemplate';
 import { patchCandidate } from '@/src/utils/simplwork';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { DialogCancelButton } from '../Buttons/DialogCancelButton';
 
 export const DeleteExperienceDialog = ({ index, data }: { index: number; data: WorkHistory }) => {
 	const [open, setOpen] = useState(false);
@@ -45,9 +46,7 @@ const DeleteFormButtons = ({ index, afterDelete }: { index: number; afterDelete:
 
 	return (
 		<div className='flex gap-5 justify-center p-5 pb-0'>
-			<button onClick={() => setOpen(false)} className='button px-4 py-2 rounded font-semibold'>
-				Cancel
-			</button>
+			<DialogCancelButton />
 			<button
 				onClick={onDelete}
 				disabled={deleting}

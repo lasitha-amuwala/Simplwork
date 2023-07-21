@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { WorkHistory } from '../../ExperienceList';
 import { FormikValues } from 'formik';
 import { patchCandidate } from '../../../utils/simplwork';
-import { ExperienceForm } from './ExperienceForm';
+import { DialogFormLayout } from './DialogFormLayout';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { ExperienceForm } from './ExperienceForm';
+import { workHistoryValidationSchema } from '../../SignUp/SignUpFlow';
 
 type WorkExperienceFormProps = { afterSave: () => void; index: number; data: WorkHistory };
 
@@ -35,5 +37,9 @@ export const WorkExperienceForm = ({ afterSave, index, data }: WorkExperienceFor
 		afterSave();
 	};
 
-	return <ExperienceForm initialValues={initialValues} onSubmit={onSubmit} disabled={saving} />;
+	return (
+		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={workHistoryValidationSchema}>
+			<ExperienceForm />
+		</DialogFormLayout>
+	);
 };

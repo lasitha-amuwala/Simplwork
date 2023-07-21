@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState } from 'react';
-import { ProfileForm } from './Forms/ProfileForm';
 import { DialogTemplate } from './DialogTemplate';
+import { EditProfileForm } from './Forms/EditProfileForm';
 
 type EditProfileDialogProps = { profileData: any };
 
@@ -14,7 +14,7 @@ export const EditProfileDialog = ({ profileData }: PropsWithChildren<EditProfile
 			triggerLabel='Edit Profile'
 			title='Edit Profile'
 			description={`Make changes to your profile here. Click save when you're done.`}>
-			<ProfileForm profileData={profileData} afterSave={() => setOpen(false)} />
+			<EditProfileForm profileData={profileData} afterSave={() => setOpen(false)} />
 		</DialogTemplate>
 	);
 };

@@ -2,21 +2,15 @@ import { useState } from 'react';
 import { patchCandidate } from '../../../utils/simplwork';
 import { FormikValues } from 'formik';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { DialogFormLayout } from './DialogFormLayout';
 import { ExperienceForm } from './ExperienceForm';
+import { workHistoryValidationSchema } from '../../SignUp/SignUpFlow';
 
 type AddExperienceFormProps = { afterSave: () => void };
 
 export const AddExperienceForm = ({ afterSave }: AddExperienceFormProps) => {
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
-
-	const initialValues = {
-		positionTitle: '',
-		companyName: '',
-		startDate: '',
-		endDate: '',
-		details: '',
-	};
 
 	const { mutateAsync } = useMutation({
 		mutationFn: patchCandidate,
@@ -34,5 +28,9 @@ export const AddExperienceForm = ({ afterSave }: AddExperienceFormProps) => {
 		afterSave();
 	};
 
-	return <ExperienceForm initialValues={initialValues} onSubmit={onSubmit} disabled={saving} />;
+	return (
+		<DialogFormLayout onSubmit={onSubmit} validationSchema={workHistoryValidationSchema} formDisabled={saving}>
+			<ExperienceForm />
+		</DialogFormLayout>
+	);
 };
