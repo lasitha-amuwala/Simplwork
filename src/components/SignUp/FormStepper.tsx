@@ -2,41 +2,22 @@ import { PropsWithChildren, ReactElement, Children } from 'react';
 import { Form, FormikConfig, FormikValues } from 'formik';
 import { StepHeader } from './StepHeader';
 
-type FormStepperProps = { step: number; updateStep: (step: number) => void };
+type StepperProps = { step: number; updateStep: (step: number) => void };
 
-export const FormStepper = ({ children, step, updateStep }: PropsWithChildren<FormStepperProps>) => {
-	const arrayChildren = Children.toArray(children) as ReactElement<FormikStepProps>[];
+export const Stepper = ({ children, step, updateStep }: PropsWithChildren<StepperProps>) => {
+	const arrayChildren = Children.toArray(children) as ReactElement<StepProps>[];
 	const currentChild = arrayChildren[step];
 
-	return (
-		<Form noValidate>
-			<div className='flex flex-col w-[450px] max-w-[450px] gap-5'>{currentChild}</div>
-			<div className='flex w-full pt-7 gap-3'>
-				{step > 0 && (
-					<button
-						type='button'
-						onClick={() => updateStep(step - 1)}
-						className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
-						Back
-					</button>
-				)}
-				<button
-					type='submit'
-					className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
-					Continue
-				</button>
-			</div>
-		</Form>
-	);
+	return <div className='flex flex-col w-[450px] max-w-[450px] gap-5'>{currentChild}</div>;
 };
 
-export interface FormikStepProps extends Pick<FormikConfig<FormikValues>, 'children' | 'validationSchema'> {
+export interface StepProps extends Pick<FormikConfig<FormikValues>, 'children' | 'validationSchema'> {
 	className?: string;
 	title: string;
 	subtitle: string;
 }
 
-export const FormStep = ({ title, subtitle, children }: FormikStepProps) => (
+export const Step = ({ title, subtitle, children }: StepProps) => (
 	<>
 		<StepHeader title={title} subtitle={subtitle} />
 		{children}

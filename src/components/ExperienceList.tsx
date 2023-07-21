@@ -8,20 +8,24 @@ export type WorkHistory = {
 	endDate?: string;
 };
 
-type WorkExperienceListProps = { history: WorkHistory[] };
+type ExperienceListProps = { history: WorkHistory[] };
 
-export const WorkExperienceList = ({ history }: WorkExperienceListProps) => {
+export const ExperienceList = ({ history }: ExperienceListProps) => {
 	return (
-		<div>
+		<div className='max-h-[800px] overflow-y-auto'>
 			{history.length === 0 ? (
-				<div className='bg-gray-50 w-full py-10 px-5 mt-5 flex flex-col justify-center items-center'>
+				<div className='bg-gray-50 w-full py-10 px-5 flex flex-col justify-center items-center'>
 					<p className=''>No work history to display.</p>
 					<p>
 						Click <span className='font-semibold'>Add Experience</span> to add your work history.
 					</p>
 				</div>
 			) : (
-				history.map((data, i) => <ExperienceListItem key={i} data={data} index={i} />)
+				<div className='flex flex-col gap-3 pr-3'>
+					{history.map((data, i) => (
+						<ExperienceListItem key={i} data={data} index={i} />
+					))}
+				</div>
 			)}
 		</div>
 	);

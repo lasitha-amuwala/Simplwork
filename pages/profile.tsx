@@ -2,7 +2,7 @@ import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
 import { AddExperienceDialog } from '@/src/components/Dialogs/AddExperienceDialog';
 import { EditProfileDialog } from '@/src/components/Dialogs/EditProfileDialog';
-import { WorkExperienceList } from '@/src/components/ExperienceList';
+import { ExperienceList } from '@/src/components/ExperienceList';
 import { queries } from '@/src/utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
@@ -48,11 +48,11 @@ const Profile: NextPage = (props: ProfileProps) => {
 				</div>
 				<div className='p-5 flex gap-5'>
 					<div className='w-7/12 h-auto'>
-						<div className='flex justify-between'>
+						<div className='flex justify-between pb-5'>
 							<h1 className='text-2xl font-semibold self-end'>Work Experience</h1>
 							<AddExperienceDialog />
 						</div>
-						<WorkExperienceList history={candidate.workHistory} />
+						<ExperienceList history={candidate.workHistory} />
 					</div>
 					<div className='w-5/12'>
 						<h1 className='text-2xl font-semibold pb-1'>My Information</h1>

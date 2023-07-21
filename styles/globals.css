@@ -21,7 +21,7 @@ body {
 		@apply font-medium leading-[35px];
 	}
 	.button {
-		@apply bg-sw-900 px-2 md:px-3 py-2 rounded text-white font-medium hover:bg-sw-400 active:bg-sw-300;
+		@apply bg-black h-12 px-2 md:px-3 py-2 rounded text-white font-medium hover:bg-black/[85%] active:bg-black/[75%];
 	}
 	.btn-blue {
 		@apply bg-sw px-2 md:px-3 py-2 rounded text-white font-medium hover:bg-sw-400 active:bg-sw-300;

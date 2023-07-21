@@ -14,9 +14,7 @@ import Image from 'next/image';
 const LogoutButton = () => {
 	const { signOut } = useAuth();
 	return (
-		<button
-			className='bg-black px-3 py-1 rounded text-white font-medium w-auto text-center cursor-pointer hover:bg-neutral-800 active:bg-neutral-700'
-			onClick={signOut}>
+		<button className='button' onClick={signOut}>
 			Sign Out
 		</button>
 	);
