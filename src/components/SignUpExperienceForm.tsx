@@ -30,12 +30,18 @@ export const SignUpExperienceForm = (props: Props) => {
 
 	const onSubmit = async ({ positionTitle, companyName, startDate, endDate, details }: FormikValues) => {
 		setSaving(true);
-    console.log('props')
+		console.log('props');
 		const data = [{ op: 'add', path: '/candidateProfile/workHistory/-', value: { positionTitle, companyName, details } }];
 		await mutateAsync(data);
 	};
 
-	const initialValues = {};
+	const initialValues = {
+		postitionTitle: '',
+		companyName: '',
+		details: '',
+		startDate: '',
+		endDate: '',
+	};
 
 	if (isError) {
 		router.push('/');

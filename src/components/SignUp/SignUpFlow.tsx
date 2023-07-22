@@ -6,8 +6,6 @@ import { string, object, number, date } from 'yup';
 import { ArrayHelpers, ErrorMessage, Field, FieldArray, Form, Formik, FormikValues } from 'formik';
 
 import { AutoComplete } from '../AutoComplete';
-import { FieldControl } from '../FieldControl';
-import { Step, Stepper } from './FormStepper';
 import { SimplworkApi } from '@/src/utils/simplwork';
 import { StepProgressHeader } from './StepProgressHeader';
 import { CommuteCheckBoxButton, commuteTypes } from './CommuteCheckBox';
@@ -18,21 +16,26 @@ import {
 	CandidateMaxTravelTimes,
 	CandidateWorkHistory,
 } from '@/src/types/api/candidate';
-import { GenderSelect } from '../GenderSelect';
 import { SignUpExperienceForm } from '../SignUpExperienceForm';
+import { StepHeader } from './StepHeader';
+import { ProfileForm } from '../Dialogs/Forms/ProfileForm';
+import { createCandidateRequestBody } from '@/src/utils/authHelpers';
 
-type ValueTypes = {
+export type ValueUserTypes = {
 	fullName: string;
 	age: number | string;
 	gender: string;
 	phoneNumber: string;
+};
+
+type ValueAvailabilityTypes = {
 	maximumHours: number | string;
 	commuteTypes: string[];
 	maxTravelTimes: CandidateMaxTravelTimes;
 	workHistory: CandidateWorkHistory[];
 };
 
-const initialValues: ValueTypes = {
+const initialValues: ValueUserTypes & ValueAvailabilityTypes = {
 	fullName: '',
 	gender: '',
 	age: '',
@@ -66,40 +69,6 @@ export const workHistoryValidationSchema = object().shape({
 
 const validationSchema = [profileValidationSchema, validationSchemaStepTwo, workHistoryValidationSchema];
 
-const createCandidateRequestBody = (values: FormikValues, location: CandidateLocation, email: string) => {
-	const candidateProfile: CandaidateProfile = {
-		workHistory: [],
-		minimumPay: 0,
-		maximumHours: values.maximumHours,
-		location,
-		availability: {
-			SUNDAY: [{ startTime: 0, endTime: 1439 }],
-			MONDAY: [{ startTime: 0, endTime: 1439 }],
-			TUESDAY: [{ startTime: 0, endTime: 1439 }],
-			WEDNESDAY: [{ startTime: 0, endTime: 1439 }],
-			THURSDAY: [{ startTime: 0, endTime: 1439 }],
-			FRIDAY: [{ startTime: 0, endTime: 1439 }],
-			SATURDAY: [{ startTime: 0, endTime: 1439 }],
-		},
-		maxLiftWeight: 0,
-		maxTravelTimes: values.maxTravelTimes,
-		autoMatch: true,
-	};
-
-	const user = {
-		email: email,
-		age: values.age,
-		gender: values.gender.toUpperCase(),
-		phoneNumber: values.phoneNumber,
-		name: values.fullName,
-	};
-
-	return {
-		candidateProfile: candidateProfile,
-		user: user,
-	};
-};
-
 type SignUpFlowProps = { credential: string; resetSignUp: () => void };
 
 export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
@@ -115,25 +84,25 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 	const updateLocation = (data: CandidateLocation) => setLocation(data);
 
 	const onSubmit = async (values: FormikValues) => {
+		console.log('val', step);
+		console.log('val', values);
 		if (step === 1) {
 			const { email } = getGoogleProfile(credential);
 			const requestBody: CandiatePostRequest = createCandidateRequestBody(values, location, email);
-			// console.log(JSON.stringify(requestBody, null, 2));
+			console.log(JSON.stringify(requestBody, null, 2));
 			await SimplworkApi.post('candidate', JSON.stringify(requestBody))
 				.then((res: any) => {
 					signInUser(credential);
-					setStep(2);
 				})
 				.catch((err: any) => {
 					alert('There was an issue creating your account, Please try again.');
-					console.log('error', err);
 					resetSignUp();
 				});
 		} else if (step === 2) {
-			router.push('/');
-		} else {
-			setStep((step) => step + 1);
+			console.log('rerender');
+			// router.push('/');
 		}
+		setStep((step) => step + 1);
 	};
 
 	return (
@@ -156,93 +125,115 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 						stepId={2}
 						currStep={step}
 					/>
-					{/* {step} */}
 				</div>
 			</div>
 			{/* validationSchema={validationSchema[step]} */}
 			<div className='flex flex-col w-full h-full gap-3 items-center justify-center p-10'>
-				<Stepper step={step} updateStep={updateStep}>
-					<Step title='Create Profile' subtitle='Enter your details to create a profile'>
-						<Formik initialValues={initialValues} onSubmit={(v) => onSubmit(v)}>
-							{({ values, setFieldValue }) => (
-								<Form className=''>
-									<FieldControl name='fullName' label='Full name' type='text' />
-									<div className='flex w-full gap-5'>
-										<FieldControl name='age' label='Age' type='number' min={14} max={100} errorBelow />
-										<GenderSelect />
+				{step}
+				{step < 2 ? (
+					<Formik initialValues={initialValues} onSubmit={(v) => onSubmit(v)} validationSchema={validationSchema[step]}>
+						{({ values, setFieldValue }) => (
+							<Form noValidate>
+								{step === 0 && (
+									<div className='w-[450px] max-w-[450px]'>
+										<StepHeader title='Create Profile' subtitle='Enter your details to create a profile' />
+										<ProfileForm />
+										<StepperButtons step={step} updateStep={updateStep} />
 									</div>
-									<FieldControl name='phoneNumber' label='Phone Number' type='tel' placeholder='XXX-XXX-XXXX' />
-									<div className='flex w-full pt-7 gap-3'>
-										{step > 0 && (
-											<button
-												type='button'
-												onClick={() => updateStep(step - 1)}
-												className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
-												Back
-											</button>
-										)}
-										<button
-											type='submit'
-											className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
-											Continue
-										</button>
-									</div>
-								</Form>
-							)}
-						</Formik>
-					</Step>
-					<Step title='Add Work Availability' subtitle='Enter your details to create a profile'>
-						<Formik initialValues={initialValues} onSubmit={(v) => onSubmit(v)}>
-							{({ values, setFieldValue }) => (
-								<Form>
-									<AutoComplete update={updateLocation} credential={credential} />
-									<div className='flex flex-col gap-1'>
-										<div className='flex items-center'>
-											<label className='font-medium leading-[35px]' htmlFor='maximumHours'>
-												I can work up to
-											</label>
-											<div className='px-2 w-20'>
-												<Field type='number' name='maximumHours' required className='inputStyle' />
+								)}
+								{step === 1 && (
+									<div className='w-[450px] max-w-[450px]'>
+										<StepHeader title='Add Work Availability' subtitle='Enter your details to create a profile' />
+										<div className='flex flex-col gap-5'>
+											<AutoComplete update={updateLocation} credential={credential} />
+											<div className='flex flex-col gap-1'>
+												<div className='flex items-center'>
+													<label className='font-medium leading-[35px]' htmlFor='maximumHours'>
+														I can work up to
+													</label>
+													<div className='px-2 w-20'>
+														<Field type='number' name='maximumHours' required className='inputStyle' />
+													</div>
+													<label className='font-medium leading-[35px]'>hours per week</label>
+												</div>
+												<ErrorMessage name='maximumHours' render={(msg: string) => <p className='text-sm font-medium text-red-700'>{msg}</p>} />
 											</div>
-											<label className='font-medium leading-[35px]'>hours per week</label>
+											<h1 className='text-md pt-3 font-medium'>
+												Select the modes of transport available to you and the maximum amount of time you are willing to commute each way
+											</h1>
+											<div className='flex gap-3 w-[450px] justify-between'>
+												{Object.values(commuteTypes).map(({ value, text, icon }, index) => (
+													<label key={`${text}${index}`}>
+														<Field type='checkbox' name='commuteTypes' value={value} label={text} icon={icon} component={CommuteCheckBoxButton} />
+													</label>
+												))}
+											</div>
+											<FieldArray
+												name='maxTravelTimes'
+												render={(arrayHelpers: ArrayHelpers) => (
+													<div className='flex flex-col gap-5'>
+														{values.commuteTypes &&
+															values.commuteTypes.length > 0 &&
+															values.commuteTypes.map((commuteType, index) => (
+																<div key={index}>
+																	<label className='flex flex-row gap-5 items-center w-full justify-between'>
+																		<span className='font-medium'>Maximum commute time by {commuteTypes[commuteType].text}</span>
+																		<Field type='number' min={0} name={`maxTravelTimes[${commuteType}]`} placeholder='min' className='inputStyle w-20' />
+																	</label>
+																</div>
+															))}
+													</div>
+												)}
+											/>
+
+											<StepperButtons step={step} updateStep={updateStep} />
+											{/* {JSON.stringify(values, null, 2)} */}
 										</div>
-										<ErrorMessage name='maximumHours' render={(msg: string) => <p className='text-sm font-medium text-red-700'>{msg}</p>} />
 									</div>
-									<h1 className='text-md pt-3 font-medium'>
-										Select the modes of transport available to you and the maximum amount of time you are willing to commute each way
-									</h1>
-									<div className='flex gap-3 w-[450px] justify-between'>
-										{Object.values(commuteTypes).map(({ value, text, icon }, index) => (
-											<label key={`${text}${index}`}>
-												<Field type='checkbox' name='commuteTypes' value={value} label={text} icon={icon} component={CommuteCheckBoxButton} />
-											</label>
-										))}
-									</div>
-									<FieldArray
-										name='maxTravelTimes'
-										render={(arrayHelpers: ArrayHelpers) => (
-											<div className='flex flex-col gap-5'>
-												{values.commuteTypes &&
-													values.commuteTypes.length > 0 &&
-													values.commuteTypes.map((commuteType, index) => (
-														<div key={index}>
-															<label className='flex flex-row gap-5 items-center w-full justify-between'>
-																<span className='font-medium'>Maximum commute time by {commuteTypes[commuteType].text}</span>
-																<Field type='number' min={0} name={`maxTravelTimes[${commuteType}]`} placeholder='min' className='inputStyle w-20' />
-															</label>
-														</div>
-													))}
-											</div>
-										)}
-									/>
-									{/* {JSON.stringify(values, null, 2)} */}
-								</Form>
-							)}
-						</Formik>
-					</Step>
-				</Stepper>
-				{step == 2 && <SignUpExperienceForm />}
+								)}
+							</Form>
+						)}
+					</Formik>
+				) : (
+					<div className='w-[450px] max-w-[450px]'>
+						<StepHeader title='Create Profile' subtitle='Enter your details to create a profile' />
+						<SignUpExperienceForm />
+						<StepperButtons step={step} updateStep={updateStep} />
+					</div>
+				)}
 			</div>
 		</div>
 	);
 };
+
+const StepperButtons = ({ step, updateStep }: { step: number; updateStep: (arg: number) => void }) => {
+	return (
+		<div className='flex w-full pt-7 gap-3'>
+			{step > 0 && (
+				<button
+					type='button'
+					onClick={() => updateStep(step - 1)}
+					className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
+					Back
+				</button>
+			)}
+			<button
+				type='submit'
+				className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
+				Continue
+			</button>
+		</div>
+	);
+};
+
+{
+	/* <div className='flex flex-col gap-5'>
+	<FieldControl name='fullName' label='Full name' type='text' />
+	<div className='flex w-full gap-5'>
+		<FieldControl name='age' label='Age' type='number' min={14} max={100} errorBelow />
+		<GenderSelect />
+	</div>
+	<FieldControl name='phoneNumber' label='Phone Number' type='tel' placeholder='XXX-XXX-XXXX' />
+	<StepperButtons step={step} updateStep={updateStep} />
+</div>; */
+}

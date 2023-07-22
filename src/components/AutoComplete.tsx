@@ -68,7 +68,7 @@ export const AutoComplete = ({ credential, update }: Props) => {
 	return (
 		<div className='flex flex-col'>
 			<label {...getLabelProps()} className='font-medium leading-[35px]'>
-				Home Address:
+				Home Address
 			</label>
 			<div>
 				<input {...getInputProps()} className='inputStyle' />

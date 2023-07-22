@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { SimplworkApi } from '../../../utils/simplwork';
 import { FormikValues } from 'formik';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { profileValidationSchema } from '../../SignUp/SignUpFlow';
+import { ValueUserTypes, profileValidationSchema } from '../../SignUp/SignUpFlow';
 import { DialogFormLayout } from './DialogFormLayout';
 import { ProfileForm } from './ProfileForm';
 
@@ -12,7 +12,7 @@ export const EditProfileForm = ({ profileData, afterSave }: EditProfileForm) => 
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
 
-	const initialValues = {
+	const initialValues: ValueUserTypes = {
 		fullName: profileData.candidateName ?? '',
 		gender: profileData.gender ?? '',
 		phoneNumber: profileData.phoneNumber ?? '',
