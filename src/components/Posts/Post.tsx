@@ -3,25 +3,27 @@ import { PostSkeleton } from '../Skeletons/PostSkeleton';
 import { useMutation } from '@tanstack/react-query';
 import { SimplworkApi } from '@/src/utils/simplwork';
 import { PostedDate } from './PostedDate';
+import { commuteTypes } from '../SignUp/CommuteCheckBox';
+import { PostTag } from './PostTag';
 
 type PostProps = {
 	posts: any;
 	selectedPost: number;
 	isLoading: boolean;
 };
-
+const applyToPost = async (data: any) => {
+	console.log(JSON.stringify(data));
+	const res = await SimplworkApi.post(`candidate/postings/setStatus?id=${data.id}&status=${data.status}`);
+	console.log('res', JSON.stringify(res.data, null, 2));
+	return res;
+};
 export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
-	const applyToPost = async (data: any) => {
-		console.log(JSON.stringify(data));
-		const res = await SimplworkApi.post(`candidate/postings/setStatus?id=${data.id}&status=${data.status}`);
-		console.log('res', JSON.stringify(res.data, null, 2));
-		return res;
-	};
-
 	const mutation = useMutation(applyToPost);
 
 	if (isLoading) return <PostSkeleton />;
+
 	const post = posts[selectedPost];
+	const isMatch = !!post.candidateStatus;
 
 	const handleOnClick = () => {
 		console.log('clicked: ', post.posting.id);
@@ -31,7 +33,7 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 
 	const CompanyCard = () => {
 		return (
-			<div className='bg-[#64B1EC]/10 border-b p-4 '>
+			<div className='bg-[#64B1EC]/10 border-b p-4 flex flex-col gap-3 '>
 				<div className='h-auto flex gap-4'>
 					<div className='h-20 w-20 bg-blue-300 rounded-md shrink-0'></div>
 					<div className='grow'>
@@ -51,6 +53,19 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 						<p className='text-md text-gray-500'>{post.posting.employer.companyDescription}</p>
 					</div>
 				</div>
+				{isMatch && (
+					<div className='flex gap-3 text-gray-600'>
+						<PostTag icon={commuteTypes.CAR.icon}>
+							<p>{`${post.carCommuteTime}m`}</p>
+						</PostTag>
+						<PostTag icon={commuteTypes.BIKE.icon}>
+							<p>{`${post.bikeCommuteTime}m`}</p>
+						</PostTag>
+						<PostTag icon={commuteTypes.WALK.icon}>
+							<p>{`${post.walkCommuteTime}m`}</p>
+						</PostTag>
+					</div>
+				)}
 			</div>
 		);
 	};
@@ -59,7 +74,7 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 		return (
 			<div className='p-5'>
 				<div>
-					<div className='text-2xl font-semibold'>{`$${post.posting.pay}`}</div>
+					<div className='text-2xl font-semibold'>{`$${post.posting.pay}/hr`}</div>
 				</div>
 				<div className='my-5 flex flex-col gap-2'>
 					<h1 className='font-semibold text-lg'>Job Description</h1>
