@@ -55,14 +55,17 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 				</div>
 				{isMatch && (
 					<div className='flex gap-3 text-gray-600'>
+						{/* <PostTag icon={commuteTypes.WALK.icon}>
+							<p>{`${post.distance} km`}</p>
+						</PostTag> */}
 						<PostTag icon={commuteTypes.CAR.icon}>
-							<p>{`${post.carCommuteTime}m`}</p>
+							<p>{`${post.carCommuteTime} min`}</p>
 						</PostTag>
 						<PostTag icon={commuteTypes.BIKE.icon}>
-							<p>{`${post.bikeCommuteTime}m`}</p>
+							<p>{`${post.bikeCommuteTime} min`}</p>
 						</PostTag>
 						<PostTag icon={commuteTypes.WALK.icon}>
-							<p>{`${post.walkCommuteTime}m`}</p>
+							<p>{`${post.walkCommuteTime} min`}</p>
 						</PostTag>
 					</div>
 				)}
