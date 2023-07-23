@@ -5,6 +5,7 @@ import { SimplworkApi } from '@/src/utils/simplwork';
 import { PostedDate } from './PostedDate';
 import { commuteTypes } from '../SignUp/CommuteCheckBox';
 import { PostTag } from './PostTag';
+import { MdLocationPin } from 'react-icons/md';
 
 type PostProps = {
 	posts: any;
@@ -17,6 +18,15 @@ const applyToPost = async (data: any) => {
 	console.log('res', JSON.stringify(res.data, null, 2));
 	return res;
 };
+
+const displayDistance = (distance: number) => {
+	if (distance < 0.1) {
+		const distanceInMetres = Math.round(distance * 1000);
+		return `${Number.parseFloat(distanceInMetres.toFixed(1))}m`;
+	}
+	return `${Number.parseFloat(distance.toFixed(1))}km`;
+};
+
 export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 	const mutation = useMutation(applyToPost);
 
@@ -33,7 +43,7 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 
 	const CompanyCard = () => {
 		return (
-			<div className='bg-[#64B1EC]/10 border-b p-4 flex flex-col gap-3 '>
+			<div className='bg-[#64B1EC]/10 border-b p-4 flex flex-col gap-4 '>
 				<div className='h-auto flex gap-4'>
 					<div className='h-20 w-20 bg-blue-300 rounded-md shrink-0'></div>
 					<div className='grow'>
@@ -55,9 +65,9 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 				</div>
 				{isMatch && (
 					<div className='flex gap-3 text-gray-600'>
-						{/* <PostTag icon={commuteTypes.WALK.icon}>
-							<p>{`${post.distance} km`}</p>
-						</PostTag> */}
+						<PostTag icon={<MdLocationPin />}>
+							<p>{`${displayDistance(post.distance)}`}</p>
+						</PostTag>
 						<PostTag icon={commuteTypes.CAR.icon}>
 							<p>{`${post.carCommuteTime} min`}</p>
 						</PostTag>
