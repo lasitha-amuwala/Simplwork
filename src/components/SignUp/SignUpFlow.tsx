@@ -88,7 +88,12 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 		console.log('val', values);
 		if (step === 1) {
 			const { email } = getGoogleProfile(credential);
-			const requestBody: CandiatePostRequest = createCandidateRequestBody(values, location, email);
+			const tempLocation: CandidateLocation = {
+				latitude: 43.676444420388805,
+				longitude: -79.55569588996742,
+				postalCode: 'M9R0B3',
+			};
+			const requestBody: CandiatePostRequest = createCandidateRequestBody(values, tempLocation, email);
 			console.log(JSON.stringify(requestBody, null, 2));
 			await SimplworkApi.post('candidate', JSON.stringify(requestBody))
 				.then((res: any) => {
@@ -99,14 +104,13 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 					resetSignUp();
 				});
 		} else if (step === 2) {
-			console.log('rerender');
-			// router.push('/');
+			router.push('/');
 		}
 		setStep((step) => step + 1);
 	};
 
 	return (
-		<div className='flex w-full h-screen bg-white p-5'>
+		<div className='flex w-full h-screen bg-white p-5 over'>
 			<div className='bg-gray-100 titems-start rounded-xl w-1/3 min-w-[450px] px-7 py-10 overflow-hidden hidden md:block'>
 				<div className='pb-8'>
 					<Image src='/Logo-long.svg' alt='logo' width={145} height={30} />
@@ -145,7 +149,7 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 									<div className='w-[450px] max-w-[450px]'>
 										<StepHeader title='Add Work Availability' subtitle='Enter your details to create a profile' />
 										<div className='flex flex-col gap-5'>
-											<AutoComplete update={updateLocation} credential={credential} />
+											{/* <AutoComplete update={updateLocation} credential={credential} /> */}
 											<div className='flex flex-col gap-1'>
 												<div className='flex items-center'>
 													<label className='font-medium leading-[35px]' htmlFor='maximumHours'>
@@ -198,7 +202,21 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 					<div className='w-[450px] max-w-[450px]'>
 						<StepHeader title='Create Profile' subtitle='Enter your details to create a profile' />
 						<SignUpExperienceForm />
-						<StepperButtons step={step} updateStep={updateStep} />
+						<div className='flex w-full pt-7 gap-3'>
+							{step > 0 && (
+								<button
+									type='button'
+									onClick={() => updateStep(step - 1)}
+									className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
+									Back
+								</button>
+							)}
+							<button
+								onClick={() => router.push('/')}
+								className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
+								Continue
+							</button>
+						</div>
 					</div>
 				)}
 			</div>
