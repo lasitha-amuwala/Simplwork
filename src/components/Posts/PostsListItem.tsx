@@ -40,7 +40,7 @@ const AvailableDayOfWeek = (weekAvailability: { dayOfWeek: number }[]) => {
 export const PostListItem = ({ post, status, active }: PostListItemProps) => {
 	return (
 		<div
-			className={`w-full h-auto  bg-white rounded-md border border-gray-200 p-4 text-start ring-sw hover:ring transition-shadow duration-150 ${
+			className={`w-full h-auto bg-white rounded-md border border-gray-200 p-4 text-start ring-sw hover:ring transition-shadow duration-150 ${
 				active && 'ring'
 			}`}>
 			<div className='w-full flex flex-col gap-3 overflow-hidden'>

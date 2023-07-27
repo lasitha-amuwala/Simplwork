@@ -55,13 +55,13 @@ const Home = () => {
 				<div className='w-full text-center font-semibold text-5xl flex justify-center items-center pt-20'>Opps... Something went wrong</div>
 			) : (
 				<div className='flex gap-4'>
-					<div className='w-[15%] hidden md:block'>
+					<div className='hidden'>
 						<Filter />
 					</div>
 					<div className='w-full md:w-[35%] pt-1'>
 						<PostList posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
 					</div>
-					<div className='w-[50%] hidden md:block'>
+					<div className='hidden md:block md:w-[65%]'>
 						<Post posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
 					</div>
 				</div>

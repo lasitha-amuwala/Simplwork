@@ -27,6 +27,7 @@
     "jwt-decode": "^3.1.2",
     "next": "^13.4.7",
     "react": "^18.2.0",
+    "react-datepicker": "^4.16.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
     "sharp": "^0.32.1",
@@ -34,6 +35,7 @@
     "yup": "^1.1.1"
   },
   "devDependencies": {
+    "@types/react-datepicker": "^4.15.0",
     "autoprefixer": "^10.4.14",
     "eslint-config-next": "^13.4.7",
     "postcss": "^8.4.23",

@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { SimplworkApi } from '../../../utils/simplwork';
 import { FormikValues } from 'formik';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ValueUserTypes, profileValidationSchema } from '../../SignUp/SignUpFlow';
+import { ValueUserTypes } from '../../SignUp/SignUpFlow';
 import { DialogFormLayout } from './DialogFormLayout';
 import { ProfileForm } from './ProfileForm';
+import { profileValidationSchema } from '../../FormValidation';
 
 type EditProfileForm = { profileData: any; afterSave: () => void };
 

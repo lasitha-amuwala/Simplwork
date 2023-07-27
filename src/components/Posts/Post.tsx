@@ -28,7 +28,7 @@ const displayDistance = (distance: number) => {
 };
 
 export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
-	const mutation = useMutation(applyToPost);
+	const mutation = useMutation({ mutationFn: applyToPost });
 
 	if (isLoading) return <PostSkeleton />;
 

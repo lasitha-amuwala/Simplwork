@@ -20,6 +20,7 @@ import { SignUpExperienceForm } from '../SignUpExperienceForm';
 import { StepHeader } from './StepHeader';
 import { ProfileForm } from '../Dialogs/Forms/ProfileForm';
 import { createCandidateRequestBody } from '@/src/utils/authHelpers';
+import { profileValidationSchema, validationSchemaStepTwo, workHistoryValidationSchema } from '../FormValidation';
 
 export type ValueUserTypes = {
 	fullName: string;
@@ -46,26 +47,7 @@ const initialValues: ValueUserTypes & ValueAvailabilityTypes = {
 	workHistory: [],
 };
 
-export const profileValidationSchema = object().shape({
-	fullName: string().min(2, 'Too Short!').max(50, 'Too Long!').required('Full name is required'),
-	age: number().min(14, 'You must be at least 14 years').max(60, 'You must be at most 60 years').required('Age is required'),
-	gender: string().required('Gender is required'),
-	phoneNumber: string()
-		.matches(/^([0-9]{3})[-]([0-9]{3})[-]([0-9]{4})$/, 'Invalid format ex. 123-456-7890')
-		.required('A phone number is required'),
-});
 
-const validationSchemaStepTwo = object().shape({
-	maximumHours: number().min(0, 'Please enter a valid hour').max(168, 'Please enter a valid hour').required('You must enter this field.'),
-});
-
-export const workHistoryValidationSchema = object().shape({
-	positionTitle: string().required('Position title is required.'),
-	companyName: string().required('Compnay name is required.'),
-	details: string().required('Position details is required.'),
-	startDate: date(),
-	endDate: date(),
-});
 
 const validationSchema = [profileValidationSchema, validationSchemaStepTwo, workHistoryValidationSchema];
 

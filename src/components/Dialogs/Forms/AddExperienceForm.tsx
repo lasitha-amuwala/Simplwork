@@ -4,7 +4,8 @@ import { FormikValues } from 'formik';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DialogFormLayout } from './DialogFormLayout';
 import { ExperienceForm } from './ExperienceForm';
-import { workHistoryValidationSchema } from '../../SignUp/SignUpFlow';
+import { formatDate } from '@/src/utils/helpers';
+import { workHistoryValidationSchema } from '../../FormValidation';
 
 type AddExperienceFormProps = { afterSave: () => void };
 
@@ -23,7 +24,13 @@ export const AddExperienceForm = ({ afterSave }: AddExperienceFormProps) => {
 
 	const onSubmit = async ({ positionTitle, companyName, startDate, endDate, details }: FormikValues) => {
 		setSaving(true);
-		const data = [{ op: 'add', path: '/candidateProfile/workHistory/-', value: { positionTitle, companyName, details } }];
+		const data = [
+			{
+				op: 'add',
+				path: '/candidateProfile/workHistory/-',
+				value: { positionTitle, companyName, details, startDate: formatDate(startDate), endDate: formatDate(endDate) },
+			},
+		];
 		await mutateAsync(data);
 		afterSave();
 	};

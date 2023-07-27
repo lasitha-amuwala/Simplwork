@@ -85,7 +85,7 @@ const Navbar = () => {
 					</button>
 					{open && (
 						<div className='absolute top-[var(--header-height)] left-0 right-0 w-full h-auto bg-white'>
-							<ul>
+							<ul className=''>
 								{navlinks.map((link) => (
 									<li key={link.name} className='pl-6 p-2 border-b text-base font-medium'>
 										<Link className='text-gray-500 hover:text-gray-800' href={link.href} onClick={() => setOpen(false)}>
