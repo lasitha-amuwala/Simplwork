@@ -29,7 +29,7 @@ export const SignInCard = () => {
 		<div className='flex flex-col items-center justify-center h-screen'>
 			<div className='flex items-center flex-col w-auto bg-white p-10 justify-center rounded-xl border border-gray-200'>
 				<AuthCard title='Welcome Back' subtitle='Please login to continue'>
-					<GoogleLogin useOneTap width='250' shape='pill' text='signin_with' onSuccess={onSignIn} onError={() => console.log('Login Failed')} />
+					<GoogleLogin useOneTap width={250} shape='pill' text='signin_with' onSuccess={onSignIn} onError={() => console.log('Login Failed')} />
 					<div className='flex w-full justify-center items-center pt-3'>
 						<div className='w-1/2 bg-gray-300 h-[1px]' />
 						<p className='px-2 text-gray-500 text-sm'>OR</p>
