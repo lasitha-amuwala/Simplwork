@@ -17,11 +17,9 @@ const Home = () => {
 	const [searchInput, setSearchInput] = useState<string>('');
 	const [searchQuery, setSearchQuery] = useState<string>('');
 
-	const {
-		data: posts,
-		isLoading,
-		isError,
-	} = useQuery(queries.candidate.searchCandidatePostings(user?.credential ?? '', { queryString: searchQuery, pageSize: '20', pageNo: '0' }));
+	const { data, isLoading, isError, isSuccess } = useQuery(
+		queries.candidate.searchCandidatePostings(user?.credential ?? '', { queryString: searchQuery, pageSize: '20', pageNo: '0' })
+	);
 
 	useEffect(() => {
 		if (router.query.search) {
@@ -55,15 +53,24 @@ const Home = () => {
 				<div className='w-full text-center font-semibold text-5xl flex justify-center items-center pt-20'>Opps... Something went wrong</div>
 			) : (
 				<div className='flex gap-4'>
-					<div className='hidden'>
+					<div className='hidden lg:block w-0 lg:w-[15%]'>
 						<Filter />
 					</div>
-					<div className='w-full md:w-[35%] pt-1'>
-						<PostList posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
-					</div>
-					<div className='hidden md:block md:w-[65%]'>
-						<Post posts={posts} selectedPost={selectedPost} isLoading={isLoading} />
-					</div>
+					{isSuccess &&
+						(data.length > 0 ? (
+							<>
+								<div className='w-full md:w-[35%] pt-1'>
+									<PostList posts={data} selectedPost={selectedPost} isLoading={isLoading} />
+								</div>
+								<div className='hidden md:block md:w-[65%] lg:w-[50%]'>
+									<Post posts={data} selectedPost={selectedPost} isLoading={isLoading} />
+								</div>
+							</>
+						) : (
+							<div className='mt-1 bg-gray-200 w-full py-10 px-5 flex flex-col justify-center items-center rounded'>
+								<p className='py-10 font-semibold'>No Posts available, Please try again.</p>
+							</div>
+						))}
 				</div>
 			)}
 			{/* <pre className='text-xs'>{user.credential}</pre> */}

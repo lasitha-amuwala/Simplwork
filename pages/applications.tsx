@@ -1,7 +1,7 @@
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
 import { PostListItem } from '@/src/components/Posts/PostsListItem';
-import { PostItemSkeleton } from '@/src/components/Skeletons/PostItemSkeleton';
+import { PostItemSkeleton } from '@/src/components/Posts/Skeletons/PostItemSkeleton';
 import { queries } from '@/src/utils/simplwork';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
@@ -50,7 +50,7 @@ const Applications: NextPage = (props: Props) => {
 
 	return (
 		<ProtectedPage>
-			<div className='w-full h-full py-20'>
+			<div className='w-full h-full py-10'>
 				<div className='flex flex-col gap-10'>
 					<MatchStatusList data={appliedQuery} label='Applied' />
 					<MatchStatusList data={interviewQuery} label='Interviews' />
@@ -67,7 +67,7 @@ const MatchStatusList = ({ data: query, label }: { data: UseQueryResult<Candidat
 	return (
 		<div>
 			<h1 className='text-3xl pl-1 font-bold'>{query.data?.length ? `${label} (${query.data.length})` : `${label} (0)`}</h1>
-			<div className='flex gap-3 pt-3 overflow-x-auto p-1'>
+			<div className='flex gap-3 pt-5 overflow-x-auto p-1'>
 				{query.isLoading &&
 					[...Array(2).fill(0)].map((key, i) => (
 						<div key={`${key}-${i}`} className='min-w-[350px] w-full'>
