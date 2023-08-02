@@ -1,15 +1,13 @@
-import { Field } from 'formik';
-import { CustomErrorMessage } from './CustomErrorMessage';
+import { Field, FieldAttributes, FormikValues } from 'formik';
+import { CustomErrorMessage } from '../../CustomErrorMessage';
 
-type FieldControlProps = {
-	name: string;
+export type FieldControlProps = {
 	label: string;
-	type: string;
 	errorBelow?: boolean;
 	[key: string]: any;
-};
+} & FieldAttributes<FormikValues>;
 
-export const FieldControl = ({ name, label, type, errorBelow, children, ...props }: React.PropsWithChildren<FieldControlProps>) => {
+export const FieldControl = ({ name, type, label, errorBelow, children, ...props }: React.PropsWithChildren<FieldControlProps>) => {
 	return (
 		<div className='w-full h-full'>
 			<div className='w-full flex items-baseline justify-between'>
@@ -18,7 +16,7 @@ export const FieldControl = ({ name, label, type, errorBelow, children, ...props
 				</label>
 				{!errorBelow && <CustomErrorMessage name={name} />}
 			</div>
-			<Field type={type} name={name} required className='inputStyle' {...props}>
+			<Field name={name} type={type} className='inputStyle' {...props}>
 				{children}
 			</Field>
 			{errorBelow && <CustomErrorMessage name={name} />}

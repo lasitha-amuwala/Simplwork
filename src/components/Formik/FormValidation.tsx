@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import { date, number, object, string } from 'yup';
-import { formatDate } from '../utils/helpers';
+import { boolean, date, number, object, string } from 'yup';
+import { formatDate } from '../../utils/helpers';
 
 export const profileValidationSchema = object().shape({
 	fullName: string().min(2, 'Too Short!').max(50, 'Too Long!').required('Full name is required'),
@@ -15,13 +15,14 @@ export const validationSchemaStepTwo = object().shape({
 	maximumHours: number().min(0, 'Please enter a valid hour').max(168, 'Please enter a valid hour').required('You must enter this field.'),
 });
 
-const transformFormatDate = (originalValue: string) =>
+const transformFormatDate = (value: string, originalValue: string) =>
 	dayjs(originalValue, 'DD-MM-YYYY').isValid() ? originalValue : formatDate(originalValue);
 
 export const workHistoryValidationSchema = object().shape({
 	positionTitle: string().required('Position title is required.'),
 	companyName: string().required('Compnay name is required.'),
 	details: string().required('Position details is required.'),
-	startDate: date(),
-	endDate: string().transform((value, originalValue) => transformFormatDate(originalValue)),
+	startDate: string().required('Start date is required.'),
+	endDate: string().required('End date is required.').nullable(),
+	currWorking: boolean(),
 });

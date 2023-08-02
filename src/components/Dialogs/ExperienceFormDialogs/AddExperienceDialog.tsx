@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { DialogTemplate } from './DialogTemplate';
-import { AddExperienceForm } from './Forms/AddExperienceForm';
+import { DialogContentLayout } from '../DialogContentLayout';
+import { AddExperienceForm } from './AddExperienceForm';
 import { HiOutlinePlus } from 'react-icons/hi';
 
 export const AddExperienceDialog = () => {
@@ -14,13 +14,13 @@ export const AddExperienceDialog = () => {
 	);
 
 	return (
-		<DialogTemplate
+		<DialogContentLayout
 			open={open}
 			setOpen={setOpen}
 			triggerLabel={<TriggerButton />}
 			title='Add Work Experience'
 			description={`Add work history here. Click add when you're done.`}>
 			<AddExperienceForm afterSave={() => setOpen(false)} />
-		</DialogTemplate>
+		</DialogContentLayout>
 	);
 };

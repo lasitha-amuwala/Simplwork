@@ -1,4 +1,4 @@
-import { DialogClose } from '../Dialogs/Dialog';
+import { DialogClose } from './Dialog';
 
 export const DialogCancelButton = () => (
 	<DialogClose aria-label='Close' asChild>
