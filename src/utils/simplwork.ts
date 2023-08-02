@@ -7,6 +7,7 @@ export const SimplworkApi = axios.create({
 	headers: { 'Content-Type': 'application/json' },
 });
 
+type Params = { [x: string]: string };
 export const queries = {
 	candidate: {
 		getCandidate: (credential: string) => ({
@@ -14,14 +15,14 @@ export const queries = {
 			queryFn: (): Promise<any> => get('candidate'),
 			enabled: !!credential,
 		}),
-		getCandidatePostings: (credential: string) => ({
-			queryKey: ['candidate/postings/personal'],
-			queryFn: (): Promise<any> => get('candidate/postings/personal'),
+		getCandidatePostings: (credential: string, params: Params) => ({
+			queryKey: ['candidate/postings/personal', params],
+			queryFn: (): Promise<any> => get(createURL('candidate/postings/personal', params)),
 			enabled: !!credential,
 		}),
-		searchCandidatePostings: (credential: string, params: { [x: string]: string }) => ({
+		searchCandidatePostings: (credential: string, params: Params) => ({
 			queryKey: ['candidate/postings/search', params],
-			queryFn: () => get(createURL('candidate/postings/search', credential, params)),
+			queryFn: () => get(createURL('candidate/postings/search', params)),
 			enabled: !!credential,
 		}),
 	},
