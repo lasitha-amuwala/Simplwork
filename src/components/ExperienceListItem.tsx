@@ -1,8 +1,11 @@
-import { DeleteExperienceDialog } from './Dialogs/DeleteExperienceDialog';
-import { EditExperienceDialog } from './Dialogs/EditExperienceDialog';
+import dayjs from 'dayjs';
+import { DeleteExperienceDialog } from './Dialogs/ExperienceFormDialogs/DeleteExperienceDialog';
+import { EditExperienceDialog } from './Dialogs/ExperienceFormDialogs/EditExperienceDialog';
 import { WorkHistory } from './ExperienceList';
 
 type ExperienceListItem = { data: WorkHistory; index: number };
+
+const dateFormatString = (date: string) => dayjs(date, 'DD-MM-YYYY').format('MMM, YYYY');
 
 export const ExperienceListItem = ({ data, index }: ExperienceListItem) => (
 	<div className='flex flex-col border py-2 bg-slate-50 p-5 rounded'>
@@ -15,7 +18,12 @@ export const ExperienceListItem = ({ data, index }: ExperienceListItem) => (
 				<EditExperienceDialog index={index} data={data} />
 				<DeleteExperienceDialog index={index} data={data} />
 			</div>
-			<p></p>
+			<div className='flex gap-1'>
+				{data.startDate && <p>{dateFormatString(data.startDate)}</p>}
+				<p>-</p>
+				{data.endDate && <p>{dateFormatString(data.endDate)}</p>}
+			</div>
+			<div></div>
 		</div>
 		<p>{data.details}</p>
 	</div>

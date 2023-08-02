@@ -1,7 +1,7 @@
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
-import { AddExperienceDialog } from '@/src/components/Dialogs/AddExperienceDialog';
-import { EditProfileDialog } from '@/src/components/Dialogs/EditProfileDialog';
+import { AddExperienceDialog } from '@/src/components/Dialogs/ExperienceFormDialogs/AddExperienceDialog';
+import { EditProfileDialog } from '@/src/components/Dialogs/ProfileFormDialog/EditProfileDialog';
 import { ExperienceList } from '@/src/components/ExperienceList';
 import { queries } from '@/src/utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
@@ -46,7 +46,7 @@ const Profile: NextPage = (props: ProfileProps) => {
 						</div>
 					</div>
 				</div>
-				{/* <div className='p-5 flex gap-5'>
+				<div className='p-5 flex gap-5'>
 					<div className='w-7/12 h-auto'>
 						<div className='flex justify-between pb-5'>
 							<h1 className='text-2xl font-semibold self-end'>Work Experience</h1>
@@ -75,7 +75,7 @@ const Profile: NextPage = (props: ProfileProps) => {
 							</div>
 						</div>
 					</div>
-				</div> */}
+				</div>
 			</div>
 		</ProtectedPage>
 	);

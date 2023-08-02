@@ -1,15 +1,15 @@
 import { HiOutlinePlus } from 'react-icons/hi';
 import { useAuth } from './Auth/AuthProvider';
-import { ExperienceForm } from './Dialogs/Forms/ExperienceForm';
+import { ExperienceForm } from './Formik/Forms/ExperienceForm';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { patchCandidate, queries } from '../utils/simplwork';
 import { ExperienceList } from './ExperienceList';
-import { AddExperienceDialog } from './Dialogs/AddExperienceDialog';
+import { AddExperienceDialog } from './Dialogs/ExperienceFormDialogs/AddExperienceDialog';
 import { Form, Formik, FormikValues } from 'formik';
 import { SaveChangesButton } from './Buttons/SaveChangesButton';
 import { useState } from 'react';
-import { workHistoryValidationSchema } from './SignUp/SignUpFlow';
 import { useRouter } from 'next/router';
+import { workHistoryValidationSchema } from './Formik/FormValidation';
 
 type Props = {};
 

@@ -18,9 +18,9 @@ import {
 } from '@/src/types/api/candidate';
 import { SignUpExperienceForm } from '../SignUpExperienceForm';
 import { StepHeader } from './StepHeader';
-import { ProfileForm } from '../Dialogs/Forms/ProfileForm';
+import { ProfileForm } from '../Formik/Forms/ProfileForm';
 import { createCandidateRequestBody } from '@/src/utils/authHelpers';
-import { profileValidationSchema, validationSchemaStepTwo, workHistoryValidationSchema } from '../FormValidation';
+import { profileValidationSchema, validationSchemaStepTwo, workHistoryValidationSchema } from '../Formik/FormValidation';
 
 export type ValueUserTypes = {
 	fullName: string;
@@ -192,7 +192,8 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 									className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
 									Back
 								</button>
-							)}
+							)}4
+							
 							<button
 								onClick={() => router.push('/')}
 								className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { PostSkeleton } from '../Skeletons/PostSkeleton';
+import { PostSkeleton } from './Skeletons/PostSkeleton';
 import { useMutation } from '@tanstack/react-query';
 import { SimplworkApi } from '@/src/utils/simplwork';
 import { PostedDate } from './PostedDate';
