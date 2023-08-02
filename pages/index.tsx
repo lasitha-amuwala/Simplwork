@@ -66,6 +66,7 @@ const Home = () => {
 					</div>
 				</div>
 			)}
+			{/* <pre className='text-xs'>{user.credential}</pre> */}
 		</div>
 	);
 };
