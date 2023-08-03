@@ -1,7 +1,7 @@
 import { FormikValues } from 'formik';
-import { CandaidateProfile, CandidateLocation } from '../types/api/candidate';
+import { CandaidateProfile, CandiatePostRequest, CandidateLocation } from '../types/api/candidate';
 
-export const createCandidateRequestBody = (values: FormikValues, location: CandidateLocation, email: string) => {
+export const createCandidateRequestBody = (values: FormikValues, location: CandidateLocation, email: string): CandiatePostRequest => {
 	const candidateProfile: CandaidateProfile = {
 		workHistory: [],
 		minimumPay: 0,

@@ -15,7 +15,13 @@ export type CandidateLocation = {
 };
 
 export type CandaidateAvailibility = {
-	times: [];
+	SUNDAY: Array<ShiftTimes>;
+	MONDAY: Array<ShiftTimes>;
+	TUESDAY: Array<ShiftTimes>;
+	WEDNESDAY: Array<ShiftTimes>;
+	THURSDAY: Array<ShiftTimes>;
+	FRIDAY: Array<ShiftTimes>;
+	SATURDAY: Array<ShiftTimes>;
 };
 
 export type CandaidateProfile = {
@@ -23,7 +29,7 @@ export type CandaidateProfile = {
 	minimumPay: number;
 	maximumHours?: number;
 	location: CandidateLocation;
-	availability?: any;
+	availability?: CandaidateAvailibility;
 	maxLiftWeight?: number;
 	maxTravelTimes?: CandidateMaxTravelTimes;
 	autoMatch: boolean;
@@ -63,3 +69,31 @@ export type UserData = {
 export type User = GoogleProfileData & {
 	candidate: Candiate;
 };
+
+export interface ShiftTimes {
+	startTime: number;
+	endTime: number;
+}
+export interface Shift {
+	dayOfWeek: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+	shiftTimes: ShiftTimes;
+	id: string;
+}
+
+export type Posting = {
+	pay: number;
+	positionTitle: string;
+	jobDescription: string;
+	benefits: string;
+	createdAt: string;
+	employer: any;
+	shifts: Shift[];
+	isFixedSchedule: boolean;
+	estimatedHours?: number;
+	id: number;
+};
+
+export interface CandidateMatchResponse {
+	posting: Posting;
+	candidateStatus: string;
+}
