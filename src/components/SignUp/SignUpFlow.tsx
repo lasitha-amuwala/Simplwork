@@ -2,20 +2,13 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { getGoogleProfile, useAuth } from '../Auth/AuthProvider';
-import { string, object, number, date } from 'yup';
 import { ArrayHelpers, ErrorMessage, Field, FieldArray, Form, Formik, FormikValues } from 'formik';
 
 import { AutoComplete } from '../AutoComplete';
 import { SimplworkApi } from '@/src/utils/simplwork';
 import { StepProgressHeader } from './StepProgressHeader';
 import { CommuteCheckBoxButton, commuteTypes } from './CommuteCheckBox';
-import {
-	CandaidateProfile,
-	CandiatePostRequest,
-	CandidateLocation,
-	CandidateMaxTravelTimes,
-	CandidateWorkHistory,
-} from '@/src/types/api/candidate';
+import { CandiatePostRequest, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory } from '@/src/types/api/candidate';
 import { SignUpExperienceForm } from '../SignUpExperienceForm';
 import { StepHeader } from './StepHeader';
 import { ProfileForm } from '../Formik/Forms/ProfileForm';
@@ -47,8 +40,6 @@ const initialValues: ValueUserTypes & ValueAvailabilityTypes = {
 	workHistory: [],
 };
 
-
-
 const validationSchema = [profileValidationSchema, validationSchemaStepTwo, workHistoryValidationSchema];
 
 type SignUpFlowProps = { credential: string; resetSignUp: () => void };
@@ -75,7 +66,7 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 				longitude: -79.55569588996742,
 				postalCode: 'M9R0B3',
 			};
-			const requestBody: CandiatePostRequest = createCandidateRequestBody(values, tempLocation, email);
+			const requestBody = createCandidateRequestBody(values, tempLocation, email);
 			console.log(JSON.stringify(requestBody, null, 2));
 			await SimplworkApi.post('candidate', JSON.stringify(requestBody))
 				.then((res: any) => {
@@ -192,8 +183,8 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 									className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
 									Back
 								</button>
-							)}4
-							
+							)}
+							4
 							<button
 								onClick={() => router.push('/')}
 								className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>

@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { PostSkeleton } from './Skeletons/PostSkeleton';
 import { useMutation } from '@tanstack/react-query';
 import { SimplworkApi } from '@/src/utils/simplwork';
@@ -6,6 +6,7 @@ import { PostedDate } from './PostedDate';
 import { commuteTypes } from '../SignUp/CommuteCheckBox';
 import { PostTag } from './PostTag';
 import { MdLocationPin } from 'react-icons/md';
+import ScheduleSelector from 'react-schedule-selector';
 
 type PostProps = {
 	posts: any;
@@ -84,6 +85,11 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 	};
 
 	const PostBody = () => {
+		const [schedule, setSchedule] = useState([]);
+
+		const handleChange = (newSchedule: any) => {
+			setSchedule(newSchedule);
+		};
 		return (
 			<div className='p-5'>
 				<div>
@@ -97,7 +103,9 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 					<h1 className='font-semibold text-lg'>Benefits</h1>
 					<p className='text-gray-500'>{post.posting.benefits}</p>
 				</div>
-				<div className='h-20 w-full p-5 bg-slate-100 rounded flex justify-center items-center'>Availability Widget</div>
+				<div className='h-20 w-full p-5 bg-slate-100 rounded flex justify-center items-center'>
+					<ScheduleSelector selection={schedule} numDays={5} minTime={8} maxTime={22} hourlyChunks={2} onChange={handleChange} />
+				</div>
 				<PostedDate date={post.posting.createdAt} />
 			</div>
 		);

@@ -25,7 +25,6 @@ export const DeleteExperienceDialog = ({ index, data }: { index: number; data: W
 
 const DeleteFormButtons = ({ index, afterDelete }: { index: number; afterDelete: () => void }) => {
 	const queryClient = useQueryClient();
-	const [open, setOpen] = useState(false);
 	const [deleting, setDeleting] = useState(false);
 
 	const { mutateAsync } = useMutation({

@@ -1,9 +1,8 @@
-import { Form, Formik, FormikValues } from 'formik';
+import { FormikValues } from 'formik';
 import { PropsWithChildren } from 'react';
 import { DialogCancelButton } from './DialogCancelButton';
 import { SaveChangesButton } from '../Buttons/SaveChangesButton';
 import { FormikBaseLayout } from '../Formik/FormikBaseLayout';
-import { WorkHistoryValuesType } from './ExperienceFormDialogs/EditExperienceForm';
 
 type Props = {
 	initialValues: {};

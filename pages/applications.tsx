@@ -2,38 +2,12 @@ import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
 import { PostListItem } from '@/src/components/Posts/PostsListItem';
 import { PostItemSkeleton } from '@/src/components/Posts/Skeletons/PostItemSkeleton';
+import { CandidateMatchResponse } from '@/src/types/api/candidate';
 import { queries } from '@/src/utils/simplwork';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
 
 type Props = {};
-
-interface ShiftTimes {
-	startTime: number;
-	endTime: number;
-}
-interface Shift {
-	dayOfWeek: 1 | 2 | 3 | 4 | 5 | 6 | 7;
-	shiftTimes: ShiftTimes;
-	id: string;
-}
-type Posting = {
-	pay: number;
-	positionTitle: string;
-	jobDescription: string;
-	benefits: string;
-	createdAt: string;
-	employer: any;
-	shifts: Shift[];
-	isFixedSchedule: boolean;
-	estimatedHours?: number;
-	id: number;
-};
-
-interface CandidateMatchResponse {
-	posting: Posting;
-	candidateStatus: string;
-}
 
 const Applications: NextPage = (props: Props) => {
 	const { user } = useAuth();
