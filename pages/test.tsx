@@ -42,28 +42,28 @@ const test = (props: Props) => {
 
 		for (const day in availabilityObject as CandaidateAvailibility) {
 			const dayArr: Array<ShiftTimes> = availabilityObject[day as DayOfWeekString];
-			let currentDate: ShiftTimes = { startTime: 0, endTime: 0 };
-			let tempNewArr: Array<ShiftTimes> = [];
+			if (dayArr.length < 1) continue;
 
-			for (let i = 0; i < dayArr.length; i++) {
-				const next = i < dayArr.length ? dayArr[i + 1] : null;
-				const { startTime, endTime } = dayArr[i];
+			let arrCopy = [...dayArr];
+			let tempArr: Array<ShiftTimes> = [];
 
-				if (i === 0) currentDate = { startTime, endTime };
+			for (let i = 0; i < arrCopy.length; i++) {
+				const next = i < arrCopy.length ? arrCopy[i + 1] : null;
+				// const prev = i > 0 ? arrCopy[i - 1] : null;
 
-				if (next) {
-					const { startTime: nextStartTime, endTime: nextEndTime } = next;
-					if (nextEndTime === startTime) {
-						currentDate.endTime = nextEndTime;
-					} else {
-						currentDate.endTime = endTime;
-					}
+
+				const { startTime: currStartTime, endTime: currEndTime } = arrCopy[i];
+
+				if (next && currEndTime === next.startTime) {
+					arrCopy[i + 1].startTime = currStartTime;
+					continue;
 				} else {
-					currentDate.endTime = endTime;
+					tempArr.push({ startTime: currStartTime, endTime: currEndTime });
 				}
-				tempNewArr.push(currentDate);
 			}
-			availabilityObject[day as DayOfWeekString] = tempNewArr;
+			console.log(dayArr);
+			console.log(arrCopy);
+			availabilityObject[day as DayOfWeekString] = tempArr;
 		}
 
 		// for (let i = 0; i < convertedArr.length; i++) {
