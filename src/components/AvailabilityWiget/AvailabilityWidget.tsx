@@ -10,7 +10,7 @@ export type AvailabilityWidgetProps = {
 	readonly?: boolean;
 };
 
-export const AvailabilityWidget = memo(({ availability, hourlyChunks = 1, readonly }: AvailabilityWidgetProps) => {
+export const AvailabilityWidget = ({ availability, hourlyChunks = 1, readonly }: AvailabilityWidgetProps) => {
 	const startDate = dayjs('2000-01-02').toDate();
 	const [schedule, setSchedule] = useState<Date[]>(availability ? computeAvailabilityToSchedule(availability, startDate, hourlyChunks) : []);
 
@@ -30,4 +30,4 @@ export const AvailabilityWidget = memo(({ availability, hourlyChunks = 1, readon
 			/>
 		</div>
 	);
-});
+};
