@@ -9,6 +9,7 @@ import { MdLocationPin } from 'react-icons/md';
 import ScheduleSelector from 'react-schedule-selector';
 import { CandaidateAvailibility, PostingResponse, ShiftTimes } from '@/src/types/api/candidate';
 import { AvailabilityWidget, constructAvailabilityObject } from '../AvailabilityWiget';
+import { ViewAvailability } from '../AvailabilityWiget/AvailabilityViewDialog';
 
 type PostProps = {
 	posts: PostingResponse[];
@@ -43,7 +44,7 @@ export const Post = ({ posts, selectedPost }: PostProps) => {
 
 	const CompanyCard = () => {
 		return (
-			<div className='bg-[#64B1EC]/10 border-b p-4 flex flex-col gap-4 '>
+			<div className='bg-[#64B1EC]/10 border-b p-4 flex flex-col gap-4 overflow-auto'>
 				<div className='h-auto flex gap-4'>
 					<div className='h-20 w-20 bg-blue-300 rounded-md shrink-0'></div>
 					<div className='grow'>
@@ -96,7 +97,7 @@ export const Post = ({ posts, selectedPost }: PostProps) => {
 	const PostBody = ({ post }: PostBodyProps) => {
 		// const [schedule, setSchedule] = useState([]);
 
-		const schedule = constructAvailabilityObject(post.posting.shifts);
+		const availability = constructAvailabilityObject(post.posting.shifts);
 
 		return (
 			<div className='p-5'>
@@ -114,7 +115,7 @@ export const Post = ({ posts, selectedPost }: PostProps) => {
 				<div className='my-5 flex flex-col gap-2'>
 					<h1 className='font-semibold text-lg'>Availability</h1>
 					<div className='h-[500px] overflow-auto pr-1'>
-						<AvailabilityWidget availability={schedule} readonly />
+						<AvailabilityWidget availability={availability} />
 					</div>
 				</div>
 				<PostedDate date={post.posting.createdAt} />
@@ -123,7 +124,7 @@ export const Post = ({ posts, selectedPost }: PostProps) => {
 	};
 
 	return (
-		<div className='bg-white rounded-md border border-gray-200 mt-1 sticky top-[80px]'>
+		<div className='bg-white rounded-md border border-gray-200 mt-1 sticky top-[80px] max-h-[90vh] overflow-auto'>
 			<CompanyCard />
 			<PostBody post={post} />
 		</div>
