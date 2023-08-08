@@ -15,6 +15,5 @@ export const getInitials = (fullName: string) => {
 };
 
 export const formatDate = (date: string): string => {
-	console.log(date);
 	return dayjs(date, 'DD-MM-YYYY', true).isValid() ? date : dayjs(date).format('DD-MM-YYYY');
 };

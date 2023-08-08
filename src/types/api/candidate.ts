@@ -79,8 +79,16 @@ export interface Shift {
 	shiftTimes: ShiftTimes;
 	id: string;
 }
+interface shiftCompatibilities {
+	shift: Shift;
+	minAfterShift: number;
+	minTillEnd: number;
+}
 
-export type Posting = {
+export type DayOfWeekString = 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY';
+type EmployerStatus = 'NEW' | 'REVIEWED' | 'INTERVIEW_REQUESTED' | 'READY_FOR_INTERVIEW' | 'REJECTED';
+type CandidateStatus = 'APPLIED' | 'ACCEPT_INTERVIEW' | 'WITHDRAWN';
+export interface Posting {
 	pay: number;
 	positionTitle: string;
 	jobDescription: string;
@@ -91,9 +99,21 @@ export type Posting = {
 	isFixedSchedule: boolean;
 	estimatedHours?: number;
 	id: number;
-};
-
-export interface CandidateMatchResponse {
-	posting: Posting;
-	candidateStatus: string;
 }
+export interface MatchPosting {
+	employerStatus: EmployerStatus;
+	candidateStatus: CandidateStatus;
+	walkCommuteTime: number;
+	bikeCommuteTime: number;
+	carCommuteTime: number;
+	distance: number;
+	matchingHours: number;
+	shiftScore: number;
+	potentialEarning: number;
+	candScore: number;
+	shiftCompatibilities: shiftCompatibilities[];
+}
+
+export type PostingResponse = {
+	posting: Posting;
+} & MatchPosting;
