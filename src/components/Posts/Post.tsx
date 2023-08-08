@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useState, useEffect } from 'react';
 import { PostSkeleton } from './Skeletons/PostSkeleton';
 import { useMutation } from '@tanstack/react-query';
 import { SimplworkApi } from '@/src/utils/simplwork';
@@ -7,11 +7,12 @@ import { commuteTypes } from '../SignUp/CommuteCheckBox';
 import { PostTag } from './PostTag';
 import { MdLocationPin } from 'react-icons/md';
 import ScheduleSelector from 'react-schedule-selector';
+import { CandaidateAvailibility, PostingResponse, ShiftTimes } from '@/src/types/api/candidate';
+import { AvailabilityWidget, constructAvailabilityObject } from '../AvailabilityWiget';
 
 type PostProps = {
-	posts: any;
+	posts: PostingResponse[];
 	selectedPost: number;
-	isLoading: boolean;
 };
 const applyToPost = async (data: any) => {
 	console.log(JSON.stringify(data));
@@ -28,10 +29,8 @@ const displayDistance = (distance: number) => {
 	return `${Number.parseFloat(distance.toFixed(1))}km`;
 };
 
-export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
+export const Post = ({ posts, selectedPost }: PostProps) => {
 	const mutation = useMutation({ mutationFn: applyToPost });
-
-	if (isLoading) return <PostSkeleton />;
 
 	const post = posts[selectedPost];
 	const isMatch = !!post.candidateStatus;
@@ -66,30 +65,39 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 				</div>
 				{isMatch && (
 					<div className='flex gap-3 text-gray-600'>
-						<PostTag icon={<MdLocationPin />}>
-							<p>{`${displayDistance(post.distance)}`}</p>
-						</PostTag>
-						<PostTag icon={commuteTypes.CAR.icon}>
-							<p>{`${post.carCommuteTime} min`}</p>
-						</PostTag>
-						<PostTag icon={commuteTypes.BIKE.icon}>
-							<p>{`${post.bikeCommuteTime} min`}</p>
-						</PostTag>
-						<PostTag icon={commuteTypes.WALK.icon}>
-							<p>{`${post.walkCommuteTime} min`}</p>
-						</PostTag>
+						{post.distance && (
+							<PostTag icon={<MdLocationPin />}>
+								<p>{`${displayDistance(post.distance)}`}</p>
+							</PostTag>
+						)}
+						{post.carCommuteTime && (
+							<PostTag icon={commuteTypes.CAR.icon}>
+								<p>{`${post.carCommuteTime} min`}</p>
+							</PostTag>
+						)}
+						{post.bikeCommuteTime && (
+							<PostTag icon={commuteTypes.BIKE.icon}>
+								<p>{`${post.bikeCommuteTime} min`}</p>
+							</PostTag>
+						)}
+						{post.walkCommuteTime && (
+							<PostTag icon={commuteTypes.WALK.icon}>
+								<p>{`${post.walkCommuteTime} min`}</p>
+							</PostTag>
+						)}
 					</div>
 				)}
 			</div>
 		);
 	};
 
-	const PostBody = () => {
-		const [schedule, setSchedule] = useState([]);
+	type PostBodyProps = { post: PostingResponse };
 
-		const handleChange = (newSchedule: any) => {
-			setSchedule(newSchedule);
-		};
+	const PostBody = ({ post }: PostBodyProps) => {
+		// const [schedule, setSchedule] = useState([]);
+
+		const schedule = constructAvailabilityObject(post.posting.shifts);
+
 		return (
 			<div className='p-5'>
 				<div>
@@ -103,8 +111,11 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 					<h1 className='font-semibold text-lg'>Benefits</h1>
 					<p className='text-gray-500'>{post.posting.benefits}</p>
 				</div>
-				<div className='h-20 w-full p-5 bg-slate-100 rounded flex justify-center items-center'>
-					<ScheduleSelector selection={schedule} numDays={5} minTime={8} maxTime={22} hourlyChunks={2} onChange={handleChange} />
+				<div className='my-5 flex flex-col gap-2'>
+					<h1 className='font-semibold text-lg'>Availability</h1>
+					<div className='h-[500px] overflow-auto pr-1'>
+						<AvailabilityWidget availability={schedule} readonly />
+					</div>
 				</div>
 				<PostedDate date={post.posting.createdAt} />
 			</div>
@@ -112,9 +123,9 @@ export const Post = ({ posts, selectedPost, isLoading }: PostProps) => {
 	};
 
 	return (
-		<div className='h-auto bg-white rounded-md border border-gray-200 mt-1 sticky top-[80px] overflow-hidden'>
+		<div className='bg-white rounded-md border border-gray-200 mt-1 sticky top-[80px]'>
 			<CompanyCard />
-			<PostBody />
+			<PostBody post={post} />
 		</div>
 	);
 };

@@ -32,7 +32,6 @@ export const AddExperienceForm = ({ afterSave }: AddExperienceFormProps) => {
 	});
 
 	const onSubmit = async ({ positionTitle, companyName, startDate, endDate, details }: FormikValues) => {
-		console.log('poop');
 		setSaving(true);
 		const data = [
 			{

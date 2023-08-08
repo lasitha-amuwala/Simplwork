@@ -2,12 +2,17 @@ import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
 import { PostListItem } from '@/src/components/Posts/PostsListItem';
 import { PostItemSkeleton } from '@/src/components/Posts/Skeletons/PostItemSkeleton';
-import { CandidateMatchResponse } from '@/src/types/api/candidate';
+import { Posting } from '@/src/types/api/candidate';
 import { queries } from '@/src/utils/simplwork';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
 
 type Props = {};
+
+interface CandidateMatchResponse {
+	posting: Posting;
+	candidateStatus: string;
+}
 
 const Applications: NextPage = (props: Props) => {
 	const { user } = useAuth();

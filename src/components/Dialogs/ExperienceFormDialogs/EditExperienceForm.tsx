@@ -42,7 +42,6 @@ export const WorkExperienceForm = ({ afterSave, index, data }: WorkExperienceFor
 
 	const onSubmit = async ({ positionTitle, companyName, startDate, endDate, details }: FormikValues) => {
 		setSaving(true);
-		console.log({ positionTitle, companyName, startDate, endDate, details });
 		const data = [
 			{
 				op: 'replace',
