@@ -24,7 +24,7 @@ export const DialogContentLayout = ({
 			<DialogTrigger asChild>
 				<button className={triggerClassName ?? 'button'}>{triggerText}</button>
 			</DialogTrigger>
-			<DialogContent className='w-auto px-10'>
+			<DialogContent className='max-w-2xl px-5 md:px-10'>
 				<div className='flex flex-col justify-center items-center'>
 					<DialogTitle>{title}</DialogTitle>
 					<DialogDescription>{description}</DialogDescription>
