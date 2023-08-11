@@ -1,8 +1,13 @@
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
+import { AvailabilityEdit } from '@/src/components/AvailabilityWiget/AvailabilityEdit';
+import { AvailabilityExpand } from '@/src/components/AvailabilityWiget/AvailabilityExpand';
 import { AddExperienceDialog } from '@/src/components/Dialogs/ExperienceFormDialogs/AddExperienceDialog';
 import { EditProfileDialog } from '@/src/components/Dialogs/ProfileFormDialog/EditProfileDialog';
 import { ExperienceList } from '@/src/components/ExperienceList';
+import { CommutePostTags } from '@/src/components/Posts/CommutePostTags';
+import { commuteTypes } from '@/src/components/SignUp/CommuteCheckBox';
+import { Candidate } from '@/src/types/api/candidate';
 import { queries } from '@/src/utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
@@ -12,9 +17,10 @@ type ProfileProps = {};
 
 const Profile: NextPage = (props: ProfileProps) => {
 	const { user } = useAuth();
-	const { data: candidate, isLoading, isError } = useQuery(queries.candidate.getCandidate(user?.credential ?? ''));
+	const { data: candidate, isLoading, isError } = useQuery<Candidate>(queries.candidate.getCandidate(user?.credential ?? ''));
 
 	if (isLoading) return <div>Loading</div>;
+	if (isError) return <div>error</div>;
 	return (
 		<ProtectedPage>
 			<div className=' bg-white rounded-lg border mt-7 w-full overflow-hidden'>
@@ -52,27 +58,44 @@ const Profile: NextPage = (props: ProfileProps) => {
 							<h1 className='text-2xl font-semibold self-end'>Work Experience</h1>
 							<AddExperienceDialog />
 						</div>
-						<ExperienceList history={candidate.workHistory} />
+						<ExperienceList history={candidate?.workHistory ?? []} />
 					</div>
-					<div className='w-5/12'>
-						<h1 className='text-2xl font-semibold pb-1'>My Information</h1>
-						<div className=' bg-sw-50 p-5 rounded-md flex flex-col gap-3'>
-							<div className=''>
-								<h1 className='font-semibold'>Email:</h1>
-								<p>{candidate.email}</p>
+					<div className='w-5/12 flex flex-col gap-5'>
+						<div>
+							<h1 className='text-2xl font-semibold pb-3'>My Information</h1>
+							<div className=' bg-gray-100 p-5 rounded-md flex flex-col gap-3'>
+								<div className=''>
+									<h1 className='font-semibold'>Email:</h1>
+									<p>{candidate?.email}</p>
+								</div>
+								<div>
+									<h1 className='font-semibold'>Gender:</h1>
+									<p>{candidate.gender.charAt(0) + candidate.gender.slice(1).toLowerCase()}</p>
+								</div>
+								<div>
+									<h1 className='font-semibold'>Age:</h1>
+									<p>{candidate?.age}</p>
+								</div>
+								<div>
+									<h1 className='font-semibold'>Phone Number:</h1>
+									<p>{candidate?.phoneNumber}</p>
+								</div>
+								<div>
+									<h1 className='font-semibold pb-1'>Commute Preferences:</h1>
+									<CommutePostTags
+										CarCommuteTime={candidate.maxTravelTimes.CAR}
+										bikeCommuteTime={candidate.maxTravelTimes.BIKE}
+										walkCommuteTime={candidate.maxTravelTimes.WALK}
+										publicTransiteCommuteTime={candidate.maxTravelTimes.PUBLIC_TRANSIT}
+									/>
+								</div>
 							</div>
-							<div>
-								<h1 className='font-semibold'>Gender:</h1>
-								<p>{candidate.gender.charAt(0) + candidate.gender.slice(1).toLowerCase()}</p>
-							</div>
-							<div>
-								<h1 className='font-semibold'>Age:</h1>
-								<p>{candidate.age}</p>
-							</div>
-							<div>
-								<h1 className='font-semibold'>Phone Number:</h1>
-								<p>{candidate.phoneNumber}</p>
-							</div>
+						</div>
+						<div>
+							<h1 className='text-2xl font-semibold pb-3'>My Availability</h1>
+							<AvailabilityEdit
+								availability={candidate?.availability}
+							/>
 						</div>
 					</div>
 				</div>
