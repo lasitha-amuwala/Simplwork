@@ -1,12 +1,10 @@
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
 import { AvailabilityEdit } from '@/src/components/AvailabilityWiget/AvailabilityEdit';
-import { AvailabilityExpand } from '@/src/components/AvailabilityWiget/AvailabilityExpand';
 import { AddExperienceDialog } from '@/src/components/Dialogs/ExperienceFormDialogs/AddExperienceDialog';
 import { EditProfileDialog } from '@/src/components/Dialogs/ProfileFormDialog/EditProfileDialog';
 import { ExperienceList } from '@/src/components/ExperienceList';
 import { CommutePostTags } from '@/src/components/Posts/CommutePostTags';
-import { commuteTypes } from '@/src/components/SignUp/CommuteCheckBox';
 import { Candidate } from '@/src/types/api/candidate';
 import { queries } from '@/src/utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
@@ -93,9 +91,7 @@ const Profile: NextPage = (props: ProfileProps) => {
 						</div>
 						<div>
 							<h1 className='text-2xl font-semibold pb-3'>My Availability</h1>
-							<AvailabilityEdit
-								availability={candidate?.availability}
-							/>
+							<AvailabilityEdit availability={candidate?.availability} />
 						</div>
 					</div>
 				</div>

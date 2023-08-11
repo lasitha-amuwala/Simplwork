@@ -1,15 +1,7 @@
-import { useState, memo } from 'react';
-import { CandaidateAvailibility } from '../../types/api/candidate';
+import { memo } from 'react';
 import { computeAvailabilityToSchedule, computeScheduleToAvailability, getHourlyChunk } from './helpers';
 import ScheduleSelector from 'react-schedule-selector';
 import dayjs from 'dayjs';
-
-export type AvailabilityWidgetProps = {
-	hourlyChunks?: number;
-	readonly?: boolean;
-	availability?: CandaidateAvailibility;
-	onChange?: (arg: CandaidateAvailibility) => void;
-};
 
 const AvailabilityWidgetBase = ({ availability, hourlyChunks = 1, readonly, onChange }: AvailabilityWidgetProps) => {
 	const startDate = dayjs('2000-01-02').toDate();
@@ -34,3 +26,4 @@ const AvailabilityWidgetBase = ({ availability, hourlyChunks = 1, readonly, onCh
 };
 
 export const AvailabilityWidget = memo(AvailabilityWidgetBase);
+export const renderWidget = (props: AvailabilityWidgetProps): JSX.Element => <AvailabilityWidget {...props} />;

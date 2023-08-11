@@ -59,6 +59,7 @@ export type Candidate = {
 	postalCode: string;
 	availability: CandaidateAvailibility;
 	autoMatch: boolean;
+	picture: string;
 };
 
 export type UserData = {

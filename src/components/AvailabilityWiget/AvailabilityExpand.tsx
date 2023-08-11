@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CandaidateAvailibility } from '@/src/types/api/candidate';
 import { DialogContentLayout } from '../Dialogs/DialogContentLayout';
-import { AvailabilityWidget, AvailabilityWidgetProps } from './AvailabilityWidget';
+import { renderWidget } from './AvailabilityWidget';
 
 type Props = {
 	availability: CandaidateAvailibility;
@@ -9,7 +9,6 @@ type Props = {
 
 export const AvailabilityExpand = ({ availability }: Props) => {
 	const [open, setOpen] = useState(false);
-	const renderWidget = (props: AvailabilityWidgetProps): JSX.Element => <AvailabilityWidget {...props} />;
 
 	return (
 		<div className='flex flex-col gap-5'>

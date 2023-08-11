@@ -1,7 +1,7 @@
-import { useState, memo } from 'react';
+import { useState } from 'react';
 import { CandaidateAvailibility } from '@/src/types/api/candidate';
 import { DialogContentLayout } from '../Dialogs/DialogContentLayout';
-import { AvailabilityWidgetProps, AvailabilityWidget } from './AvailabilityWidget';
+import { renderWidget } from './AvailabilityWidget';
 import { SaveChangesButton } from '../Buttons/SaveChangesButton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchCandidate } from '@/src/utils/simplwork';
@@ -11,9 +11,7 @@ type Props = {
 	availability: CandaidateAvailibility;
 };
 
-const renderWidget = (props: AvailabilityWidgetProps): JSX.Element => <AvailabilityWidget {...props} />;
-
-export const AvailabilityEdit = memo(({ availability, ...rest }: Props) => {
+export const AvailabilityEdit = ({ availability }: Props) => {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -31,7 +29,7 @@ export const AvailabilityEdit = memo(({ availability, ...rest }: Props) => {
 			</div>
 		</div>
 	);
-});
+};
 
 const EditAvialabilityDialogBody = ({ afterSave, availability }: { afterSave: () => void; availability: CandaidateAvailibility }) => {
 	const queryClient = useQueryClient();

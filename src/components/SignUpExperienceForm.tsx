@@ -1,4 +1,3 @@
-import { HiOutlinePlus } from 'react-icons/hi';
 import { useAuth } from './Auth/AuthProvider';
 import { ExperienceForm } from './Formik/Forms/ExperienceForm';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -47,7 +46,7 @@ export const SignUpExperienceForm = (props: Props) => {
 		router.push('/');
 	}
 	if (isLoading) return <div>Loading...</div>;
-	if (candidate.workHistory.length == 0) {
+	if (candidate?.workHistory.length == 0) {
 		return (
 			<Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={workHistoryValidationSchema}>
 				{({ values, setFieldValue }) => (
@@ -65,7 +64,7 @@ export const SignUpExperienceForm = (props: Props) => {
 	}
 	return (
 		<div className='flex flex-col gap-5'>
-			<ExperienceList history={candidate.workHistory} />
+			<ExperienceList history={candidate?.workHistory?? []} />
 			<AddExperienceDialog />
 		</div>
 	);
