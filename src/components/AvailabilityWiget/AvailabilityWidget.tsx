@@ -6,21 +6,22 @@ import dayjs from 'dayjs';
 
 export type AvailabilityWidgetProps = {
 	hourlyChunks?: number;
-	availability?: CandaidateAvailibility;
 	readonly?: boolean;
+	availability?: CandaidateAvailibility;
+	onChange?: (arg: CandaidateAvailibility) => void;
 };
 
-export  const AvailabilityWidget = ({ availability, hourlyChunks = 1, readonly }: AvailabilityWidgetProps) => {
+const AvailabilityWidgetBase = ({ availability, hourlyChunks = 1, readonly, onChange }: AvailabilityWidgetProps) => {
 	const startDate = dayjs('2000-01-02').toDate();
-	const [schedule, setSchedule] = useState<Date[]>(availability ? computeAvailabilityToSchedule(availability, startDate, hourlyChunks) : []);
+	const schedule: Date[] = availability ? computeAvailabilityToSchedule(availability, startDate, hourlyChunks) : [];
 
-	const handleSubmit = () => computeScheduleToAvailability(schedule, hourlyChunks);
+	const handleOnChange = (schedule: Date[]) => onChange && onChange(computeScheduleToAvailability(schedule, hourlyChunks));
 
 	return (
-		<div className={`${readonly && 'pointer-events-none'} w-full h-auto`}>
+		<div className={`${readonly && 'pointer-events-none touch-none cursor-none'} w-full h-auto`}>
 			<ScheduleSelector
 				selection={schedule}
-				onChange={setSchedule}
+				onChange={handleOnChange}
 				minTime={0}
 				maxTime={24}
 				startDate={startDate}
@@ -31,3 +32,5 @@ export  const AvailabilityWidget = ({ availability, hourlyChunks = 1, readonly }
 		</div>
 	);
 };
+
+export const AvailabilityWidget = memo(AvailabilityWidgetBase);

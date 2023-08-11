@@ -1,15 +1,12 @@
-import { memo, useState, useEffect } from 'react';
-import { PostSkeleton } from './Skeletons/PostSkeleton';
+import { memo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { SimplworkApi } from '@/src/utils/simplwork';
-import { PostedDate } from './PostedDate';
 import { commuteTypes } from '../SignUp/CommuteCheckBox';
 import { PostTag } from './PostTag';
 import { MdLocationPin } from 'react-icons/md';
-import ScheduleSelector from 'react-schedule-selector';
-import { CandaidateAvailibility, PostingResponse, ShiftTimes } from '@/src/types/api/candidate';
-import { AvailabilityWidget, constructAvailabilityObject } from '../AvailabilityWiget';
-import { ViewAvailability } from '../AvailabilityWiget/AvailabilityViewDialog';
+import { PostingResponse } from '@/src/types/api/candidate';
+import { constructAvailabilityObject } from '../AvailabilityWiget';
+import { AvailabilityExpand } from '../AvailabilityWiget/AvailabilityExpand';
 
 type PostProps = {
 	posts: PostingResponse[];
@@ -95,30 +92,25 @@ export const Post = ({ posts, selectedPost }: PostProps) => {
 	type PostBodyProps = { post: PostingResponse };
 
 	const PostBody = ({ post }: PostBodyProps) => {
-		// const [schedule, setSchedule] = useState([]);
-
 		const availability = constructAvailabilityObject(post.posting.shifts);
 
 		return (
-			<div className='p-5'>
-				<div>
-					<div className='text-2xl font-semibold'>{`$${post.posting.pay}/hr`}</div>
-				</div>
-				<div className='my-5 flex flex-col gap-2'>
+			<div className='flex flex-col gap-5 p-5'>
+				<div className='text-2xl font-semibold'>{`$${post.posting.pay}/hr`}</div>
+				<div className='flex flex-col gap-1'>
 					<h1 className='font-semibold text-lg'>Job Description</h1>
 					<p className='text-gray-500'>{post.posting.jobDescription}</p>
 				</div>
-				<div className='my-5 flex flex-col gap-2'>
+				<div className='flex flex-col gap-1'>
 					<h1 className='font-semibold text-lg'>Benefits</h1>
 					<p className='text-gray-500'>{post.posting.benefits}</p>
 				</div>
-				<div className='my-5 flex flex-col gap-2'>
+				<div className='flex flex-col gap-1'>
 					<h1 className='font-semibold text-lg'>Availability</h1>
 					<div className='h-[500px] overflow-auto pr-1'>
-						<AvailabilityWidget availability={availability} />
+						<AvailabilityExpand availability={availability} />
 					</div>
 				</div>
-				<PostedDate date={post.posting.createdAt} />
 			</div>
 		);
 	};
