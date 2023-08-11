@@ -8,12 +8,13 @@ import { AutoComplete } from '../AutoComplete';
 import { SimplworkApi } from '@/src/utils/simplwork';
 import { StepProgressHeader } from './StepProgressHeader';
 import { CommuteCheckBoxButton, commuteTypes } from './CommuteCheckBox';
-import { CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory } from '@/src/types/api/candidate';
+import { CandaidateAvailibility, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory } from '@/src/types/api/candidate';
 import { SignUpExperienceForm } from '../SignUpExperienceForm';
 import { StepHeader } from './StepHeader';
 import { ProfileForm } from '../Formik/Forms/ProfileForm';
 import { createCandidateRequestBody } from '@/src/utils/authHelpers';
 import { profileValidationSchema, validationSchemaStepTwo, workHistoryValidationSchema } from '../Formik/FormValidation';
+import { AvailabilityWidget, constructAvailabilityObject } from '../AvailabilityWiget';
 
 export type ValueUserTypes = {
 	fullName: string;
@@ -40,7 +41,7 @@ const initialValues: ValueUserTypes & ValueAvailabilityTypes = {
 	workHistory: [],
 };
 
-const validationSchema = [profileValidationSchema, validationSchemaStepTwo, workHistoryValidationSchema];
+const validationSchema = [profileValidationSchema, null, validationSchemaStepTwo, workHistoryValidationSchema];
 
 type SignUpFlowProps = { credential: string; resetSignUp: () => void };
 
@@ -52,6 +53,7 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 
 	const [step, setStep] = useState<number>(0);
 	const [location, setLocation] = useState<CandidateLocation>({ latitude: 0, longitude: 0, postalCode: '' });
+	const [availability, setAvailability] = useState<CandaidateAvailibility>(constructAvailabilityObject());
 
 	const updateStep = (step: number) => setStep(step);
 	const updateLocation = (data: CandidateLocation) => setLocation(data);
@@ -59,14 +61,14 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 	const onSubmit = async (values: FormikValues) => {
 		console.log('val', step);
 		console.log('val', values);
-		if (step === 1) {
+		if (step === 2) {
 			const { email } = getGoogleProfile(credential);
-			const tempLocation: CandidateLocation = {
-				latitude: 43.676444420388805,
-				longitude: -79.55569588996742,
-				postalCode: 'M9R0B3',
-			};
-			const requestBody = createCandidateRequestBody(values, tempLocation, email);
+			// const tempLocation: CandidateLocation = {
+			// 	latitude: 43.676444420388805,
+			// 	longitude: -79.55569588996742,
+			// 	postalCode: 'M9R0B3',
+			// };
+			const requestBody = createCandidateRequestBody(values, location, availability, email);
 			console.log(JSON.stringify(requestBody, null, 2));
 			await SimplworkApi.post('candidate', JSON.stringify(requestBody))
 				.then((res: any) => {
@@ -76,7 +78,7 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 					alert('There was an issue creating your account, Please try again.');
 					resetSignUp();
 				});
-		} else if (step === 2) {
+		} else if (step >= 3) {
 			router.push('/');
 		}
 		setStep((step) => step + 1);
@@ -95,19 +97,18 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 						stepId={0}
 						currStep={step}
 					/>
-					<StepProgressHeader name='Add Availability' description='Please add your work availability' stepId={1} currStep={step} />
+					<StepProgressHeader name='Commute Preferences' description='Please add your work availability' stepId={1} currStep={step} />
+					<StepProgressHeader name='Work Availability' description='Please add your work availability' stepId={2} currStep={step} />
 					<StepProgressHeader
 						name='Add Work Experience'
 						description='Please select the account type that you wish to create'
-						stepId={2}
+						stepId={3}
 						currStep={step}
 					/>
 				</div>
 			</div>
-			{/* validationSchema={validationSchema[step]} */}
 			<div className='flex flex-col w-full h-full gap-3 items-center justify-center p-10'>
-				{step}
-				{step < 2 ? (
+				{step < 3 ? (
 					<Formik initialValues={initialValues} onSubmit={(v) => onSubmit(v)} validationSchema={validationSchema[step]}>
 						{({ values, setFieldValue }) => (
 							<Form noValidate>
@@ -119,22 +120,10 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 									</div>
 								)}
 								{step === 1 && (
-									<div className='w-[450px] max-w-[450px]'>
-										<StepHeader title='Add Work Availability' subtitle='Enter your details to create a profile' />
+									<div className='w-[450px] max-w-[450px] flex flex-col gap-5'>
+										<StepHeader title='Add Commute Preferences' subtitle='Enter your details to create a profile' />
+										<AutoComplete update={updateLocation} />
 										<div className='flex flex-col gap-5'>
-											{/* <AutoComplete update={updateLocation} credential={credential} /> */}
-											<div className='flex flex-col gap-1'>
-												<div className='flex items-center'>
-													<label className='font-medium leading-[35px]' htmlFor='maximumHours'>
-														I can work up to
-													</label>
-													<div className='px-2 w-20'>
-														<Field type='number' name='maximumHours' required className='inputStyle' />
-													</div>
-													<label className='font-medium leading-[35px]'>hours per week</label>
-												</div>
-												<ErrorMessage name='maximumHours' render={(msg: string) => <p className='text-sm font-medium text-red-700'>{msg}</p>} />
-											</div>
 											<h1 className='text-md pt-3 font-medium'>
 												Select the modes of transport available to you and the maximum amount of time you are willing to commute each way
 											</h1>
@@ -162,35 +151,41 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 													</div>
 												)}
 											/>
-
-											<StepperButtons step={step} updateStep={updateStep} />
-											{/* {JSON.stringify(values, null, 2)} */}
 										</div>
+
+										<StepperButtons step={step} updateStep={updateStep} />
+									</div>
+								)}
+								{step === 2 && (
+									<div className='w-[450px] max-w-[450px] flex flex-col gap-5'>
+										<StepHeader title='Add Work Availability' subtitle='Enter your details to create a profile' />
+										<div className='flex flex-col gap-1'>
+											<div className='flex items-center'>
+												<label className='font-medium leading-[35px]' htmlFor='maximumHours'>
+													I can work up to
+												</label>
+												<div className='px-2 w-20'>
+													<Field type='number' name='maximumHours' required className='inputStyle' />
+												</div>
+												<label className='font-medium leading-[35px]'>hours per week</label>
+											</div>
+											<ErrorMessage name='maximumHours' render={(msg: string) => <p className='text-sm font-medium text-red-700'>{msg}</p>} />
+										</div>
+										<div className='w-full'>
+											<h1 className='font-medium leading-[35px]'>Select the time segments that you are available to work.</h1>
+											<AvailabilityWidget availability={availability} onChange={setAvailability} />
+										</div>
+										<StepperButtons step={step} updateStep={updateStep} />
 									</div>
 								)}
 							</Form>
 						)}
 					</Formik>
 				) : (
-					<div className='w-[450px] max-w-[450px]'>
-						<StepHeader title='Create Profile' subtitle='Enter your details to create a profile' />
+					<div className='w-[450px] max-w-[450px] flex flex-col gap-5'>
+						<StepHeader title='Add Work Experience' subtitle='Enter your work experience' />
 						<SignUpExperienceForm />
-						<div className='flex w-full pt-7 gap-3'>
-							{step > 0 && (
-								<button
-									type='button'
-									onClick={() => updateStep(step - 1)}
-									className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
-									Back
-								</button>
-							)}
-							4
-							<button
-								onClick={() => router.push('/')}
-								className='w-full bg-[#64B1EC] p-3 text-white font-medium text-center items-center rounded-[4px] cursor-pointer hover:bg-[#64b1ec]/90 active:bg-[#64b1ec]/80 disabled:bg-gray-300'>
-								Continue
-							</button>
-						</div>
+						<StepperButtons step={step} updateStep={updateStep} />
 					</div>
 				)}
 			</div>
@@ -200,7 +195,7 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 
 const StepperButtons = ({ step, updateStep }: { step: number; updateStep: (arg: number) => void }) => {
 	return (
-		<div className='flex w-full pt-7 gap-3'>
+		<div className='flex w-full gap-3'>
 			{step > 0 && (
 				<button
 					type='button'

@@ -1,21 +1,18 @@
 import { FormikValues } from 'formik';
-import { CandaidateProfile, CandidatePostRequest, CandidateLocation } from '../types/api/candidate';
+import { CandaidateProfile, CandidatePostRequest, CandidateLocation, CandaidateAvailibility } from '../types/api/candidate';
 
-export const createCandidateRequestBody = (values: FormikValues, location: CandidateLocation, email: string): CandidatePostRequest => {
+export const createCandidateRequestBody = (
+	values: FormikValues,
+	location: CandidateLocation,
+	availability: CandaidateAvailibility,
+	email: string
+): CandidatePostRequest => {
 	const candidateProfile: CandaidateProfile = {
 		workHistory: [],
 		minimumPay: 0,
 		maximumHours: values.maximumHours,
 		location,
-		availability: {
-			SUNDAY: [{ startTime: 0, endTime: 1439 }],
-			MONDAY: [{ startTime: 0, endTime: 1439 }],
-			TUESDAY: [{ startTime: 0, endTime: 1439 }],
-			WEDNESDAY: [{ startTime: 0, endTime: 1439 }],
-			THURSDAY: [{ startTime: 0, endTime: 1439 }],
-			FRIDAY: [{ startTime: 0, endTime: 1439 }],
-			SATURDAY: [{ startTime: 0, endTime: 1439 }],
-		},
+		availability,
 		maxLiftWeight: 0,
 		maxTravelTimes: values.maxTravelTimes,
 		autoMatch: true,

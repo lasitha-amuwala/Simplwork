@@ -3,7 +3,7 @@ import { useCombobox } from 'downshift';
 import { SimplworkApi } from '../utils/simplwork';
 import { CandidateLocation } from '../types/api/candidate';
 
-type Props = { update: (arg: CandidateLocation) => void; credential: string };
+type Props = { update: (arg: CandidateLocation) => void };
 
 type ItemType = {
 	place_name: '';
@@ -14,7 +14,7 @@ type ItemType = {
 	id?: string;
 };
 
-export const AutoComplete = ({ credential, update }: Props) => {
+export const AutoComplete = ({ update }: Props) => {
 	const initalItem: ItemType = { place_name: '', center: [], context: null, place_type: [], text: '' };
 	const [items, setItems] = useState<ItemType[]>([initalItem]);
 	const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
@@ -47,7 +47,7 @@ export const AutoComplete = ({ credential, update }: Props) => {
 	const getResults = async (inputValue?: string) => {
 		if (!inputValue && !inputValue?.length) setItems([initalItem]);
 
-		if (inputValue && inputValue.length > 3 && credential) {
+		if (inputValue && inputValue.length > 3) {
 			const query = inputValue.replaceAll(/[^a-zA-Z0-9 ]/g, '');
 			await SimplworkApi.get(`geocoding?query=${query}`)
 				.then(({ data }) =>
