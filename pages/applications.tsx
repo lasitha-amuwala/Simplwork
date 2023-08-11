@@ -48,7 +48,7 @@ const MatchStatusList = ({ data: query, label }: { data: UseQueryResult<Candidat
 			<h1 className='text-3xl pl-1 font-bold'>{query.data?.length ? `${label} (${query.data.length})` : `${label} (0)`}</h1>
 			<div className='flex gap-3 pt-5 overflow-x-auto p-1'>
 				{query.isLoading &&
-					[...Array(2).fill(0)].map((key, i) => (
+					[...Array(3).fill(0)].map((key, i) => (
 						<div key={`${key}-${i}`} className='min-w-[350px] w-full'>
 							<PostItemSkeleton />
 						</div>

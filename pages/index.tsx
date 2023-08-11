@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/src/components/Auth/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import { MdMap } from 'react-icons/md';
@@ -9,7 +9,6 @@ import { PostList } from '@/src/components/Posts/PostList';
 import { Post } from '@/src/components/Posts/Post';
 import { SearchBar } from '@/src/components/SearchBar';
 import { Filter } from '@/src/components/Filter';
-import { PostListItemSkeleton } from '@/src/components/Posts/Skeletons/PostListItemSkeleton';
 import { PostSkeleton } from '@/src/components/Posts/Skeletons/PostSkeleton';
 
 const Home = () => {
@@ -59,14 +58,7 @@ const Home = () => {
 						<Filter />
 					</div>
 					<div className='w-full md:w-[35%] pt-1'>
-						{isLoading && [...Array(20).fill(0)].map((_key, i) => <PostListItemSkeleton key={i} />)}
-						{!isLoading && isSuccess && data.length > 0 ? (
-							<PostList posts={data} selectedPost={selectedPost} />
-						) : (
-							<div className='mt-1 bg-gray-200 w-full py-10 px-5 flex flex-col justify-center items-center rounded'>
-								<p className='py-10 font-semibold'>No Posts available, Please try again.</p>
-							</div>
-						)}
+						<PostList posts={data} selectedPost={selectedPost} isLoading={isLoading} />
 					</div>
 					<div className='hidden md:block md:w-[65%] lg:w-[50%]'>
 						{isLoading && <PostSkeleton />}
