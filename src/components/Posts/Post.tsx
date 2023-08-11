@@ -1,12 +1,10 @@
 import { memo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { SimplworkApi } from '@/src/utils/simplwork';
-import { commuteTypes } from '../SignUp/CommuteCheckBox';
-import { PostTag } from './PostTag';
-import { MdLocationPin } from 'react-icons/md';
 import { PostingResponse } from '@/src/types/api/candidate';
 import { constructAvailabilityObject } from '../AvailabilityWiget';
 import { AvailabilityExpand } from '../AvailabilityWiget/AvailabilityExpand';
+import { CommutePostTags } from './CommutePostTags';
 
 type PostProps = {
 	posts: PostingResponse[];
@@ -18,15 +16,6 @@ const applyToPost = async (data: any) => {
 	console.log('res', JSON.stringify(res.data, null, 2));
 	return res;
 };
-
-const displayDistance = (distance: number) => {
-	if (distance < 0.1) {
-		const distanceInMetres = Math.round(distance * 1000);
-		return `${Number.parseFloat(distanceInMetres.toFixed(1))}m`;
-	}
-	return `${Number.parseFloat(distance.toFixed(1))}km`;
-};
-
 export const Post = ({ posts, selectedPost }: PostProps) => {
 	const mutation = useMutation({ mutationFn: applyToPost });
 
@@ -62,28 +51,12 @@ export const Post = ({ posts, selectedPost }: PostProps) => {
 					</div>
 				</div>
 				{isMatch && (
-					<div className='flex gap-3 text-gray-600'>
-						{post.distance && (
-							<PostTag icon={<MdLocationPin />}>
-								<p>{`${displayDistance(post.distance)}`}</p>
-							</PostTag>
-						)}
-						{post.carCommuteTime && (
-							<PostTag icon={commuteTypes.CAR.icon}>
-								<p>{`${post.carCommuteTime} min`}</p>
-							</PostTag>
-						)}
-						{post.bikeCommuteTime && (
-							<PostTag icon={commuteTypes.BIKE.icon}>
-								<p>{`${post.bikeCommuteTime} min`}</p>
-							</PostTag>
-						)}
-						{post.walkCommuteTime && (
-							<PostTag icon={commuteTypes.WALK.icon}>
-								<p>{`${post.walkCommuteTime} min`}</p>
-							</PostTag>
-						)}
-					</div>
+					<CommutePostTags
+						distance={post.distance}
+						CarCommuteTime={post.carCommuteTime}
+						bikeCommuteTime={post.bikeCommuteTime}
+						walkCommuteTime={post.walkCommuteTime}
+					/>
 				)}
 			</div>
 		);
