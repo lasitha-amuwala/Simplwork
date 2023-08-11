@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createURL } from './httpUtils';
 import { get, post } from './http';
-import { PostingResponse } from '../types/api/candidate';
+import { Candidate, PostingResponse } from '../types/api/candidate';
 
 export const SimplworkApi = axios.create({
 	baseURL: 'https://simplwork.com/api/',
@@ -13,7 +13,7 @@ export const queries = {
 	candidate: {
 		getCandidate: (credential: string) => ({
 			queryKey: ['candidate'],
-			queryFn: (): Promise<any> => get('candidate'),
+			queryFn: (): Promise<Candidate> => get('candidate'),
 			enabled: !!credential,
 		}),
 		getCandidatePostings: (credential: string, params: Params) => ({

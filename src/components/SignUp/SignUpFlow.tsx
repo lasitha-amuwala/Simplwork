@@ -8,7 +8,7 @@ import { AutoComplete } from '../AutoComplete';
 import { SimplworkApi } from '@/src/utils/simplwork';
 import { StepProgressHeader } from './StepProgressHeader';
 import { CommuteCheckBoxButton, commuteTypes } from './CommuteCheckBox';
-import { CandiatePostRequest, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory } from '@/src/types/api/candidate';
+import { CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory } from '@/src/types/api/candidate';
 import { SignUpExperienceForm } from '../SignUpExperienceForm';
 import { StepHeader } from './StepHeader';
 import { ProfileForm } from '../Formik/Forms/ProfileForm';

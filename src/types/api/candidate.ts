@@ -36,15 +36,18 @@ export type CandaidateProfile = {
 };
 
 export type CandidateMaxTravelTimes = {
-	[key: string]: number;
+	BIKE?: number;
+	WALK?: number;
+	CAR?: number;
+	PUBLIC_TRANSIT?: number;
 };
 
-export type CandiatePostRequest = {
+export type CandidatePostRequest = {
 	candidateProfile: CandaidateProfile;
 	user: UserData;
 };
 
-export type Candiate = {
+export type Candidate = {
 	profileName: string;
 	candidateName: string;
 	phoneNumber: string;
@@ -54,7 +57,7 @@ export type Candiate = {
 	maxTravelTimes: CandidateMaxTravelTimes;
 	workHistory: CandidateWorkHistory[];
 	postalCode: string;
-	availibility: CandaidateAvailibility;
+	availability: CandaidateAvailibility;
 	autoMatch: boolean;
 };
 
@@ -67,7 +70,7 @@ export type UserData = {
 };
 
 export type User = GoogleProfileData & {
-	candidate: Candiate;
+	candidate: Candidate;
 };
 
 export interface ShiftTimes {
