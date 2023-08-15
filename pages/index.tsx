@@ -16,9 +16,10 @@ const Home = () => {
 	const [searchInput, setSearchInput] = useState<string>('');
 	const [searchQuery, setSearchQuery] = useState<string>('');
 
-	const { data, isLoading, isError, isSuccess } = useQuery(
-		queries.candidate.searchCandidatePostings(user?.credential ?? '', { queryString: searchQuery, pageSize: '20', pageNo: '0' })
-	);
+	const { data, isLoading, isError, isSuccess } = useQuery({
+		...queries.candidate.searchCandidatePostings(user?.credential ?? '', { queryString: searchQuery, pageSize: '20', pageNo: '0' }),
+		refetchInterval: 30000,
+	});
 
 	useEffect(() => {
 		if (router.query.search) {
