@@ -1,11 +1,11 @@
 import '@styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Inter } from 'next/font/google';
-import { BaseLayout } from '@components/Layouts/BaseLayout';
 import { NextPageWithLayout } from '@typings/NextPageWithLayout';
 import { AuthProvider } from '@components/Auth/AuthProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { BaseLayout } from '@components/Layouts/BaseLayout';
 
 interface CustomAppProps extends AppProps {
 	Component: NextPageWithLayout;
