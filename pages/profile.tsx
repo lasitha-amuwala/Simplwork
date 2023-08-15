@@ -1,6 +1,6 @@
 import { useAuth } from '@components/Auth/AuthProvider';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
-import { AvailabilityEdit } from '@components/AvailabilityWiget/AvailabilityEdit';
+import { AvailabilityEdit } from '@components/AvailabilityWidget/AvailabilityEdit';
 import { AddExperienceDialog } from '@components/Dialogs/ExperienceFormDialogs/AddExperienceDialog';
 import { EditProfileDialog } from '@components/Dialogs/ProfileFormDialog/EditProfileDialog';
 import { ExperienceList } from '@components/ExperienceList';

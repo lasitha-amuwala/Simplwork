@@ -3,7 +3,7 @@ import { NextPageWithLayout } from '@typings/NextPageWithLayout';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '@components/Auth/AuthProvider';
 import { AuthCard } from '@components/Auth/AuthCard';
-import { EmptyLayout } from '@components/layouts/EmptyLayout';
+import { EmptyLayout } from '@components/Layouts/EmptyLayout';
 import { useRouter } from 'next/router';
 
 const SignIn: NextPageWithLayout = () => {

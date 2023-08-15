@@ -1,6 +1,6 @@
 import { PostingResponse } from "@typings/api/candidate";
-import { constructAvailabilityObject } from "../../AvailabilityWiget";
-import { AvailabilityExpand } from "../../AvailabilityWiget/AvailabilityExpand";
+import { constructAvailabilityObject } from "../../AvailabilityWidget";
+import { AvailabilityExpand } from "../../AvailabilityWidget/AvailabilityExpand";
 
 type PostBodyProps = { post: PostingResponse };
 
