@@ -1,6 +1,6 @@
 import { MdLocationPin } from 'react-icons/md';
 import { PostTag } from './PostTag';
-import { commuteTypes } from '../SignUp/CommuteCheckBox';
+import { commuteTypes } from '../../SignUp/CommuteCheckBox';
 
 const displayDistance = (distance: number) => {
 	if (distance < 0.1) {
@@ -24,7 +24,7 @@ export const CommutePostTags = ({
 	publicTransiteCommuteTime?: number;
 }) => {
 	return (
-		<div className='flex gap-3 text-gray-600'>
+		<div className='flex gap-3 text-gray-600 flex-nowrap'>
 			{distance && (
 				<PostTag icon={<MdLocationPin />}>
 					<p>{`${displayDistance(distance)}`}</p>

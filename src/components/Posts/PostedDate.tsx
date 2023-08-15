@@ -13,8 +13,6 @@ export const PostedDate = ({ date }: PostedDateProps) => {
 	return (
 		<div className='text-xs pt-3 text-gray-500 flex gap-1'>
 			<p>{dayjs(date, 'DD-MM-YYYY', 'en-ca').format('MMMM D, YYYY').toString()}</p>
-			{/* {' • '}
-			<p>{dayjs(date, 'DD-MM-YYYY', 'en-ca').fromNow()}</p> */}
 		</div>
 	);
 };

@@ -1,4 +1,4 @@
-export const PostItemSkeleton = () => (
+export const PostCardSkeleton = () => (
 	<div className='bg-white rounded-md border border-gray-200 p-4 grid grid-cols-12 gap-3 animate-pulse'>
 		<div className='w-full col-span-12 grid grid-cols-12'>
 			<div className='col-span-7 w-full grid grid-cols-10 gap-3'>

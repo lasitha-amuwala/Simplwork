@@ -1,7 +1,7 @@
 import { memo } from 'react';
-import { PostTag } from './PostTag';
 import { MdAttachMoney, MdCalendarMonth, MdOutlineAccessTime } from 'react-icons/md';
-import { PostedDate } from './PostedDate';
+import { PostedDate } from '../PostedDate';
+import { PostTag } from '../PostTags';
 
 type PostListItemProps = {
 	post: any;
@@ -37,7 +37,7 @@ const AvailableDayOfWeek = (weekAvailability: { dayOfWeek: number }[]) => {
 	);
 };
 
-export const PostListItem = ({ post, status, active }: PostListItemProps) => {
+export const PostCard = memo(({ post, status, active }: PostListItemProps) => {
 	return (
 		<div
 			className={`w-full h-auto bg-white rounded-md border border-gray-200 p-4 text-start ring-sw hover:ring transition-shadow duration-150 ${
@@ -68,6 +68,6 @@ export const PostListItem = ({ post, status, active }: PostListItemProps) => {
 			<PostedDate date={post.createdAt} />
 		</div>
 	);
-};
+});
 
-export const MemoizedPostListItem = memo(PostListItem);
+PostCard.displayName = 'PostCard';
