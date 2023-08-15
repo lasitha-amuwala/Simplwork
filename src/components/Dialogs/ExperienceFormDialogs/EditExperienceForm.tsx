@@ -5,7 +5,7 @@ import { patchCandidate } from '../../../utils/simplwork';
 import { DialogFormLayout } from '../DialogFormLayout';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ExperienceForm } from '../../Formik/Forms/ExperienceForm';
-import { formatDate } from '@/src/utils/helpers';
+import { formatDate } from '@utils/helpers';
 import { workHistoryValidationSchema } from '../../Formik/FormValidation';
 
 type WorkExperienceFormProps = { afterSave: () => void; index: number; data: WorkHistory };

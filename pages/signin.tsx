@@ -1,9 +1,9 @@
 import { ReactElement, useEffect } from 'react';
-import { NextPageWithLayout } from '@/src/types/NextPageWithLayout';
+import { NextPageWithLayout } from '@typings/NextPageWithLayout';
 import { GoogleLogin } from '@react-oauth/google';
-import { useAuth } from '@/src/components/Auth/AuthProvider';
-import { AuthCard } from '@/src/components/Auth/AuthCard';
-import { EmptyLayout } from '@/src/components/layouts/EmptyLayout';
+import { useAuth } from '@components/Auth/AuthProvider';
+import { AuthCard } from '@components/Auth/AuthCard';
+import { EmptyLayout } from '@components/layouts/EmptyLayout';
 import { useRouter } from 'next/router';
 
 const SignIn: NextPageWithLayout = () => {

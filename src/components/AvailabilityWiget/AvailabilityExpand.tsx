@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CandaidateAvailibility } from '@/src/types/api/candidate';
+import { CandaidateAvailibility } from '@typings/api/candidate';
 import { DialogContentLayout } from '../Dialogs/DialogContentLayout';
 import { renderWidget } from './AvailabilityWidget';
 

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { PostingResponse } from '@/src/types/api/candidate';
+import { PostingResponse } from '@typings/api/candidate';
 import { PostCard } from './PostCard';
 import { PostCardSkeleton } from './PostCardSkeleton';
 

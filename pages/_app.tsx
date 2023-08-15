@@ -1,9 +1,9 @@
-import '@/styles/globals.css';
+import '@styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Inter } from 'next/font/google';
-import { BaseLayout } from '@/src/layouts/BaseLayout';
-import { NextPageWithLayout } from '@/src/types/NextPageWithLayout';
-import { AuthProvider } from '@/src/components/Auth/AuthProvider';
+import { BaseLayout } from '@components/layouts/BaseLayout';
+import { NextPageWithLayout } from '@typings/NextPageWithLayout';
+import { AuthProvider } from '@components/Auth/AuthProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 

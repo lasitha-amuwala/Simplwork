@@ -1,4 +1,4 @@
-import { GoogleProfileData } from '../Auth';
+import { GoogleProfileData } from "@components/Auth/Auth";
 
 export type CandidateWorkHistory = {
 	positionTitle: string;

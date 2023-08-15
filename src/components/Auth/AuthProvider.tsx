@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, PropsWithChildren, useEffect } from 'react';
 import { CredentialResponse, GoogleOAuthProvider, googleLogout } from '@react-oauth/google';
-import { SimplworkApi } from '@/src/utils/simplwork';
+import { SimplworkApi } from '@utils/simplwork';
 import { useRouter } from 'next/router';
 import jwt_decode from 'jwt-decode';
 import { AuthContextType, GoogleProfileData, GoogleToken } from './Auth';

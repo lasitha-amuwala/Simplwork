@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/src/components/Auth/AuthProvider';
+import { useAuth } from '@components/Auth/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import { MdErrorOutline } from 'react-icons/md';
-import { queries } from '@/src/utils/simplwork';
+import { queries } from '@utils/simplwork';
 import { useRouter } from 'next/router';
-import { SearchBar } from '@/src/components/SearchBar';
-import { Post, PostSkeleton } from '@/src/components/Posts/Post';
-import { PostCardList } from '@/src/components/Posts/PostCard';
-import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
+import { SearchBar } from '@components/SearchBar';
+import { Post, PostSkeleton } from '@components/Posts/Post';
+import { PostCardList } from '@components/Posts/PostCard';
+import { ProtectedPage } from '@components/Auth/ProtectedPage';
 
 const Home = () => {
 	const router = useRouter();

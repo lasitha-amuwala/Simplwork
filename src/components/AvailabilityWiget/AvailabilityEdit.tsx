@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { CandaidateAvailibility } from '@/src/types/api/candidate';
+import { CandaidateAvailibility } from '@typings/api/candidate';
 import { DialogContentLayout } from '../Dialogs/DialogContentLayout';
 import { renderWidget } from './AvailabilityWidget';
 import { SaveChangesButton } from '../Buttons/SaveChangesButton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { patchCandidate } from '@/src/utils/simplwork';
+import { patchCandidate } from '@utils/simplwork';
 import { DialogCancelButton } from '../Dialogs/DialogCancelButton';
 
 type Props = {

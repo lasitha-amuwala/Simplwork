@@ -3,7 +3,7 @@ import { MdDelete } from 'react-icons/md';
 import { CgSpinner } from 'react-icons/cg';
 import { WorkHistory } from '../../ExperienceList';
 import { DialogContentLayout } from '../DialogContentLayout';
-import { patchCandidate } from '@/src/utils/simplwork';
+import { patchCandidate } from '@utils/simplwork';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DialogCancelButton } from '../DialogCancelButton';
 

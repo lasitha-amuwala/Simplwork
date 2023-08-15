@@ -1,12 +1,9 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
-import { ReactElement, useState, useEffect } from 'react';
-import { EmptyLayout } from '@/src/components/layouts/EmptyLayout';
-import { AuthCard } from '@/src/components/Auth/AuthCard';
-import { SignUpFlow } from '@/src/components/SignUp/SignUpFlow';
-import { NextPageWithLayout } from '@/src/types/NextPageWithLayout';
-import { getGoogleProfile, useAuth } from '@/src/components/Auth/AuthProvider';
+import { ReactElement, useEffect } from 'react';
+import { EmptyLayout } from '@components/layouts/EmptyLayout';
+import { NextPageWithLayout } from '@typings/NextPageWithLayout';
+import { SignUpFlow } from '@components/SignUp/SignUpFlow';
+import { useAuth } from '@components/Auth/AuthProvider';
 
 type Props = {};
 
@@ -17,7 +14,7 @@ const Register: NextPageWithLayout<Props> = () => {
 	useEffect(() => {
 		if (!user || !isLoggedIn) router.replace('/signin');
 		if (user && isLoggedIn) router.replace('/');
-	}, [user, isLoggedIn]);
+	}, [user, isLoggedIn, router]);
 
 	return <SignUpFlow credential={user?.credential as string} />;
 };

@@ -15,7 +15,10 @@
 		"jsx": "preserve",
 		"incremental": true,
 		"paths": {
-			"@/*": ["./*"]
+			"@components/*": ["./src/components/*"],
+			"@typings/*": ["./src/types/*"],
+			"@utils/*": ["./src/utils/*"],
+			"@styles/*": ["./styles/*"]
 		},
 		"plugins": [
 			{

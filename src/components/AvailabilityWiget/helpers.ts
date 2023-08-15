@@ -1,4 +1,4 @@
-import { CandaidateAvailibility, DayOfWeekString, Shift, ShiftTimes } from '@/src/types/api/candidate';
+import { CandaidateAvailibility, DayOfWeekString, Shift, ShiftTimes } from '@typings/api/candidate';
 import dayjs from 'dayjs';
 
 export const getHourlyChunk = (hourlyChunks: number): number => Math.floor(60 / hourlyChunks);

@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { SimplworkApi } from '@/src/utils/simplwork';
-import { PostingResponse } from '@/src/types/api/candidate';
+import { SimplworkApi } from '@utils/simplwork';
+import { PostingResponse } from '@typings/api/candidate';
 import { CommutePostTags } from '../PostTags/CommutePostTags';
 import { PostBody } from './PostBody';
 

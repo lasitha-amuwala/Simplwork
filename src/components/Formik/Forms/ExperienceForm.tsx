@@ -1,7 +1,6 @@
 import { FieldControl } from '../Feilds/FieldControl';
-import { useState } from 'react';
 import { DayPickerField } from '../Feilds/DayPickerField';
-import { Field, useField } from 'formik';
+import { useField } from 'formik';
 
 export const ExperienceForm = () => {
 	const [field] = useField('currWorking');

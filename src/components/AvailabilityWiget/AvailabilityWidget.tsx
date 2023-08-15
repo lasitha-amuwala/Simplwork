@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { computeAvailabilityToSchedule, computeScheduleToAvailability, getHourlyChunk } from './helpers';
-import ScheduleSelector from 'react-schedule-selector';
+import ScheduleSelector from 'react-schedule-selector'
 import dayjs from 'dayjs';
 
 const AvailabilityWidgetBase = ({ availability, hourlyChunks = 1, readonly, onChange }: AvailabilityWidgetProps) => {
@@ -11,7 +11,7 @@ const AvailabilityWidgetBase = ({ availability, hourlyChunks = 1, readonly, onCh
 
 	return (
 		<div className={`${readonly && 'pointer-events-none touch-none cursor-none'} w-full h-auto`}>
-			<ScheduleSelector
+			<ScheduleSelector 
 				selection={schedule}
 				onChange={handleOnChange}
 				minTime={0}

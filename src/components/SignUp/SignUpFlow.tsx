@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { getGoogleProfile, useAuth } from '../Auth/AuthProvider';
+import { useAuth } from '../Auth/AuthProvider';
 import { ArrayHelpers, ErrorMessage, Field, FieldArray, Form, Formik, FormikValues } from 'formik';
 
 import { AutoComplete } from '../AutoComplete';
-import { SimplworkApi } from '@/src/utils/simplwork';
+import { SimplworkApi } from '@utils/simplwork';
 import { StepProgressHeader } from './StepProgressHeader';
 import { CommuteCheckBoxButton, commuteTypes } from './CommuteCheckBox';
-import { CandaidateAvailibility, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory } from '@/src/types/api/candidate';
+import { CandaidateAvailibility, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory } from '@typings/api/candidate';
 import { SignUpExperienceForm } from '../SignUpExperienceForm';
 import { StepHeader } from './StepHeader';
 import { ProfileForm } from '../Formik/Forms/ProfileForm';
-import { createCandidateRequestBody } from '@/src/utils/authHelpers';
+import { createCandidateRequestBody } from '@utils/authHelpers';
 import { profileValidationSchema, validationSchemaStepTwo, workHistoryValidationSchema } from '../Formik/FormValidation';
 import { AvailabilityWidget, constructAvailabilityObject } from '../AvailabilityWiget';
 
@@ -43,40 +43,37 @@ const initialValues: ValueUserTypes & ValueAvailabilityTypes = {
 
 const validationSchema = [profileValidationSchema, null, validationSchemaStepTwo, workHistoryValidationSchema];
 
-type SignUpFlowProps = { credential: string; resetSignUp: () => void };
+type SignUpFlowProps = { credential: string; resetSignUp?: () => void };
+
+// const tempLocation: CandidateLocation = {
+// 	latitude: 43.676444420388805,
+// 	longitude: -79.55569588996742,
+// 	postalCode: 'M9R0B3',
+// };
 
 export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 	const router = useRouter();
-	const { signInUser } = useAuth();
-
-	if (!credential) router.push('/signup');
+	const { user, signInUser } = useAuth();
 
 	const [step, setStep] = useState<number>(0);
 	const [location, setLocation] = useState<CandidateLocation>({ latitude: 0, longitude: 0, postalCode: '' });
 	const [availability, setAvailability] = useState<CandaidateAvailibility>(constructAvailabilityObject());
-
+	// update form step
 	const updateStep = (step: number) => setStep(step);
+	// callback to get location coordinates from autocomplete
 	const updateLocation = (data: CandidateLocation) => setLocation(data);
 
 	const onSubmit = async (values: FormikValues) => {
-		console.log('val', step);
-		console.log('val', values);
 		if (step === 2) {
-			const { email } = getGoogleProfile(credential);
-			// const tempLocation: CandidateLocation = {
-			// 	latitude: 43.676444420388805,
-			// 	longitude: -79.55569588996742,
-			// 	postalCode: 'M9R0B3',
-			// };
-			const requestBody = createCandidateRequestBody(values, location, availability, email);
-			console.log(JSON.stringify(requestBody, null, 2));
+			const requestBody = createCandidateRequestBody(values, location, availability, user?.email as string);
+			// console.log(JSON.stringify(requestBody, null, 2));
 			await SimplworkApi.post('candidate', JSON.stringify(requestBody))
 				.then((res: any) => {
 					signInUser(credential);
 				})
 				.catch((err: any) => {
 					alert('There was an issue creating your account, Please try again.');
-					resetSignUp();
+					router.push('/');
 				});
 		} else if (step >= 3) {
 			router.push('/');

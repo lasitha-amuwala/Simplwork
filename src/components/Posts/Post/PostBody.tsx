@@ -1,4 +1,4 @@
-import { PostingResponse } from "@/src/types/api/candidate";
+import { PostingResponse } from "@typings/api/candidate";
 import { constructAvailabilityObject } from "../../AvailabilityWiget";
 import { AvailabilityExpand } from "../../AvailabilityWiget/AvailabilityExpand";
 

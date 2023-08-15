@@ -1,9 +1,9 @@
-import { useAuth } from '@/src/components/Auth/AuthProvider';
-import { ProtectedPage } from '@/src/components/Auth/ProtectedPage';
-import { PostListItem } from '@/src/components/Posts/PostsListItem';
-import { PostItemSkeleton } from '@/src/components/Posts/Skeletons/PostItemSkeleton';
-import { Posting } from '@/src/types/api/candidate';
-import { queries } from '@/src/utils/simplwork';
+import { useAuth } from '@components/Auth/AuthProvider';
+import { ProtectedPage } from '@components/Auth/ProtectedPage';
+import { PostCard } from '@components/Posts/PostCard/PostCard';
+import { PostCardSkeleton } from '@components/Posts/PostCard/PostCardSkeleton';
+import { Posting } from '@typings/api/candidate';
+import { queries } from '@utils/simplwork';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
 
@@ -50,14 +50,14 @@ const MatchStatusList = ({ data: query, label }: { data: UseQueryResult<Candidat
 				{query.isLoading &&
 					[...Array(3).fill(0)].map((key, i) => (
 						<div key={`${key}-${i}`} className='min-w-[350px] w-full'>
-							<PostItemSkeleton />
+							<PostCardSkeleton />
 						</div>
 					))}
 				{query.isSuccess &&
 					(query.data.length > 0 ? (
 						query.data?.map(({ posting, candidateStatus }) => (
 							<div key={`${posting.id}`} className='min-w-[350px] w-full'>
-								<PostListItem post={posting} status={candidateStatus} />
+								<PostCard post={posting} status={candidateStatus} />
 							</div>
 						))
 					) : (
