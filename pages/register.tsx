@@ -12,7 +12,7 @@ const Register: NextPageWithLayout<Props> = () => {
 	const router = useRouter();
 
 	useEffect(() => {
-		if (!user || !isLoggedIn) router.replace('/signin');
+		if (!user) router.replace('/signin');
 		if (user && isLoggedIn) router.replace('/');
 	}, [user, isLoggedIn, router]);
 
