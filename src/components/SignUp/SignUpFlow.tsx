@@ -14,7 +14,7 @@ import { StepHeader } from './StepHeader';
 import { ProfileForm } from '../Formik/Forms/ProfileForm';
 import { createCandidateRequestBody } from '@utils/authHelpers';
 import { profileValidationSchema, validationSchemaStepTwo, workHistoryValidationSchema } from '../Formik/FormValidation';
-import { AvailabilityWidget, constructAvailabilityObject } from '../AvailabilityWidget';
+import { AvailabilityWidget, constructAvailabilityObject } from '@components/AvailabilityWidget';
 
 export type ValueUserTypes = {
 	fullName: string;

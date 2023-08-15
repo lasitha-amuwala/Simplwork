@@ -1,6 +1,6 @@
-import { CandaidateAvailibility } from '@typings/api/candidate';
+type CandaidateAvailibility = import('../../types/api/candidate').CandaidateAvailibility;
 
-interface AvailabilityWidgetProps {
+export interface AvailabilityWidgetProps {
 	hourlyChunks?: number;
 	readonly?: boolean;
 	availability?: CandaidateAvailibility;

@@ -1,9 +1,11 @@
 import { memo } from 'react';
-import { computeAvailabilityToSchedule, computeScheduleToAvailability, getHourlyChunk } from './helpers';
-import ScheduleSelector from 'react-schedule-selector'
 import dayjs from 'dayjs';
+import ScheduleSelector from 'react-schedule-selector';
 
-const AvailabilityWidgetBase = ({ availability, hourlyChunks = 1, readonly, onChange }: AvailabilityWidgetProps) => {
+import { AvailabilityWidgetProps } from './types';
+import { computeAvailabilityToSchedule, computeScheduleToAvailability } from './helpers';
+
+export const AvailabilityWidget = memo(({ availability, hourlyChunks = 1, readonly, onChange }: AvailabilityWidgetProps) => {
 	const startDate = dayjs('2000-01-02').toDate();
 	const schedule: Date[] = availability ? computeAvailabilityToSchedule(availability, startDate, hourlyChunks) : [];
 
@@ -11,7 +13,7 @@ const AvailabilityWidgetBase = ({ availability, hourlyChunks = 1, readonly, onCh
 
 	return (
 		<div className={`${readonly && 'pointer-events-none touch-none cursor-none'} w-full h-auto`}>
-			<ScheduleSelector 
+			<ScheduleSelector
 				selection={schedule}
 				onChange={handleOnChange}
 				minTime={0}
@@ -23,7 +25,7 @@ const AvailabilityWidgetBase = ({ availability, hourlyChunks = 1, readonly, onCh
 			/>
 		</div>
 	);
-};
+});
 
-export const AvailabilityWidget = memo(AvailabilityWidgetBase);
+AvailabilityWidget.displayName = 'AvailabilityWidget';
 export const renderWidget = (props: AvailabilityWidgetProps): JSX.Element => <AvailabilityWidget {...props} />;

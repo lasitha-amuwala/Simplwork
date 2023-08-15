@@ -1,6 +1,5 @@
 import { useAuth } from '@components/Auth/AuthProvider';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
-import { AvailabilityEdit } from '@components/AvailabilityWidget/AvailabilityEdit';
 import { AddExperienceDialog } from '@components/Dialogs/ExperienceFormDialogs/AddExperienceDialog';
 import { EditProfileDialog } from '@components/Dialogs/ProfileFormDialog/EditProfileDialog';
 import { ExperienceList } from '@components/ExperienceList';
@@ -9,6 +8,7 @@ import { Candidate } from '@typings/api/candidate';
 import { queries } from '@utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
+import { AvailabilityEdit } from '@components/AvailabilityWidget';
 import Image from 'next/image';
 
 type ProfileProps = {};
