@@ -6,8 +6,7 @@ import { CommutePostTags } from '../PostTags/CommutePostTags';
 import { PostBody } from './PostBody';
 
 type PostProps = {
-	posts: PostingResponse[];
-	selectedPost: number;
+	post: PostingResponse;
 };
 
 const applyToPost = async (data: any) => {
@@ -17,10 +16,9 @@ const applyToPost = async (data: any) => {
 	return res;
 };
 
-export const Post = memo(({ posts, selectedPost }: PostProps) => {
+export const Post = memo(({ post }: PostProps) => {
 	const mutation = useMutation({ mutationFn: applyToPost });
 
-	const post = posts[selectedPost];
 	const isMatch = !!post.candidateStatus;
 
 	const handleOnClick = () => {
@@ -45,7 +43,12 @@ export const Post = memo(({ posts, selectedPost }: PostProps) => {
 									Apply
 								</button>
 							) : (
-								<div className='bg-green-100 self-start text-green-600 font-medium px-2 py-1 rounded-md'>Applied</div>
+								<div>
+									<div className='bg-green-100 self-start text-green-600 font-medium px-2 py-1 rounded-md'>Applied</div>
+									<button className='btn-blue self-start' onClick={handleOnClick}>
+										Widthdraw
+									</button>
+								</div>
 							)}
 						</div>
 						<p className='text-md text-gray-500'>{post.posting.employer.companyDescription}</p>

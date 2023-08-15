@@ -1,91 +1,49 @@
-import { useAuth } from '@components/Auth/AuthProvider';
+import DialogContent, { Dialog } from '@components/Dialogs/Dialog';
+import { MatchStatusList } from '@components/Applications/MatchStatusList';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
-import { PostCard } from '@components/Posts/PostCard/PostCard';
-import { PostCardSkeleton } from '@components/Posts/PostCard/PostCardSkeleton';
-import { Posting } from '@typings/api/candidate';
-import { queries } from '@utils/simplwork';
-import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useQuery } from '@tanstack/react-query';
+import { queries } from '@utils/simplwork';
+import { useAuth } from '@components/Auth/AuthProvider';
 
 type Props = {};
 
-interface CandidateMatchResponse {
-	posting: Posting;
-	candidateStatus: string;
-}
-
 const Applications: NextPage = (props: Props) => {
+	const [open, setOpen] = useState<boolean>(false);
+	const router = useRouter();
 	const { user } = useAuth();
 
-	const appliedQuery = useQuery<CandidateMatchResponse[]>(
-		queries.candidate.getCandidatePostings(user?.credential as string, { requestStatusSet: 'APPLIED' })
-	);
-	const interviewQuery = useQuery<CandidateMatchResponse[]>(
-		queries.candidate.getCandidatePostings(user?.credential as string, { requestStatusSet: 'ACCEPT_INTERVIEW' })
-	);
-	const withdrawnQuery = useQuery<CandidateMatchResponse[]>(
-		queries.candidate.getCandidatePostings(user?.credential as string, { requestStatusSet: 'WITHDRAWN' })
-	);
+	const { data } = useQuery(queries.candidate.getCandidatePostings(user?.credential as string, {}));
+
+	const renderPostDialog = (): JSX.Element => {
+		return <>{/* <Post post={} /> */}</>;
+	};
+
+	useEffect(() => {
+		if (router.query.id) {
+			router.query.id;
+			setOpen(true);
+		} else {
+			setOpen(false);
+		}
+	}, [router]);
 
 	return (
 		<ProtectedPage>
 			<div className='w-full h-full py-10'>
 				<div className='flex flex-col gap-10'>
-					<MatchStatusList data={appliedQuery} label='Applied' />
-					<MatchStatusList data={interviewQuery} label='Interviews' />
-					<MatchStatusList data={withdrawnQuery} label='Withdrawn' />
+					<MatchStatusList status='APPLIED' label='Applied' />
+					<MatchStatusList status='ACCEPT_INTERVIEW' label='Interviews' />
+					<MatchStatusList status='WITHDRAWN' label='Withdrawn' />
 				</div>
 			</div>
+			<Dialog open={open} onOpenChange={setOpen}>
+				<DialogContent>{renderPostDialog()}</DialogContent>
+			</Dialog>
 		</ProtectedPage>
 	);
 };
 
 export default Applications;
-
-const MatchStatusList = ({ data: query, label }: { data: UseQueryResult<CandidateMatchResponse[], unknown>; label: string }) => {
-	return (
-		<div>
-			<h1 className='text-3xl pl-1 font-bold'>{query.data?.length ? `${label} (${query.data.length})` : `${label} (0)`}</h1>
-			<div className='flex gap-3 pt-5 overflow-x-auto p-1'>
-				{query.isLoading &&
-					[...Array(3).fill(0)].map((key, i) => (
-						<div key={`${key}-${i}`} className='min-w-[350px] w-full'>
-							<PostCardSkeleton />
-						</div>
-					))}
-				{query.isSuccess &&
-					(query.data.length > 0 ? (
-						query.data?.map(({ posting, candidateStatus }) => (
-							<div key={`${posting.id}`} className='min-w-[350px] w-full'>
-								<PostCard post={posting} status={candidateStatus} />
-							</div>
-						))
-					) : (
-						<div className='bg-gray-200 w-full py-10 px-5 flex flex-col justify-center items-center rounded'>
-							<p className='py-10'>No applications.</p>
-						</div>
-					))}
-			</div>
-		</div>
-	);
-};
-{
-	/* <div className='flex flex-col mx-5 gap-10 pt-20 '>
-<div className='flex flex-col gap-10 items-center justify-center  w-full h-full '>
-	{candidate && (
-		<div className='w-full flex flex-col gap-4 '>
-			<h1 className='text-3xl font-bold px-1'>{`Applied (${candidate.length})`}</h1>
-			<div className='w-full flex overflow-y-auto max-h-[1000px] p-1 gap-4'>
-				{candidate.map(({ posting, candidateStatus }: any, i: number) => {
-					return (
-						<div key={`${posting.id}${i}`} className='w-full flex'>
-							<PostListItem post={posting} status={candidateStatus} />
-						</div>
-					);
-				})}
-			</div>
-		</div>
-	)}
-</div>
-</div> */
-}

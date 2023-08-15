@@ -1,0 +1,45 @@
+import { PostCard, PostCardSkeleton } from '@components/Posts/PostCard';
+import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
+import { queries } from '@utils/simplwork';
+import { useAuth } from '@components/Auth/AuthProvider';
+import { Posting } from '@typings/api/candidate';
+
+interface CandidateMatchResponse {
+	posting: Posting;
+	candidateStatus: string;
+}
+
+export const MatchStatusList = ({ status, label }: { status: string; label: string }) => {
+	const { user } = useAuth();
+
+	const { data, isSuccess, isLoading } = useQuery<CandidateMatchResponse[]>(
+		queries.candidate.getCandidatePostings(user?.credential as string, { requestStatusSet: status })
+	);
+
+	return (
+		<div>
+			<h1 className='text-3xl pl-1 font-bold'>{data?.length ? `${label} (${data.length})` : `${label} (0)`}</h1>
+			<div className='flex gap-3 pt-5 overflow-x-auto p-1'>
+				{isLoading &&
+					[...Array(3).fill(0)].map((key, i) => (
+						<div key={`${key}-${i}`} className='min-w-[350px] w-full'>
+							<PostCardSkeleton />
+						</div>
+					))}
+				{isSuccess &&
+					(data.length > 0 ? (
+						data?.map(({ posting, candidateStatus }) => (
+							<Link href={{ pathname: '/applications', query: { id: posting.id } }} key={`${posting.id}`} className='min-w-[350px] w-full'>
+								<PostCard post={posting} status={candidateStatus} />
+							</Link>
+						))
+					) : (
+						<div className='bg-gray-200 w-full py-10 px-5 flex flex-col justify-center items-center rounded'>
+							<p className='py-10'>No applications.</p>
+						</div>
+					))}
+			</div>
+		</div>
+	);
+};

@@ -61,7 +61,7 @@ const Home = () => {
 						<div className='hidden md:block md:w-[60%] lg:w-[60%]'>
 							{isLoading && <PostSkeleton />}
 							{!isLoading && isSuccess && data.length > 0 ? (
-								<Post posts={data} selectedPost={selectedPost} />
+								<Post post={data[selectedPost]} />
 							) : (
 								<div className='mt-1 bg-gray-200 w-full py-10 px-5 flex flex-col justify-center items-center rounded'>
 									<p className='py-10 font-semibold'>No Posts available, Please try again.</p>
