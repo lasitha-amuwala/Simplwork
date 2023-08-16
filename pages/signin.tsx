@@ -4,7 +4,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '@components/Auth/AuthProvider';
 import { AuthCard } from '@components/Auth/AuthCard';
 import { useRouter } from 'next/router';
-import { EmptyLayout } from '@components/Layouts/EmptyLayout';
+import { EmptyLayout } from '../src/Layouts/EmptyLayout';
 
 const SignIn: NextPageWithLayout = () => {
 	const router = useRouter();

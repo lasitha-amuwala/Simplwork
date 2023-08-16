@@ -3,7 +3,7 @@ import { ReactElement, useEffect } from 'react';
 import { NextPageWithLayout } from '@typings/NextPageWithLayout';
 import { SignUpFlow } from '@components/SignUp/SignUpFlow';
 import { useAuth } from '@components/Auth/AuthProvider';
-import { EmptyLayout } from '@components/Layouts/EmptyLayout';
+import { EmptyLayout } from '../src/Layouts/EmptyLayout';
 
 type Props = {};
 
