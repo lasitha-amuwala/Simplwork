@@ -8,7 +8,6 @@ import { AutoComplete } from '../AutoComplete';
 import { SimplworkApi } from '@utils/simplwork';
 import { StepProgressHeader } from './StepProgressHeader';
 import { CommuteCheckBoxButton, commuteTypes } from './CommuteCheckBox';
-import { CandaidateAvailibility, CandidateLocation, CandidateMaxTravelTimes, CandidateWorkHistory } from '@typings/api/candidate';
 import { SignUpExperienceForm } from '../SignUpExperienceForm';
 import { StepHeader } from './StepHeader';
 import { ProfileForm } from '../Formik/Forms/ProfileForm';
@@ -26,8 +25,8 @@ export type ValueUserTypes = {
 type ValueAvailabilityTypes = {
 	maximumHours: number | string;
 	commuteTypes: string[];
-	maxTravelTimes: CandidateMaxTravelTimes;
-	workHistory: CandidateWorkHistory[];
+	maxTravelTimes: SW.IMaxTravelTimes;
+	workHistory: SW.IWorkHistory[];
 };
 
 const initialValues: ValueUserTypes & ValueAvailabilityTypes = {
@@ -56,12 +55,12 @@ export const SignUpFlow = ({ credential, resetSignUp }: SignUpFlowProps) => {
 	const { user, signInUser } = useAuth();
 
 	const [step, setStep] = useState<number>(0);
-	const [location, setLocation] = useState<CandidateLocation>({ latitude: 0, longitude: 0, postalCode: '' });
-	const [availability, setAvailability] = useState<CandaidateAvailibility>(constructAvailabilityObject());
+	const [location, setLocation] = useState<SW.ILocation>({ latitude: 0, longitude: 0, postalCode: '' });
+	const [availability, setAvailability] = useState<SW.IAvailability>(constructAvailabilityObject());
 	// update form step
 	const updateStep = (step: number) => setStep(step);
 	// callback to get location coordinates from autocomplete
-	const updateLocation = (data: CandidateLocation) => setLocation(data);
+	const updateLocation = (data: SW.ILocation) => setLocation(data);
 
 	const onSubmit = async (values: FormikValues) => {
 		if (step === 2) {

@@ -1,13 +1,12 @@
 import { FormikValues } from 'formik';
-import { CandaidateProfile, CandidatePostRequest, CandidateLocation, CandaidateAvailibility } from '../types/api/candidate';
 
 export const createCandidateRequestBody = (
 	values: FormikValues,
-	location: CandidateLocation,
-	availability: CandaidateAvailibility,
+	location: SW.ILocation,
+	availability: SW.IAvailability,
 	email: string
-): CandidatePostRequest => {
-	const candidateProfile: CandaidateProfile = {
+): SW.Candidate.IPostRequest => {
+	const candidateProfile: SW.Candidate.IProfile = {
 		workHistory: [],
 		minimumPay: 0,
 		maximumHours: values.maximumHours,

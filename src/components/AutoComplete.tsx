@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useCombobox } from 'downshift';
 import { SimplworkApi } from '../utils/simplwork';
-import { CandidateLocation } from '../types/api/candidate';
 
-type Props = { update: (arg: CandidateLocation) => void };
+type Props = { update: (arg: SW.ILocation) => void };
 
 type ItemType = {
 	place_name: '';

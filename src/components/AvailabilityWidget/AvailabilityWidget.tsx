@@ -1,9 +1,8 @@
 import { memo } from 'react';
 import dayjs from 'dayjs';
 import ScheduleSelector from 'react-schedule-selector';
-
-import { AvailabilityWidgetProps } from './types';
 import { computeAvailabilityToSchedule, computeScheduleToAvailability } from './helpers';
+import { AvailabilityWidgetProps } from './types';
 
 export const AvailabilityWidget = memo(({ availability, hourlyChunks = 1, readonly, onChange }: AvailabilityWidgetProps) => {
 	const startDate = dayjs('2000-01-02').toDate();

@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { CandaidateAvailibility } from '@typings/api/candidate';
 import { DialogContentLayout } from '../Dialogs/DialogContentLayout';
 import { renderWidget } from './AvailabilityWidget';
 
 type Props = {
-	availability: CandaidateAvailibility;
+	availability: SW.IAvailability;
 };
 
 export const AvailabilityExpand = ({ availability }: Props) => {

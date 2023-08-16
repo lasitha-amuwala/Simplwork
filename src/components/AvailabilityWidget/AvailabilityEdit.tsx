@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { CandaidateAvailibility } from '@typings/api/candidate';
 import { DialogContentLayout } from '../Dialogs/DialogContentLayout';
 import { renderWidget } from './AvailabilityWidget';
 import { SaveChangesButton } from '../Buttons/SaveChangesButton';
@@ -8,7 +7,7 @@ import { patchCandidate } from '@utils/simplwork';
 import { DialogCancelButton } from '../Dialogs/DialogCancelButton';
 
 type Props = {
-	availability: CandaidateAvailibility;
+	availability: SW.IAvailability;
 };
 
 export const AvailabilityEdit = ({ availability }: Props) => {
@@ -31,10 +30,10 @@ export const AvailabilityEdit = ({ availability }: Props) => {
 	);
 };
 
-const EditAvialabilityDialogBody = ({ afterSave, availability }: { afterSave: () => void; availability: CandaidateAvailibility }) => {
+const EditAvialabilityDialogBody = ({ afterSave, availability }: { afterSave: () => void; availability: SW.IAvailability }) => {
 	const queryClient = useQueryClient();
 	const [buttonDiabled, setButtonDiabled] = useState(false);
-	const [availabilityObj, setAvailabilityObj] = useState<CandaidateAvailibility>(availability);
+	const [availabilityObj, setAvailabilityObj] = useState<SW.IAvailability>(availability);
 
 	const { mutate } = useMutation({
 		mutationFn: patchCandidate,

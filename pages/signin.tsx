@@ -3,8 +3,8 @@ import { NextPageWithLayout } from '@typings/NextPageWithLayout';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '@components/Auth/AuthProvider';
 import { AuthCard } from '@components/Auth/AuthCard';
-import { EmptyLayout } from '@components/Layouts/EmptyLayout';
 import { useRouter } from 'next/router';
+import { EmptyLayout } from '@components/Layouts/EmptyLayout';
 
 const SignIn: NextPageWithLayout = () => {
 	const router = useRouter();
@@ -18,6 +18,7 @@ const SignIn: NextPageWithLayout = () => {
 		<div className='flex items-center justify-center h-screen'>
 			<AuthCard title='Sign in or Register' subtitle='Continue with google to sign in or register.'>
 				<GoogleLogin useOneTap width={250} shape='pill' text='continue_with' onSuccess={onSignIn} onError={() => console.log('Login Failed')} />
+				
 			</AuthCard>
 		</div>
 	);

@@ -1,21 +1,17 @@
 import { useAuth } from '@components/Auth/AuthProvider';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
 import { AddExperienceDialog } from '@components/Dialogs/ExperienceFormDialogs/AddExperienceDialog';
-import { EditProfileDialog } from '@components/Dialogs/ProfileFormDialog/EditProfileDialog';
 import { ExperienceList } from '@components/ExperienceList';
 import { CommutePostTags } from '@components/Posts/PostTags/CommutePostTags';
-import { Candidate } from '@typings/api/candidate';
 import { queries } from '@utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
 import { AvailabilityEdit } from '@components/AvailabilityWidget';
 import Image from 'next/image';
 
-type ProfileProps = {};
-
-const Profile: NextPage = (props: ProfileProps) => {
+const Profile: NextPage = () => {
 	const { user } = useAuth();
-	const { data: candidate, isLoading, isError } = useQuery<Candidate>(queries.candidate.getCandidate(user?.credential ?? ''));
+	const { data: candidate, isLoading, isError } = useQuery<SW.Candidate.ICandidate>(queries.candidate.getCandidate(user?.credential ?? ''));
 
 	if (isLoading) return <div>Loading</div>;
 	if (isError) return <div>error</div>;

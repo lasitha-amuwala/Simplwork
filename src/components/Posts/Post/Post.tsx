@@ -1,12 +1,11 @@
 import { memo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { SimplworkApi } from '@utils/simplwork';
-import { PostingResponse } from '@typings/api/candidate';
 import { CommutePostTags } from '../PostTags/CommutePostTags';
 import { PostBody } from './PostBody';
 
 type PostProps = {
-	post: PostingResponse;
+	post: SW.PostingResponse;
 };
 
 const applyToPost = async (data: any) => {

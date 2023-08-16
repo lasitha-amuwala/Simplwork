@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import { ReactElement, useEffect } from 'react';
-import { EmptyLayout } from '@components/Layouts/EmptyLayout';
 import { NextPageWithLayout } from '@typings/NextPageWithLayout';
 import { SignUpFlow } from '@components/SignUp/SignUpFlow';
 import { useAuth } from '@components/Auth/AuthProvider';
+import { EmptyLayout } from '@components/Layouts/EmptyLayout';
 
 type Props = {};
 

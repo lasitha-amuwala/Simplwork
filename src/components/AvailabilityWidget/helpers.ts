@@ -1,21 +1,20 @@
-import { CandaidateAvailibility, DayOfWeekString, Shift, ShiftTimes } from '@typings/api/candidate';
 import dayjs from 'dayjs';
 
 export const getHourlyChunk = (hourlyChunks: number): number => Math.floor(60 / hourlyChunks);
 
-export const getDayOfWeekString = (dayOfWeek: number): DayOfWeekString => {
-	const dayOfWeekString: DayOfWeekString[] = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
+export const getDayOfWeekString = (dayOfWeek: number): SW.DayOfWeekString => {
+	const dayOfWeekString: SW.DayOfWeekString[] = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
 	return dayOfWeekString[dayOfWeek - 1];
 };
 
-export const computeAvailabilityToSchedule = (availabilityObject: CandaidateAvailibility, startDate: Date, hourlyChunk: number): Date[] => {
+export const computeAvailabilityToSchedule = (availabilityObject: SW.IAvailability, startDate: Date, hourlyChunk: number): Date[] => {
 	const schedule: Date[] = [];
 	const convertShiftTimeToDate = (day: number, minute: number) => dayjs(startDate).day(day).minute(minute).toDate();
 
 	const chunk = getHourlyChunk(hourlyChunk);
 	Object.keys(availabilityObject).forEach((keys, i) => {
-		if (availabilityObject[keys as DayOfWeekString].length < 1) return;
-		availabilityObject[keys as DayOfWeekString].forEach(({ startTime, endTime }: ShiftTimes) => {
+		if (availabilityObject[keys as SW.DayOfWeekString].length < 1) return;
+		availabilityObject[keys as SW.DayOfWeekString].forEach(({ startTime, endTime }: SW.IShiftTimes) => {
 			const diff = endTime - startTime;
 			const numChunk = Math.floor(diff / chunk);
 			const day = i == 6 ? 0 : i + 1;
@@ -35,16 +34,16 @@ export const computeAvailabilityToSchedule = (availabilityObject: CandaidateAvai
 };
 
 // compute
-export const computeScheduleToAvailability = (arr: Date[], hourlyChunks: number): CandaidateAvailibility => {
+export const computeScheduleToAvailability = (arr: Date[], hourlyChunks: number): SW.IAvailability => {
 	let availabilityObject = constructAvailabilityObject();
 
 	const chunk = getHourlyChunk(hourlyChunks);
 	const getStartTime = (date: Date): number => date.getHours() * chunk;
 	const getEndTime = (date: Date): number => (date.getHours() + 1) * chunk;
-	const getDayOfWeek = (date: Date): DayOfWeekString => getDayOfWeekString(date.getDay() === 0 ? 7 : date.getDay());
+	const getDayOfWeek = (date: Date): SW.DayOfWeekString => getDayOfWeekString(date.getDay() === 0 ? 7 : date.getDay());
 
 	// merges shiftTimes that can be merged ex. input: [{start: 0, end: 60}, {start: 60, end: 120}] , output: [{start: 0, end: 120}]
-	const mergeShiftTimesRecursively = (list: ShiftTimes[], prevLength: number) => {
+	const mergeShiftTimesRecursively = (list: SW.IShiftTimes[], prevLength: number) => {
 		let originalLength = list.length;
 		if (originalLength === prevLength) return list;
 
@@ -66,8 +65,8 @@ export const computeScheduleToAvailability = (arr: Date[], hourlyChunks: number)
 	return availabilityObject;
 };
 
-export const constructAvailabilityObject = (shifts?: Shift[]): CandaidateAvailibility => {
-	let availabilityObject: CandaidateAvailibility = {
+export const constructAvailabilityObject = (shifts?: SW.IShift[]): SW.IAvailability => {
+	let availabilityObject: SW.IAvailability = {
 		MONDAY: [],
 		TUESDAY: [],
 		WEDNESDAY: [],

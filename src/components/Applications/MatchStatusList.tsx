@@ -3,10 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { queries } from '@utils/simplwork';
 import { useAuth } from '@components/Auth/AuthProvider';
-import { Posting } from '@typings/api/candidate';
-
 interface CandidateMatchResponse {
-	posting: Posting;
+	posting: SW.IPosting;
 	candidateStatus: string;
 }
 

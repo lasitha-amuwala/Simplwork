@@ -1,10 +1,9 @@
 import Link from 'next/link';
-import { PostingResponse } from '@typings/api/candidate';
 import { PostCard } from './PostCard';
 import { PostCardSkeleton } from './PostCardSkeleton';
 
 type PostCardListProps = {
-	posts: PostingResponse[] | undefined;
+	posts: SW.PostingResponse[] | undefined;
 	selectedPost: number;
 	isLoading: boolean;
 };

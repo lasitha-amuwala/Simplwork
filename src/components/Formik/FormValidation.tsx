@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { boolean, date, number, object, string } from 'yup';
+import { boolean, number, object, string } from 'yup';
 import { formatDate } from '../../utils/helpers';
 
 export const profileValidationSchema = object().shape({

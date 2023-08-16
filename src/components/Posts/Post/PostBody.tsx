@@ -1,7 +1,6 @@
 import { AvailabilityExpand, constructAvailabilityObject } from '@components/AvailabilityWidget';
-import { PostingResponse } from '@typings/api/candidate';
 
-type PostBodyProps = { post: PostingResponse };
+type PostBodyProps = { post: SW.PostingResponse };
 
 export const PostBody = ({ post }: PostBodyProps) => {
 	const availability = constructAvailabilityObject(post.posting.shifts);
