@@ -26,6 +26,25 @@ export const queries = {
 			enabled: !!credential,
 		}),
 	},
+	employer: {
+		getEmployer: (credential: string, employerName: string) => ({
+			queryKey: ['employer'],
+			queryFn: (): Promise<SW.Employer.IEmployer> => get(createURL(`employer/${employerName}/branch`)),
+			enabled: !!credential,
+		}),
+		getBranches: (credential: string, employerName: string , params: Params) => ({
+			queryKey: ['branches', employerName, params],
+			queryFn: (): Promise<SW.Employer.IBranch[]> => get(createURL(`employer/${employerName}/branch`, params)),
+			enabled: !!credential && !!employerName,
+		}),
+	},
+	user: {
+		employerList: (credential: string) => ({
+			queryKey: ['employeeList'],
+			queryFn: (): Promise<any> => get(`user/employerList`),
+			enabled: !!credential,
+		}),
+	},
 };
 
 export const mutations = {
