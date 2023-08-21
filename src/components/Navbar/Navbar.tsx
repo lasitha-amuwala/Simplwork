@@ -7,13 +7,22 @@ import { NavControls } from './NavControls';
 
 const Navbar = () => {
 	const [open, setOpen] = useState(false);
-	const { pathname } = useRouter();
+	const router = useRouter();
+	const { pathname } = router;
 
-	const navlinks = [
+	const candidateLinks = [
 		{ name: 'Find Jobs', href: '/' },
 		{ name: 'My Applications', href: '/applications' },
 		{ name: 'Profile', href: '/profile' },
 	];
+
+	const employerLinks = [
+		{ name: 'Job Posting', href: '/e/' },
+		{ name: 'Branches', href: '/e/branches' },
+		{ name: 'Messages', href: '/e/messages' },
+	];
+
+	const navLinks = pathname.split('/')[1] == 'e' ? employerLinks : candidateLinks;
 
 	return (
 		<nav className='flex justify-center h-[var(--header-height)] bg-white w-full border-b border-neutral-200 px-2 md:px-5 fixed left-0 right-0 z-50'>
@@ -27,7 +36,7 @@ const Navbar = () => {
 					{open && (
 						<div className='absolute top-[var(--header-height)] left-0 right-0 w-full h-auto bg-white'>
 							<ul className=''>
-								{navlinks.map((link) => (
+								{navLinks.map((link) => (
 									<li key={link.name} className='pl-6 p-2 border-b text-base font-medium'>
 										<Link className='text-gray-500 hover:text-gray-800' href={link.href} onClick={() => setOpen(false)}>
 											{link.name}
@@ -43,7 +52,7 @@ const Navbar = () => {
 				</Link>
 				<div className='hidden md:block h-full'>
 					<ul className='flex gap-10 font-medium h-full'>
-						{navlinks.map((link) => (
+						{navLinks.map((link) => (
 							<li key={link.name} className='h-full items-center flex flex-col border-sky-500'>
 								<div className='grow flex items-center'>
 									<Link

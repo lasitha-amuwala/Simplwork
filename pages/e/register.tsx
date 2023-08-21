@@ -3,8 +3,9 @@ import { EmptyLayout } from '../../src/Layouts/EmptyLayout';
 import { EmployerSignUp } from '@components/SignUp/Employer/EmployerSignUp';
 import { useRouter } from 'next/router';
 import { useAuth } from '@components/Auth/AuthProvider';
+import { NextPageWithLayout } from '@typings/NextPageWithLayout';
 
-const Register = () => {
+const Register: NextPageWithLayout = () => {
 	const { user, isLoggedIn } = useAuth();
 	const router = useRouter();
 

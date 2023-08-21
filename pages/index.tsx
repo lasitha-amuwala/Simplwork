@@ -8,8 +8,9 @@ import { SearchBar } from '@components/SearchBar';
 import { Post, PostSkeleton } from '@components/Posts/Post';
 import { PostCardList } from '@components/Posts/PostCard';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
+import { NextPage } from 'next';
 
-const Home = () => {
+const Home: NextPage = () => {
 	const router = useRouter();
 	const { user } = useAuth();
 	const [selectedPost, setSelectedPost] = useState<number>(0);

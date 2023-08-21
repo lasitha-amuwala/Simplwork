@@ -4,10 +4,11 @@ import { useAuth } from '@components/Auth/AuthProvider';
 import { CenterPage } from '@components/CenterPage';
 import { GoogleLogin } from '@react-oauth/google';
 import { EmptyLayout } from '../../src/Layouts/EmptyLayout';
+import { NextPageWithLayout } from '@typings/NextPageWithLayout';
 
 type Props = {};
 
-const SignIn = (props: Props) => {
+const SignIn: NextPageWithLayout = (props: Props) => {
 	const { onEmplyerSignIn } = useAuth();
 
 	return (

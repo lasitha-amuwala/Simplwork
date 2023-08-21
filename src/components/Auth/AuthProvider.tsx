@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 					if (res.data.length > 0) {
 						setLoggedIn(true);
 						setLocalStorage(credential);
-						router.replace('/e/register');
+						router.replace('/e/');
 						return;
 					} else {
 						setLoggedIn(false);
