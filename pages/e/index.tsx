@@ -4,9 +4,9 @@ import React from 'react';
 
 type Props = {};
 
-const index = (props: Props) => {
+const Home = (props: Props) => {
 	const { user } = useAuth();
 	return <ProtectedPage>Employer side {user?.email}</ProtectedPage>;
 };
 
-export default index;
+export default Home;
