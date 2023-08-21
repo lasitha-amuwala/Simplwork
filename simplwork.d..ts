@@ -116,6 +116,19 @@ namespace SW {
 
 	namespace Employer {
 		type Status = 'NEW' | 'REVIEWED' | 'INTERVIEW_REQUESTED' | 'READY_FOR_INTERVIEW' | 'REJECTED';
+
+		interface IEmployer {
+			companyName: string;
+			companyDescription: string;
+		}
+
+		interface IBranch {
+			company: string;
+			branchName: string;
+			location: ILocation;
+			jobs: IPosting[];
+			noOfJobs: number;
+		}
 	}
 
 	interface IAvailability {
