@@ -3,6 +3,7 @@ import { CredentialResponse } from '@react-oauth/google';
 export type GoogleProfileData = {
 	credential: string;
 	exp: number;
+	name: string;
 	email: string;
 	picture: string;
 };
@@ -29,5 +30,6 @@ export type AuthContextType = {
 	isLoggedIn: boolean;
 	signInUser: (credential: string) => void;
 	onSignIn: (credential: CredentialResponse) => void;
+	onEmplyerSignIn: (credential: CredentialResponse) => void;
 	signOut: () => void;
 };

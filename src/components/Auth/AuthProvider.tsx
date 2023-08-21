@@ -15,12 +15,10 @@ const setAuthorization = (credential: string) => (SimplworkApi.defaults.headers.
 // set localstorage token
 const setLocalStorage = (token: string | null) => (!token ? localStorage.removeItem('token') : localStorage.setItem('token', token));
 
-const getCandidate = async (): Promise<any> => await SimplworkApi.get('candidate');
-
 // extract google profile data from jwt
 export const getGoogleProfile = (credential: string): GoogleProfileData => {
-	const { exp, email, picture } = decodeCredential(credential);
-	return { credential: credential, email, picture, exp };
+	const { exp, email, picture, name } = decodeCredential(credential);
+	return { credential: credential, email, picture, name, exp, };
 };
 
 // checks expiry on token
@@ -51,12 +49,35 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 			.catch((err) => {
 				if (err.response.status === 404) {
 					setLoggedIn(false);
-					setLocalStorage(credential);
 					router.push('/register');
 					return;
 				}
 				setAuthorization('');
 				setUser(null);
+			});
+	};
+
+	const onEmplyerSignIn = ({ credential }: CredentialResponse) => {
+		if (!credential) return;
+
+		setUser(getGoogleProfile(credential));
+		setAuthorization(credential);
+		SimplworkApi.get('user/employerList')
+			.then((res) => {
+				if (res.status >= 200 && res.status <= 299) {
+					if (res.data.length > 0) {
+						setLoggedIn(true);
+						setLocalStorage(credential);
+						router.replace('/e/register');
+						return;
+					} else {
+						setLoggedIn(false);
+						router.push('/e/register');
+					}
+				}
+			})
+			.catch((err) => {
+				alert('There was an internal server error, please try again.');
 			});
 	};
 
@@ -120,7 +141,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	}, [signOutUser]);
 
 	return (
-		<AuthContext.Provider value={{ user, isLoggedIn: isLoggedIn, signInUser, onSignIn, signOut }}>
+		<AuthContext.Provider value={{ user, isLoggedIn: isLoggedIn, signInUser, onEmplyerSignIn, onSignIn, signOut }}>
 			<GoogleOAuthProvider clientId='869487513689-u4hhunj2o95cf404asivk737j91fddgq.apps.googleusercontent.com'>{children}</GoogleOAuthProvider>
 		</AuthContext.Provider>
 	);
