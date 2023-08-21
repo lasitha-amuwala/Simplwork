@@ -1,14 +1,14 @@
-import { useAuth } from './Auth/AuthProvider';
-import { ExperienceForm } from './Formik/Forms/ExperienceForm';
+import { useAuth } from '../../Auth/AuthProvider';
+import { ExperienceForm } from '../../Formik/Forms/ExperienceForm';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { patchCandidate, queries } from '../utils/simplwork';
-import { ExperienceList } from './ExperienceList';
-import { AddExperienceDialog } from './Dialogs/ExperienceFormDialogs/AddExperienceDialog';
+import { patchCandidate, queries } from '../../../utils/simplwork';
+import { ExperienceList } from '../../ExperienceList';
+import { AddExperienceDialog } from '../../Dialogs/ExperienceFormDialogs/AddExperienceDialog';
 import { Form, Formik, FormikValues } from 'formik';
-import { SaveChangesButton } from './Buttons/SaveChangesButton';
+import { SaveChangesButton } from '../../Buttons/SaveChangesButton';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { workHistoryValidationSchema } from './Formik/FormValidation';
+import { workHistoryValidationSchema } from '../../Formik/FormValidation';
 
 type Props = {};
 
@@ -29,7 +29,6 @@ export const SignUpExperienceForm = (props: Props) => {
 
 	const onSubmit = async ({ positionTitle, companyName, startDate, endDate, details }: FormikValues) => {
 		setSaving(true);
-		console.log('props');
 		const data = [{ op: 'add', path: '/candidateProfile/workHistory/-', value: { positionTitle, companyName, details } }];
 		await mutateAsync(data);
 	};
@@ -42,9 +41,7 @@ export const SignUpExperienceForm = (props: Props) => {
 		endDate: '',
 	};
 
-	if (isError) {
-		router.push('/');
-	}
+	if (isError) router.push('/');
 	if (isLoading) return <div>Loading...</div>;
 	if (candidate?.workHistory.length == 0) {
 		return (

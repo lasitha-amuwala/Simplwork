@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 import { useAuth } from '../components/Auth/AuthProvider';
 
 type Props = {};

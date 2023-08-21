@@ -7,6 +7,8 @@ type StepProgressHeaderProps = {
 	currStep: number;
 };
 
+export type StepProgressHeaderObj = Pick<StepProgressHeaderProps, 'name' | 'description' | 'stepId'>;
+
 export const StepProgressHeader = ({ name, description, stepId, currStep }: StepProgressHeaderProps) => {
 	const titleColor = currStep === stepId ? 'text-black' : 'text-neutral-500';
 	const descColor = currStep === stepId ? 'text-neutral-700' : 'text-neutral-500';
@@ -22,5 +24,3 @@ export const StepProgressHeader = ({ name, description, stepId, currStep }: Step
 		</div>
 	);
 };
-
-

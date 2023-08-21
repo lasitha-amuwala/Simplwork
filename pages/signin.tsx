@@ -5,6 +5,8 @@ import { useAuth } from '@components/Auth/AuthProvider';
 import { AuthCard } from '@components/Auth/AuthCard';
 import { useRouter } from 'next/router';
 import { EmptyLayout } from '../src/Layouts/EmptyLayout';
+import Link from 'next/link';
+import { CenterPage } from '@components/CenterPage';
 
 const SignIn: NextPageWithLayout = () => {
 	const router = useRouter();
@@ -15,12 +17,14 @@ const SignIn: NextPageWithLayout = () => {
 	}, [user, isLoggedIn, router]);
 
 	return (
-		<div className='flex items-center justify-center h-screen'>
-			<AuthCard title='Sign in or Register' subtitle='Continue with google to sign in or register.'>
+		<CenterPage>
+			<AuthCard title='Sign in or Register' subtitle='Continue with Google to sign in or register.'>
 				<GoogleLogin useOneTap width={250} shape='pill' text='continue_with' onSuccess={onSignIn} onError={() => console.log('Login Failed')} />
-				
+				<Link href='/e/signin' className='font-medium text-xs'>
+					Employer? Sign in or register<span className='text-blue-700 '> here</span>
+				</Link>
 			</AuthCard>
-		</div>
+		</CenterPage>
 	);
 };
 

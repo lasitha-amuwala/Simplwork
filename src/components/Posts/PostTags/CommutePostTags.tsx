@@ -1,6 +1,6 @@
 import { MdLocationPin } from 'react-icons/md';
 import { PostTag } from './PostTag';
-import { commuteTypes } from '../../SignUp/CommuteCheckBox';
+import { commuteTypes } from '../../SignUp/Candidate/CommuteCheckBox';
 
 const displayDistance = (distance: number) => {
 	if (distance < 0.1) {

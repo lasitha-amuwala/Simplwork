@@ -17,11 +17,11 @@ const Profile: NextPage = () => {
 	if (isError) return <div>error</div>;
 	return (
 		<ProtectedPage>
-			<div className=' bg-white rounded-lg border mt-7 w-full overflow-hidden'>
+			<div className='bg-white rounded-lg border mt-7 w-full overflow-hidden'>
 				<div className='relative'>
 					<div className='h-36 bg-gradient-to-r from-white to-sw-300 w-full' />
-					<div className='  h-auto flex justify-between bg-white p-5'>
-						<div className='flex flex-col ml-52'>{candidate && <h1 className='text-4xl font-semibold'>{candidate.candidateName}</h1>}</div>
+					<div className='h-auto flex justify-between bg-white p-5'>
+						{candidate && <h1 className='text-4xl font-semibold ml-52'>{candidate.candidateName}</h1>}
 						<div className='absolute top-0 left-5 rounded-full w-[175px] h-[175px] bg-sw-100 overflow-hidden flex justify-center items-center shadow-lg '>
 							<div className='w-[165px] h-[165px] rounded-full relative overflow-hidden'>
 								{user?.picture && (

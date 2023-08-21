@@ -17,9 +17,9 @@ export interface StepProps extends Pick<FormikConfig<FormikValues>, 'children' |
 	subtitle: string;
 }
 
-export const Step = ({ title, subtitle, children }: StepProps) => (
-	<>
-		<StepHeader title={title} subtitle={subtitle} />
-		{children}
-	</>
-);
+// export const Step = ({ title, subtitle, children }: StepProps) => (
+// 	<>
+// 		<StepHeader title={title} subtitle={subtitle} />
+// 		{children}
+// 	</>
+// );

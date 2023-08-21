@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { ReactElement, useEffect } from 'react';
 import { NextPageWithLayout } from '@typings/NextPageWithLayout';
-import { SignUpFlow } from '@components/SignUp/SignUpFlow';
+import { CandidateSignUp } from '@components/SignUp/Candidate/CandidateSignUp';
 import { useAuth } from '@components/Auth/AuthProvider';
 import { EmptyLayout } from '../src/Layouts/EmptyLayout';
 
@@ -16,7 +16,7 @@ const Register: NextPageWithLayout<Props> = () => {
 		if (user && isLoggedIn) router.replace('/');
 	}, [user, isLoggedIn, router]);
 
-	return <SignUpFlow credential={user?.credential as string} />;
+	return <CandidateSignUp credential={user?.credential as string} />;
 };
 
 Register.getLayout = function getLayout(page: ReactElement) {
