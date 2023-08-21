@@ -1,68 +1,9 @@
 import { useState } from 'react';
-import { useAuth } from './Auth/AuthProvider';
-import { useQuery } from '@tanstack/react-query';
-import { queries } from '../utils/simplwork';
-import * as Popover from '@radix-ui/react-popover';
-import * as Avatar from '@radix-ui/react-avatar';
-import { RxCross2 } from 'react-icons/rx';
 import { RiMenuFill } from 'react-icons/ri';
 import { useRouter } from 'next/router';
-import { getInitials } from '../utils/helpers';
 import Link from 'next/link';
 import Image from 'next/image';
-
-const LogoutButton = () => {
-	const { signOut } = useAuth();
-	return (
-		<button className='button' onClick={signOut}>
-			Sign Out
-		</button>
-	);
-};
-
-const SigninButton = () => {
-	return (
-		<Link href='/' className='bg-sw-700 px-2 md:px-3 py-1 rounded text-white font-medium hover:bg-sky-400 active:bg-sky-300 '>
-			Sign in
-		</Link>
-	);
-};
-
-const NavControls = () => {
-	const { user } = useAuth();
-	const { data: candidate } = useQuery(queries.candidate.getCandidate(user?.credential ?? ''));
-
-	return (
-		<Popover.Root>
-			<Popover.Trigger asChild>
-				{candidate ? (
-					<Avatar.Root className='h-11 w-11 overflow-hidden rounded-full'>
-						{candidate.picture ? (
-							<Avatar.Image asChild className='w-full h-full object-cover rounded-full' src={user?.picture} alt={candidate.candidateName} />
-						) : (
-							<Avatar.Fallback className='text-sw-500 leading-1 flex h-full w-full items-center justify-center bg-sw-50 text-[15px] font-medium'>
-								{getInitials(candidate?.candidateName)}
-							</Avatar.Fallback>
-						)}
-					</Avatar.Root>
-				) : (
-					<SigninButton />
-				)}
-			</Popover.Trigger>
-			<Popover.Portal>
-				<Popover.Content className='PopoverContent' sideOffset={5}>
-					<div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-						<LogoutButton />
-					</div>
-					<Popover.Close className='PopoverClose' aria-label='Close'>
-						<RxCross2 />
-					</Popover.Close>
-					<Popover.Arrow className='PopoverArrow' />
-				</Popover.Content>
-			</Popover.Portal>
-		</Popover.Root>
-	);
-};
+import { NavControls } from './NavControls';
 
 const Navbar = () => {
 	const [open, setOpen] = useState(false);
@@ -75,7 +16,7 @@ const Navbar = () => {
 	];
 
 	return (
-		<nav className='flex justify-center h-[var(--header-height)] bg-white w-full border-b border-neutral-200 px-2 md:px-5 fixed left-0 right-0'>
+		<nav className='flex justify-center h-[var(--header-height)] bg-white w-full border-b border-neutral-200 px-2 md:px-5 fixed left-0 right-0 z-50'>
 			<div className='flex h-full w-full max-w-[1300px] items-center justify-between'>
 				<div className='md:hidden'>
 					<button
