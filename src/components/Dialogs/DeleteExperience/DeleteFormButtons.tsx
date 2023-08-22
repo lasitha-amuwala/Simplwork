@@ -1,29 +1,10 @@
 import { useState } from 'react';
-import { MdDelete } from 'react-icons/md';
 import { CgSpinner } from 'react-icons/cg';
-import { WorkHistory } from '../../ExperienceList';
-import { DialogContentLayout } from '../DialogContentLayout';
 import { patchCandidate } from '@utils/simplwork';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { DialogCancelButton } from '../DialogCancelButton';
+import { DialogCancelButton } from '@components/Dialogs/DialogCancelButton';
 
-export const DeleteExperienceDialog = ({ index, data }: { index: number; data: WorkHistory }) => {
-	const [open, setOpen] = useState(false);
-
-	return (
-		<DialogContentLayout
-			open={open}
-			setOpen={setOpen}
-			triggerLabel={<MdDelete />}
-			triggerClassName='p-2 rounded baby-red-btn'
-			title='Are You Sure?'
-			description={`This cannot be undone.`}>
-			<DeleteFormButtons afterDelete={() => setOpen(false)} index={index} />
-		</DialogContentLayout>
-	);
-};
-
-const DeleteFormButtons = ({ index, afterDelete }: { index: number; afterDelete: () => void }) => {
+export const DeleteFormButtons = ({ index, afterDelete }: { index: number; afterDelete: () => void }) => {
 	const queryClient = useQueryClient();
 	const [deleting, setDeleting] = useState(false);
 

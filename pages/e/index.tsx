@@ -1,6 +1,6 @@
 import { useAuth } from '@components/Auth/AuthProvider';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
-import { CreatePostingDialog } from '@components/CreatePostingDialog';
+import { CreatePostingDialog } from '@components/Posts/CreatePostingDialog';
 import { NextPage } from 'next';
 import React from 'react';
 

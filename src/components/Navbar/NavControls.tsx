@@ -1,6 +1,4 @@
 import { useAuth } from '../Auth/AuthProvider';
-import { useQuery } from '@tanstack/react-query';
-import { queries } from '../../utils/simplwork';
 import * as Popover from '@radix-ui/react-popover';
 import * as Avatar from '@radix-ui/react-avatar';
 import { RxCross2 } from 'react-icons/rx';

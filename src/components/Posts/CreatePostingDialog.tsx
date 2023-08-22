@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DialogContentLayout } from './Dialogs/DialogContentLayout';
+import { DialogContentLayout } from '../Dialogs/DialogContentLayout';
 import { HiOutlinePlus } from 'react-icons/hi';
 import { CreatePostingForm } from './CreatePostingForm';
 

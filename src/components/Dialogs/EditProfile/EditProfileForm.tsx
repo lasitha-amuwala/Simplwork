@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { SimplworkApi } from '../../../utils/simplwork';
 import { FormikValues } from 'formik';
+import { SimplworkApi } from '@utils/simplwork';
+import { ProfileForm } from '@components/Formik/Forms/ProfileForm';
+import { FieldControl } from '@components/Formik/inputs/FieldControl';
+import { DialogFormLayout } from '@components/Dialogs/DialogFormLayout';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { DialogFormLayout } from '../DialogFormLayout';
-import { ProfileForm } from '../../Formik/Forms/ProfileForm';
-import { profileValidationSchema } from '../../Formik/FormValidation';
-import { FieldControl } from '../../Formik/Feilds/FieldControl';
+import { profileValidationSchema } from '@components/Formik/FormValidation';
 
 type EditProfileForm = { profileData: any; afterSave: () => void };
 

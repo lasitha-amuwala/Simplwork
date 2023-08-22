@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { WorkHistory } from '../../ExperienceList';
-import { DialogContentLayout } from '../DialogContentLayout';
-import { WorkExperienceForm } from './EditExperienceForm';
 import { MdEdit } from 'react-icons/md';
+import { WorkHistory } from '@components/Lists/Experience/ExperienceList';
+import { WorkExperienceForm } from './EditExperienceForm';
+import { DialogContentLayout } from '@components/Dialogs/DialogContentLayout';
 
 export const EditExperienceDialog = ({ index, data }: { index: number; data: WorkHistory }) => {
 	const [open, setOpen] = useState(false);

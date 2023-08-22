@@ -6,9 +6,9 @@ import { employerProfile } from '@components/Formik/FormValidation';
 import { RegisterLayout } from '../RegisterLayout';
 import { Step } from '../Step';
 import { StepHeader } from '../StepHeader';
-import { FieldControl } from '@components/Formik/Feilds/FieldControl';
+import { FieldControl } from '@components/Formik/inputs/FieldControl';
 import { StepperButtons } from '../StepperButtons';
-import { SignUpBranchForm } from './SignUpBranchesForm';
+import { SignUpBranchForm } from '../../Formik/Forms/Signup/SignUpBranchesForm';
 import { useRouter } from 'next/router';
 
 type Props = {};

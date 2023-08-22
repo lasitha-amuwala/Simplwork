@@ -5,8 +5,8 @@ import { SimplworkApi, queries } from '@utils/simplwork';
 import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { BranchForm } from './BranchForm';
-import { BranchList } from './BranchList';
+import { BranchForm } from '../BranchForm';
+import { BranchList } from '../../../Lists/Branches/BranchList';
 
 type SignUpBranchProps = { employerName: string };
 type Values = { branchName: string };

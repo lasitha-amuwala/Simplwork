@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { FieldControl } from './Formik/Feilds/FieldControl';
+import { FieldControl } from '../inputs/FieldControl';
 import { Field } from 'formik';
-import { AutoComplete } from './AutoComplete';
-import { AvailabilityWidget } from './AvailabilityWidget';
+import { AutoComplete } from '../../AutoComplete';
+import { AvailabilityWidget } from '../../AvailabilityWidget';
 
 type Props = {
 	updateLocation: (arg: SW.ILocation) => void;

@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { FormikValues } from 'formik';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { SimplworkApi, queries } from '@utils/simplwork';
-import { DialogFormLayout } from './Dialogs/DialogFormLayout';
-import { postingValidationSchema } from './Formik/FormValidation';
-import { constructAvailabilityObject } from './AvailabilityWidget';
-import { PostingForm } from './PostingForm';
-import { useAuth } from './Auth/AuthProvider';
+import { DialogFormLayout } from '../Dialogs/DialogFormLayout';
+import { jobPostingValidationSchema } from '../Formik/FormValidation';
+import { constructAvailabilityObject } from '../AvailabilityWidget';
+import { PostingForm } from '../Formik/Forms/PostingForm';
+import { useAuth } from '../Auth/AuthProvider';
 
 type CreatePostingFormProps = { afterSave: () => void };
 
@@ -80,7 +80,7 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 	};
 
 	return (
-		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={postingValidationSchema} formDisabled={saving}>
+		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={jobPostingValidationSchema} formDisabled={saving}>
 			<PostingForm updateLocation={setLocation} availability={availability} setAvailability={setAvailability} />
 		</DialogFormLayout>
 	);

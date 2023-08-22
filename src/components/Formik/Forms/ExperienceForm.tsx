@@ -1,5 +1,5 @@
-import { FieldControl } from '../Feilds/FieldControl';
-import { DayPickerField } from '../Feilds/DayPickerField';
+import { FieldControl } from '../inputs/FieldControl';
+import { DayPicker } from '../inputs/DayPicker';
 import { useField } from 'formik';
 
 export const ExperienceForm = () => {
@@ -14,8 +14,8 @@ export const ExperienceForm = () => {
 					<label htmlFor='currWorking'>{`I am currently working in this role.`}</label>
 				</div>
 				<div className='flex gap-5'>
-					<DayPickerField name='startDate' label='Start Date' type='date' errorBelow />
-					<DayPickerField name='endDate' label='End Date' type='date' errorBelow disabled={field.value} />
+					<DayPicker name='startDate' label='Start Date' type='date' errorBelow />
+					<DayPicker name='endDate' label='End Date' type='date' errorBelow disabled={field.value} />
 				</div>
 				<FieldControl name='details' label='Job Description' as='textarea' type='text' className='py-2 w-full inputStyle h-32' />
 			</div>

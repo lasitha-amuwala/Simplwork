@@ -1,14 +1,14 @@
-import { useAuth } from '../../Auth/AuthProvider';
-import { ExperienceForm } from '../../Formik/Forms/ExperienceForm';
+import { useAuth } from '../../../Auth/AuthProvider';
+import { ExperienceForm } from '../ExperienceForm';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { patchCandidate, queries } from '../../../utils/simplwork';
-import { ExperienceList } from '../../ExperienceList';
-import { AddExperienceDialog } from '../../Dialogs/ExperienceFormDialogs/AddExperienceDialog';
+import { patchCandidate, queries } from '../../../../utils/simplwork';
+import { ExperienceList } from '../../../Lists/Experience/ExperienceList';
+import { AddExperienceDialog } from '../../../Dialogs/AddExperience/AddExperienceDialog';
 import { Form, Formik, FormikValues } from 'formik';
-import { SaveChangesButton } from '../../Buttons/SaveChangesButton';
+import { SaveChangesButton } from '../../../Buttons/SaveChangesButton';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { workHistoryValidationSchema } from '../../Formik/FormValidation';
+import { workHistoryValidationSchema } from '../../FormValidation';
 
 type Props = {};
 
@@ -61,7 +61,7 @@ export const SignUpExperienceForm = (props: Props) => {
 	}
 	return (
 		<div className='flex flex-col gap-5'>
-			<ExperienceList history={candidate?.workHistory?? []} />
+			<ExperienceList history={candidate?.workHistory ?? []} />
 			<AddExperienceDialog />
 		</div>
 	);

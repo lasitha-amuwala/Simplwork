@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState } from 'react';
-import { DialogContentLayout } from '../DialogContentLayout';
 import { EditProfileForm } from './EditProfileForm';
+import { DialogContentLayout } from '@components/Dialogs/DialogContentLayout';
 
 type EditProfileDialogProps = { profileData: any };
 

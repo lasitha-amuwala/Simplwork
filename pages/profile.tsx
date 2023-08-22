@@ -1,13 +1,13 @@
 import { useAuth } from '@components/Auth/AuthProvider';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
-import { AddExperienceDialog } from '@components/Dialogs/ExperienceFormDialogs/AddExperienceDialog';
-import { ExperienceList } from '@components/ExperienceList';
+import { ExperienceList } from '@components/Lists/Experience/ExperienceList';
 import { CommutePostTags } from '@components/Posts/PostTags/CommutePostTags';
 import { queries } from '@utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
 import { AvailabilityEdit } from '@components/AvailabilityWidget';
 import Image from 'next/image';
+import { AddExperienceDialog } from '@components/Dialogs/AddExperience/AddExperienceDialog';
 
 const Profile: NextPage = () => {
 	const { user } = useAuth();

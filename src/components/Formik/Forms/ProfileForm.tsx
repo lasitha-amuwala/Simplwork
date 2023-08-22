@@ -1,5 +1,5 @@
-import { FieldControl } from '../Feilds/FieldControl';
-import { GenderSelect } from '../Feilds/GenderSelect';
+import { FieldControl } from '../inputs/FieldControl';
+import { GenderSelect } from '../inputs/GenderSelect';
 
 export const ProfileForm = () => (
 	<div className='flex flex-col gap-2'>

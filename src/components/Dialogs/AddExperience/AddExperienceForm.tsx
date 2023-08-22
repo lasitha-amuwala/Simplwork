@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { patchCandidate } from '../../../utils/simplwork';
 import { FormikValues } from 'formik';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { DialogFormLayout } from '../DialogFormLayout';
-import { ExperienceForm } from '../../Formik/Forms/ExperienceForm';
 import { formatDate } from '@utils/helpers';
-import { workHistoryValidationSchema } from '../../Formik/FormValidation';
-import { WorkHistoryValuesType } from './EditExperienceForm';
+import { patchCandidate } from '@utils/simplwork';
+import { DialogFormLayout } from '@components/Dialogs/DialogFormLayout';
+import { ExperienceForm } from '@components/Formik/Forms/ExperienceForm';
+import { workHistoryValidationSchema } from '@components/Formik/FormValidation';
+import { WorkHistoryValuesType } from '../EditExperience/EditExperienceForm';
 
 type AddExperienceFormProps = { afterSave: () => void };
 

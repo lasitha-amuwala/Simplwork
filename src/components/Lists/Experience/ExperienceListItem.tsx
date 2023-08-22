@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
-import { DeleteExperienceDialog } from './Dialogs/ExperienceFormDialogs/DeleteExperienceDialog';
-import { EditExperienceDialog } from './Dialogs/ExperienceFormDialogs/EditExperienceDialog';
 import { WorkHistory } from './ExperienceList';
+import { EditExperienceDialog } from '@components/Dialogs/EditExperience/EditExperienceDialog';
+import { DeleteExperienceDialog } from '@components/Dialogs/DeleteExperience/DeleteExperienceDialog';
 
 type ExperienceListItem = { data: WorkHistory; index: number };
 

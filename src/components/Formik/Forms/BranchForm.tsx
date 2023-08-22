@@ -1,5 +1,5 @@
 import { AutoComplete } from '@components/AutoComplete';
-import { FieldControl } from '@components/Formik/Feilds/FieldControl';
+import { FieldControl } from '@components/Formik/inputs/FieldControl';
 import React from 'react';
 
 type BranchFormProps = { updateLocation: (arg: SW.ILocation) => void; afterSave: () => void };

@@ -6,7 +6,7 @@ import { AutoComplete } from '../../AutoComplete';
 import { SimplworkApi } from '@utils/simplwork';
 import { StepProgressHeaderObj } from '../StepProgressHeader';
 import { CommuteCheckBoxButton, commuteTypes } from './CommuteCheckBox';
-import { SignUpExperienceForm } from './SignUpExperienceForm';
+import { SignUpExperienceForm } from '../../Formik/Forms/Signup/SignUpExperienceForm';
 import { StepHeader } from '../StepHeader';
 import { ProfileForm } from '../../Formik/Forms/ProfileForm';
 import { createCandidateRequestBody } from '@utils/authHelpers';

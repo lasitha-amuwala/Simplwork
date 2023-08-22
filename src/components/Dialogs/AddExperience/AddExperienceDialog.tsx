@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { DialogContentLayout } from '../DialogContentLayout';
-import { AddExperienceForm } from './AddExperienceForm';
 import { HiOutlinePlus } from 'react-icons/hi';
+import { AddExperienceForm } from './AddExperienceForm';
+import { DialogContentLayout } from '@components/Dialogs/DialogContentLayout';
 
 export const AddExperienceDialog = () => {
 	const [open, setOpen] = useState(false);

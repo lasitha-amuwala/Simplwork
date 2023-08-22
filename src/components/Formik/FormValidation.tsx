@@ -35,7 +35,7 @@ export const employerProfile = object().shape({
 		.max(2000, 'Maximum 2000 characters, Too Long!'),
 });
 
-export const postingValidationSchema = object().shape({
+export const jobPostingValidationSchema = object().shape({
 	positionTitle: string().required('Position title is required.'),
 	pay: number().required('Pay is required.'),
 	fixedSchedule: boolean().required('This field is required.'),
