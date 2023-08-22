@@ -34,3 +34,11 @@ export const employerProfile = object().shape({
 		.min(2, 'Too Short!')
 		.max(2000, 'Maximum 2000 characters, Too Long!'),
 });
+
+export const postingValidationSchema = object().shape({
+	positionTitle: string().required('Position title is required.'),
+	pay: number().required('Pay is required.'),
+	fixedSchedule: boolean().required('This field is required.'),
+	jobDescription: string().required('Job Description is required.'),
+	benefits: string().required('Benefits is required.'),
+});

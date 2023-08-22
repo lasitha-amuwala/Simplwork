@@ -48,6 +48,7 @@ export const EmployerSignUp = (props: Props) => {
 				.then(() => {
 					setIsEmployerCreated(true);
 					setEmployerName(companyName);
+					window.localStorage.setItem('employerName', companyName);
 					setStep((step) => step + 1);
 				})
 				.catch((err) => {
@@ -55,8 +56,7 @@ export const EmployerSignUp = (props: Props) => {
 					//reset form
 				});
 		} else if (step == 1) {
-			console.log('test');
-			router.push('/');
+			router.push('/e/');
 		} else {
 			setStep((step) => step + 1);
 		}
@@ -71,7 +71,7 @@ export const EmployerSignUp = (props: Props) => {
 							<Step>
 								<StepHeader title='Create Profile' subtitle='Enter your details to create a profile' />
 								<FieldControl name='companyName' label='Company Name' type='text' />
-								<FieldControl name='companyDescription' label='Company Description' type='text' as='textarea' className='h-52 inputStyle ' />
+								<FieldControl name='companyDescription' label='Company Description' type='text' as='textarea' className='h-52 inputStyle' />
 								<StepperButtons step={step} updateStep={setStep} />
 							</Step>
 						</Form>

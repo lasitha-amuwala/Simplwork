@@ -25,7 +25,7 @@ namespace SW {
 	interface IShift {
 		dayOfWeek: DayOfWeekNumber;
 		shiftTimes: IShiftTimes;
-		id: string;
+		id?: string;
 	}
 
 	interface IShiftCompatibilities {

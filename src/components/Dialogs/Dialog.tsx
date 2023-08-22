@@ -10,11 +10,11 @@ const DialogContent = forwardRef<HTMLDivElement, PropsWithChildren<DialogContent
 	({ className, children, ...props }, forwardedRef) => {
 		return (
 			<DialogPrimitive.Portal>
-				<DialogPrimitive.Overlay className='bg-black/30 data-[state=open]:animate-overlayShow fixed inset-0' />
+				<DialogPrimitive.Overlay className='bg-black/30 data-[state=open]:animate-overlayShow fixed inset-0 z-[99]' />
 				<DialogPrimitive.Content
 					{...props}
 					ref={forwardedRef}
-					className={`${className} data-[state=open]:animate-contentShow overflow-auto fixed top-[50%] left-[50%] max-h-[85vh] w-[95%] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none`}>
+					className={`${className} z-[100] data-[state=open]:animate-contentShow overflow-auto fixed top-[50%] left-[50%] max-h-[85vh] w-[95%] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none`}>
 					{children}
 					<DialogPrimitive.Close aria-label='Close' asChild>
 						<button
