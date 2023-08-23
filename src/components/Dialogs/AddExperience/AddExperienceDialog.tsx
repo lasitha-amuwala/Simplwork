@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { HiOutlinePlus } from 'react-icons/hi';
 import { AddExperienceForm } from './AddExperienceForm';
 import { DialogContentLayout } from '@components/Dialogs/DialogContentLayout';
 
@@ -8,7 +7,6 @@ export const AddExperienceDialog = () => {
 
 	const TriggerButton = () => (
 		<div className='flex gap-2 items-center'>
-			<HiOutlinePlus className='text-xl' />
 			<p className='tracking-wide'>Add Experience</p>
 		</div>
 	);

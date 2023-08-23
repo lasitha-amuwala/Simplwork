@@ -1,13 +1,15 @@
 import { useAuth } from '@components/Auth/AuthProvider';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
 import { ExperienceList } from '@components/Lists/Experience/ExperienceList';
-import { CommutePostTags } from '@components/Posts/PostTags/CommutePostTags';
 import { queries } from '@utils/simplwork';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
 import { AvailabilityEdit } from '@components/AvailabilityWidget';
-import Image from 'next/image';
 import { AddExperienceDialog } from '@components/Dialogs/AddExperience/AddExperienceDialog';
+import { EditProfileDialog } from '@components/Dialogs/EditProfile/EditProfileDialog';
+import { HeaderWithButton } from '@components/Profile/HeaderWithButton';
+import { ProfileInfoCard } from '@components/Profile/ProfileInfoCard';
+import Image from 'next/image';
 
 const Profile: NextPage = () => {
 	const { user } = useAuth();
@@ -42,42 +44,19 @@ const Profile: NextPage = () => {
 				</div>
 				<div className='p-5 flex gap-5'>
 					<div className='w-7/12 h-auto'>
-						<div className='flex justify-between pb-5'>
-							<h1 className='text-2xl font-semibold self-end'>Work Experience</h1>
+						<HeaderWithButton title='My Experience'>
 							<AddExperienceDialog />
+						</HeaderWithButton>
+						<div className='max-h-[800px] overflow-y-auto pr-1'>
+							<ExperienceList history={candidate?.workHistory ?? []} />
 						</div>
-						<ExperienceList history={candidate?.workHistory ?? []} />
 					</div>
-					<div className='w-5/12 flex flex-col gap-5'>
+					<div className='w-5/12 flex flex-col gap-5 '>
 						<div>
-							<h1 className='text-2xl font-semibold pb-3'>My Information</h1>
-							<div className=' bg-gray-100 p-5 rounded-md flex flex-col gap-3'>
-								<div className=''>
-									<h1 className='font-semibold'>Email:</h1>
-									<p>{candidate?.email}</p>
-								</div>
-								<div>
-									<h1 className='font-semibold'>Gender:</h1>
-									<p>{candidate.gender.charAt(0) + candidate.gender.slice(1).toLowerCase()}</p>
-								</div>
-								<div>
-									<h1 className='font-semibold'>Age:</h1>
-									<p>{candidate?.age}</p>
-								</div>
-								<div>
-									<h1 className='font-semibold'>Phone Number:</h1>
-									<p>{candidate?.phoneNumber}</p>
-								</div>
-								<div>
-									<h1 className='font-semibold pb-1'>Commute Preferences:</h1>
-									<CommutePostTags
-										CarCommuteTime={candidate.maxTravelTimes.CAR}
-										bikeCommuteTime={candidate.maxTravelTimes.BIKE}
-										walkCommuteTime={candidate.maxTravelTimes.WALK}
-										publicTransiteCommuteTime={candidate.maxTravelTimes.PUBLIC_TRANSIT}
-									/>
-								</div>
-							</div>
+							<HeaderWithButton title='My Information'>
+								<EditProfileDialog profileData={candidate} />
+							</HeaderWithButton>
+							<ProfileInfoCard candidate={candidate} />
 						</div>
 						<div>
 							<h1 className='text-2xl font-semibold pb-3'>My Availability</h1>
