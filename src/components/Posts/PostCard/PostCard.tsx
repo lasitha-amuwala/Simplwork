@@ -52,7 +52,7 @@ export const PostCard = memo(({ post, status, active }: PostListItemProps) => {
 		statusTextColor = 'text-indigo-600';
 	} else if (status === 'WITHDRAWN') {
 		statusString = 'Withdrawn';
-		statusBGColor = 'text-gray-100';
+		statusBGColor = 'bg-gray-100';
 		statusTextColor = 'text-gray-600';
 	}
 

@@ -1,26 +1,30 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@components/Auth/AuthProvider';
-import { useQuery } from '@tanstack/react-query';
-import { MdErrorOutline } from 'react-icons/md';
-import { queries } from '@utils/simplwork';
-import { useRouter } from 'next/router';
-import { SearchBar } from '@components/SearchBar';
-import { Post, PostSkeleton } from '@components/Posts/Post';
-import { PostCardList } from '@components/Posts/PostCard';
-import { ProtectedPage } from '@components/Auth/ProtectedPage';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { queries } from '@utils/simplwork';
+import { MdErrorOutline } from 'react-icons/md';
+import { SearchBar } from '@components/SearchBar';
+import { useAuth } from '@components/Auth/AuthProvider';
+import { PostCardList } from '@components/Posts/PostCard';
+import { Post, PostSkeleton } from '@components/Posts/Post';
+import { ProtectedPage } from '@components/Auth/ProtectedPage';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const Home: NextPage = () => {
 	const router = useRouter();
 	const { user } = useAuth();
+	const queryClient = useQueryClient();
 	const [selectedPost, setSelectedPost] = useState<number>(0);
 	const [searchInput, setSearchInput] = useState<string>('');
 	const [searchQuery, setSearchQuery] = useState<string>('');
 
-	const { data, isLoading, isError, isSuccess } = useQuery({
-		...queries.candidate.searchCandidatePostings(user?.credential ?? '', { queryString: searchQuery, pageSize: '20', pageNo: '0' }),
-		refetchInterval: 30000,
+	const postingQuery = queries.candidate.searchCandidatePostings(user?.credential ?? '', {
+		queryString: searchQuery,
+		pageSize: '20',
+		pageNo: '0',
 	});
+
+	const { data, isLoading, isError, isSuccess } = useQuery({ ...postingQuery, refetchInterval: 30000 });
 
 	useEffect(() => {
 		if (router.query.search) {
@@ -29,7 +33,10 @@ const Home: NextPage = () => {
 		}
 	}, [router]);
 
+	// if url has id, set id as selected post
 	useEffect(() => setSelectedPost(parseInt((router.query.id as string) ?? 0)), [router]);
+	// refetch postings
+	const refetch = () => queryClient.invalidateQueries(postingQuery);
 
 	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearchInput(e.target.value);
 
@@ -62,7 +69,7 @@ const Home: NextPage = () => {
 						<div className='hidden md:block md:w-[60%] lg:w-[60%]'>
 							{isLoading && <PostSkeleton />}
 							{!isLoading && isSuccess && data.length > 0 ? (
-								<Post post={data[selectedPost]} />
+								<Post post={data[selectedPost]} refetch={refetch} />
 							) : (
 								<div className='mt-1 bg-gray-200 w-full py-10 px-5 flex flex-col justify-center items-center rounded'>
 									<p className='py-10 font-semibold'>No Posts available, Please try again.</p>

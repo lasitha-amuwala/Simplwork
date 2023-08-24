@@ -3,30 +3,33 @@ import { useMutation } from '@tanstack/react-query';
 import { SimplworkApi } from '@utils/simplwork';
 import { CommutePostTags } from '../PostTags/CommutePostTags';
 import { PostBody } from './PostBody';
+import axios from 'axios';
 
 type PostProps = {
 	post: SW.PostingResponse;
+	refetch: () => Promise<void>;
 };
 
-const applyToPost = async (data: any) => {
-	console.log(JSON.stringify(data));
-	const res = await SimplworkApi.post(`candidate/postings/setStatus?id=${data.id.toString()}&status=APPLIED`);
-	console.log('res', JSON.stringify(res.data, null, 2));
-	return res;
+const setPostingStatus = ({ id, status }: { id: number; status: string }) => {
+	return SimplworkApi.post(`candidate/postings/setStatus?id=${id.toString()}&status=${status}`);
 };
 
-export const Post = memo(({ post }: PostProps) => {
-	const mutation = useMutation({ mutationFn: applyToPost });
-
+export const Post = memo(({ post, refetch }: PostProps) => {
 	const isMatch = !!post.candidateStatus;
+	// run setStatus mutation, refetch post list on success, handle errors
+	const { mutate } = useMutation({
+		mutationFn: setPostingStatus,
+		onSuccess: () => refetch(),
+		onError: (error) => {
+			if (axios.isAxiosError(error))
+				if (error.response?.status) alert('Unable to apply to job: your availability do not match the required job schedule');
+				else alert('Something went wrong. Please try again.');
+		},
+	});
 
-	const handleOnClick = () => {
-		console.log('clicked: ', post.posting.id);
-		mutation.mutate({ id: post.posting.id, status: 'APPLIED' });
-		// console.log(post.posting.id);
-	};
+	const onStatusChangeClick = (status: string) => mutate({ id: post.posting.id, status: status });
 
-	const CompanyCard = () => {
+	const CompanyHeaderCard = () => {
 		return (
 			<div className='bg-[#64B1EC]/10 border-b p-4 flex flex-col gap-4 overflow-auto'>
 				<div className='h-auto flex gap-4'>
@@ -37,17 +40,14 @@ export const Post = memo(({ post }: PostProps) => {
 								<h1 className='font-semibold text-xl'>{post.posting.employer.companyName}</h1>
 								<p className='font-normal text-lg '>{post.posting.employer?.branches[0].branchName}</p>
 							</div>
-							{!post.candidateStatus ? (
-								<button className='btn-blue self-start' onClick={handleOnClick}>
+							{!post.candidateStatus || post.candidateStatus === 'WITHDRAWN' ? (
+								<button className='btn-blue self-start' onClick={() => onStatusChangeClick('APPLIED')}>
 									Apply
 								</button>
 							) : (
-								<div>
-									<div className='bg-green-100 self-start text-green-600 font-medium px-2 py-1 rounded-md'>Applied</div>
-									<button className='btn-blue self-start' onClick={handleOnClick}>
-										Widthdraw
-									</button>
-								</div>
+								<button className='btn-red self-start' onClick={() => onStatusChangeClick('WITHDRAWN')}>
+									Withdraw
+								</button>
 							)}
 						</div>
 						<p className='text-md text-gray-500'>{post.posting.employer.companyDescription}</p>
@@ -67,7 +67,7 @@ export const Post = memo(({ post }: PostProps) => {
 
 	return (
 		<div className='bg-white rounded-md border border-gray-200 mt-1 sticky top-[80px] max-h-[90vh] overflow-auto'>
-			<CompanyCard />
+			<CompanyHeaderCard />
 			<PostBody post={post} />
 		</div>
 	);

@@ -29,6 +29,9 @@ body {
 	.baby-blue-btn {
 		@apply bg-sw-50 text-sw-400 hover:bg-sw-100;
 	}
+	.btn-red {
+		@apply bg-red-700 px-2 md:px-3 py-2 rounded text-white font-medium hover:bg-red-800 active:bg-red-900;
+	}
 	.baby-red-btn {
 		@apply bg-red-50 text-red-600 hover:bg-red-100;
 	}
