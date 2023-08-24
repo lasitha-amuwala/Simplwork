@@ -38,6 +38,24 @@ const AvailableDayOfWeek = (weekAvailability: { dayOfWeek: number }[]) => {
 };
 
 export const PostCard = memo(({ post, status, active }: PostListItemProps) => {
+	let statusString = status;
+	let statusBGColor = 'bg-green-50';
+	let statusTextColor = 'text-green-600';
+
+	if (status === 'APPLIED') {
+		statusString = 'Applied';
+		statusBGColor = 'bg-green-50';
+		statusTextColor = 'text-green-600';
+	} else if (status === 'ACCEPT_INTERVIEW') {
+		statusString = 'Interview Accepted';
+		statusBGColor = 'bg-indigo-100';
+		statusTextColor = 'text-indigo-600';
+	} else if (status === 'WITHDRAWN') {
+		statusString = 'Withdrawn';
+		statusBGColor = 'text-gray-100';
+		statusTextColor = 'text-gray-600';
+	}
+
 	return (
 		<div
 			className={`w-full h-auto bg-white rounded-md border border-gray-200 p-4 text-start ring-sw hover:ring transition-shadow duration-150 ${
@@ -51,8 +69,8 @@ export const PostCard = memo(({ post, status, active }: PostListItemProps) => {
 						<p className='font-medium text-gray-500'>{post.employer.companyName}</p>
 					</div>
 					<div className=''>
-						{status && status === 'APPLIED' ? (
-							<div className='bg-green-100 text-green-600 text-sm font-medium px-2 py-1 rounded-md'>Applied</div>
+						{status ? (
+							<div className={`${statusBGColor} ${statusTextColor} text-sm font-medium px-2 py-1 rounded-md`}>{statusString}</div>
 						) : (
 							<button className='bg-sw-50 text-sw-400 text-sm font-medium px-2 py-1 rounded-md text-now whitespace-nowrap'>Click to apply</button>
 						)}
