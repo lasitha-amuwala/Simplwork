@@ -20,7 +20,7 @@ const Register: NextPageWithLayout<Props> = () => {
 };
 
 Register.getLayout = function getLayout(page: ReactElement) {
-	return <EmptyLayout>{page}</EmptyLayout>;
+	return <EmptyLayout title='Register'>{page}</EmptyLayout>;
 };
 
 export default Register;

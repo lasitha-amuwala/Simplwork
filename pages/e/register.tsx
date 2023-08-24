@@ -21,7 +21,7 @@ const Register: NextPageWithLayout = () => {
 };
 
 Register.getLayout = function getLayout(page: ReactElement) {
-	return <EmptyLayout>{page}</EmptyLayout>;
+	return <EmptyLayout title='Employer Register'>{page}</EmptyLayout>;
 };
 
 export default Register;

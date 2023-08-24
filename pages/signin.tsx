@@ -29,7 +29,7 @@ const SignIn: NextPageWithLayout = () => {
 };
 
 SignIn.getLayout = function getLayout(page: ReactElement) {
-	return <EmptyLayout>{page}</EmptyLayout>;
+	return <EmptyLayout title='Sign In'>{page}</EmptyLayout>;
 };
 
 export default SignIn;

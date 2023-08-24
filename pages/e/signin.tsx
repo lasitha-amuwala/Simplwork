@@ -14,14 +14,21 @@ const SignIn: NextPageWithLayout = (props: Props) => {
 	return (
 		<CenterPage>
 			<AuthCard title='Employer Sign in or Register' subtitle='Continue with Google to sign in or register.'>
-				<GoogleLogin useOneTap width={250} shape='pill' text='continue_with' onSuccess={onEmplyerSignIn} onError={() => console.log('Login Failed')} />
+				<GoogleLogin
+					useOneTap
+					width={250}
+					shape='pill'
+					text='continue_with'
+					onSuccess={onEmplyerSignIn}
+					onError={() => console.log('Login Failed')}
+				/>
 			</AuthCard>
 		</CenterPage>
 	);
 };
 
 SignIn.getLayout = function getLayout(page: ReactElement) {
-	return <EmptyLayout>{page}</EmptyLayout>;
+	return <EmptyLayout title='Employer Sign In'>{page}</EmptyLayout>;
 };
 
 export default SignIn;

@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import { queries } from '@utils/simplwork';
 import { useAuth } from '@components/Auth/AuthProvider';
+import Head from 'next/head';
 
 type Props = {};
 
@@ -32,6 +33,9 @@ const Applications: NextPage = (props: Props) => {
 
 	return (
 		<ProtectedPage>
+			<Head>
+				<title>My Applications - Simplwork</title>
+			</Head>
 			<div className='w-full h-full py-10'>
 				<div className='flex flex-col gap-10'>
 					<MatchStatusList status='APPLIED' label='Applied' />

@@ -9,6 +9,7 @@ import { PostCardList } from '@components/Posts/PostCard';
 import { Post, PostSkeleton } from '@components/Posts/Post';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import Head from 'next/head';
 
 const Home: NextPage = () => {
 	const router = useRouter();
@@ -49,6 +50,9 @@ const Home: NextPage = () => {
 
 	return (
 		<ProtectedPage>
+			<Head>
+				<title>Find Jobs - Simplwork</title>
+			</Head>
 			{isError ? (
 				<div className='flex flex-col gap-3 w-full h-[50vh] justify-center items-center text-gray-600'>
 					<MdErrorOutline className='text-8xl' />

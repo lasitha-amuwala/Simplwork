@@ -10,6 +10,7 @@ import { EditProfileDialog } from '@components/Dialogs/EditProfile/EditProfileDi
 import { HeaderWithButton } from '@components/Profile/HeaderWithButton';
 import { ProfileInfoCard } from '@components/Profile/ProfileInfoCard';
 import Image from 'next/image';
+import Head from 'next/head';
 
 const Profile: NextPage = () => {
 	const { user } = useAuth();
@@ -19,6 +20,9 @@ const Profile: NextPage = () => {
 	if (isError) return <div>error</div>;
 	return (
 		<ProtectedPage>
+			<Head>
+				<title>Profile - Simplwork</title>
+			</Head>
 			<div className='bg-white rounded-lg border mt-7 w-full overflow-hidden'>
 				<div className='relative'>
 					<div className='h-36 bg-gradient-to-r from-white to-sw-300 w-full' />
