@@ -56,7 +56,7 @@ const Navbar = () => {
 							<li key={link.name} className='h-full items-center flex flex-col border-sky-500'>
 								<div className='grow flex items-center'>
 									<Link
-										className={`${pathname === link.href ? 'text-sky-500 hover:text-sky-600' : 'text-gray-500 hover:text-neutral-800'} `}
+										className={`${pathname === link.href ? 'text-sky-500 hover:text-sky-600' : 'text-gray-500 hover:text-neutral-800'}`}
 										href={link.href}>
 										{link.name}
 									</Link>

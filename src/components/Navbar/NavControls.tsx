@@ -5,6 +5,7 @@ import { RxCross2 } from 'react-icons/rx';
 import { getInitials } from '../../utils/helpers';
 import { SignInButton } from './SignInButton';
 import { LogoutButton } from './SignOutButton';
+import Image from 'next/image';
 
 export const NavControls = () => {
 	const { user } = useAuth();
@@ -14,13 +15,10 @@ export const NavControls = () => {
 			<Popover.Trigger asChild>
 				{user ? (
 					<Avatar.Root className='h-11 w-11 overflow-hidden rounded-full'>
-						{user?.picture ? (
-							<Avatar.Image asChild className='w-full h-full object-cover rounded-full' src={user.picture} alt={user?.name} />
-						) : (
-							<Avatar.Fallback className='text-sw-500 leading-1 flex h-full w-full items-center justify-center bg-sw-50 text-[15px] font-medium'>
-								{getInitials(user?.name)}
-							</Avatar.Fallback>
-						)}
+						<Avatar.Image className='w-full h-full object-cover rounded-full' src={user?.picture ?? ''} alt={user?.name} />
+						<Avatar.Fallback className='text-sw-500 leading-1 flex h-full w-full items-center justify-center bg-sw-50 text-[15px] font-medium'>
+							{getInitials(user?.name)}
+						</Avatar.Fallback>
 					</Avatar.Root>
 				) : (
 					<SignInButton />
