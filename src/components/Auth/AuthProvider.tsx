@@ -18,7 +18,7 @@ const setLocalStorage = (token: string | null) => (!token ? localStorage.removeI
 // extract google profile data from jwt
 export const getGoogleProfile = (credential: string): GoogleProfileData => {
 	const { exp, email, picture, name } = decodeCredential(credential);
-	return { credential: credential, email, picture, name, exp, };
+	return { credential: credential, email, picture, name, exp };
 };
 
 // checks expiry on token
@@ -100,8 +100,8 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 		}
 		setAuthorization(credential);
 		setLocalStorage(credential);
+		setLoggedIn(true);
 		setUser(getGoogleProfile(credential));
-		router.replace('/');
 	};
 
 	// const onSignUp = ({ credential }: CredentialResponse): Promise<boolean> => {
@@ -124,10 +124,13 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	// };
 
 	// on refresh or new window open, log the user in automatically
-	// useEffect(() => {
-	// 	const credential = localStorage.getItem('token');
-	// 	if (credential && !isTokenExpired(credential)) signInUser(credential);
-	// }, []);
+	useEffect(() => {
+		const credential = localStorage.getItem('token');
+		if (credential && !isTokenExpired(credential)) {
+			signInUser(credential);
+			router.replace('/');
+		}
+	}, []);
 
 	// set an interceptor to catch 401 errors and remove user
 	useEffect(() => {

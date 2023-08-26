@@ -71,7 +71,6 @@ export const CandidateSignUp = ({ credential, resetSignUp }: SignUpFlowProps) =>
 			SimplworkApi.post('candidate', JSON.stringify(requestBody))
 				.then((res: any) => {
 					setCandidateCreated(true);
-					// signInUser(credential);
 				})
 				.catch((err: any) => {
 					alert('There was an issue creating your account, Please try again.');
@@ -111,7 +110,14 @@ export const CandidateSignUp = ({ credential, resetSignUp }: SignUpFlowProps) =>
 				<Step>
 					<StepHeader title='Add Work Experience' subtitle='Enter your work experience' />
 					<SignUpExperienceForm />
-					<StepperButtons step={step} updateStep={setStep} />
+					<button
+						className='btn-blue'
+						onClick={() => {
+							signInUser(credential);
+							router.push('/');
+						}}>
+						Complete
+					</button>
 				</Step>
 			) : (
 				<Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema[step]}>
@@ -157,7 +163,7 @@ export const CandidateSignUp = ({ credential, resetSignUp }: SignUpFlowProps) =>
 											)}
 										/>
 									</div>
-									<StepperButtons step={step} updateStep={setStep} renderBackButton={true} />
+									<StepperButtons step={step} updateStep={setStep} />
 								</Step>
 							)}
 							{step === 2 && (
@@ -181,7 +187,7 @@ export const CandidateSignUp = ({ credential, resetSignUp }: SignUpFlowProps) =>
 											<AvailabilityWidget availability={availability} onChange={setAvailability} />
 										</div>
 									</div>
-									<StepperButtons step={step} updateStep={setStep} />
+									<StepperButtons step={step} updateStep={setStep} renderBackButton={true} />
 								</Step>
 							)}
 						</Form>
@@ -191,15 +197,3 @@ export const CandidateSignUp = ({ credential, resetSignUp }: SignUpFlowProps) =>
 		</RegisterLayout>
 	);
 };
-
-{
-	/* <div className='flex flex-col gap-5'>
-	<FieldControl name='fullName' label='Full name' type='text' />
-	<div className='flex w-full gap-5'>
-		<FieldControl name='age' label='Age' type='number' min={14} max={100} errorBelow />
-		<GenderSelect />
-	</div>
-	<FieldControl name='phoneNumber' label='Phone Number' type='tel' placeholder='XXX-XXX-XXXX' />
-	<StepperButtons step={step} updateStep={updateStep} />
-</div>; */
-}
