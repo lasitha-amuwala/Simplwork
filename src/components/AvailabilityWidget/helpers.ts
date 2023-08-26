@@ -35,7 +35,9 @@ export const computeAvailabilityToSchedule = (availabilityObject: SW.IAvailabili
 
 // compute
 export const computeScheduleToAvailability = (arr: Date[], hourlyChunks: number): SW.IAvailability => {
+	console.log('hi', arr)
 	let availabilityObject = constructAvailabilityObject();
+	if (arr.length < 0) return availabilityObject;
 
 	const chunk = getHourlyChunk(hourlyChunks);
 	const getStartTime = (date: Date): number => date.getHours() * chunk;
@@ -61,7 +63,10 @@ export const computeScheduleToAvailability = (arr: Date[], hourlyChunks: number)
 	};
 	// convert raw scheduler data to more useful data
 	arr.forEach((date) => availabilityObject[getDayOfWeek(date)].push({ startTime: getStartTime(date), endTime: getEndTime(date) }));
+	console.log(availabilityObject);
 	Object.values(availabilityObject).map((values) => mergeShiftTimesRecursively(values, 0));
+	console.log(availabilityObject);
+
 	return availabilityObject;
 };
 
