@@ -14,7 +14,7 @@ export const computeAvailabilityToSchedule = (availabilityObject: SW.IAvailabili
 	const chunk = getHourlyChunk(hourlyChunk);
 	Object.keys(availabilityObject).forEach((keys, i) => {
 		if (availabilityObject[keys as SW.DayOfWeekString].length < 1) return;
-		availabilityObject[keys as SW.DayOfWeekString].forEach(({ startTime, endTime }: SW.IShiftTimes) => {
+		availabilityObject[keys as SW.DayOfWeekString].forEach(({ startTime, endTime }: SW.IShiftTime) => {
 			const diff = endTime - startTime;
 			const numChunk = Math.floor(diff / chunk);
 			const day = i == 6 ? 0 : i + 1;
@@ -45,7 +45,7 @@ export const computeScheduleToAvailability = (arr: Date[], hourlyChunks: number)
 	const getDayOfWeek = (date: Date): SW.DayOfWeekString => getDayOfWeekString(date.getDay() === 0 ? 7 : date.getDay());
 
 	// merges shiftTimes that can be merged ex. input: [{start: 0, end: 60}, {start: 60, end: 120}] , output: [{start: 0, end: 120}]
-	const mergeShiftTimesRecursively = (list: SW.IShiftTimes[], prevLength: number) => {
+	const mergeShiftTimesRecursively = (list: SW.IShiftTime[], prevLength: number) => {
 		let originalLength = list.length;
 		if (originalLength === prevLength) return list;
 
