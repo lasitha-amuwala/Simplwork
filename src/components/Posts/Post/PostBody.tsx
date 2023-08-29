@@ -18,7 +18,7 @@ export const PostBody = ({ post }: PostBodyProps) => {
 			</div>
 			<div className='flex flex-col gap-1'>
 				<h1 className='font-semibold text-lg'>Availability</h1>
-				<div className='h-[500px] overflow-auto pr-1'>
+				<div className='pr-1'>
 					<AvailabilityExpand availability={availability} />
 				</div>
 			</div>
