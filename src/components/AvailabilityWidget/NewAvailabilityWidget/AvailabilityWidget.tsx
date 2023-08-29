@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useRef } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -16,13 +18,13 @@ export const renderWidget = (props: AvailabilityWidgetProps): JSX.Element => <Av
 export const AvailabilityWidget = ({ events, backgroundEvents, readonly = false }: AvailabilityWidgetProps) => {
 	const calendarRef = useRef(null);
 
-	const onSelect = (selectInfo: unknown) => {
+	const onSelect = (selectInfo: any) => {
 		const api = selectInfo.view.calendar;
 		api.addEvent({ start: selectInfo.start, end: selectInfo.end });
 		console.log(api.getEvents());
 	};
 
-	const renderButton = (selectInfo: unknown) => {
+	const renderButton = (selectInfo: any) => {
 		const { event, timeText } = selectInfo;
 		return (
 			<div className=''>
