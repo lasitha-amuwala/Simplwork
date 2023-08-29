@@ -1,6 +1,5 @@
 namespace SW {
 	type DayOfWeekString = 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY';
-	type DayOfWeekNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 	interface IMaxTravelTimes {
 		BIKE?: number;
@@ -17,14 +16,14 @@ namespace SW {
 		endDate?: string;
 	}
 
-	interface IShiftTimes {
+	interface IShiftTime {
 		startTime: number;
 		endTime: number;
 	}
 
 	interface IShift {
-		dayOfWeek: DayOfWeekNumber;
-		shiftTimes: IShiftTimes;
+		dayOfWeek: number;
+		shiftTimes: IShiftTime;
 		id?: string;
 	}
 
@@ -135,12 +134,12 @@ namespace SW {
 	}
 
 	interface IAvailability {
-		SUNDAY: IShiftTimes[];
-		MONDAY: IShiftTimes[];
-		TUESDAY: IShiftTimes[];
-		WEDNESDAY: IShiftTimes[];
-		THURSDAY: IShiftTimes[];
-		FRIDAY: IShiftTimes[];
-		SATURDAY: IShiftTimes[];
+		SUNDAY: IShiftTime[];
+		MONDAY: IShiftTime[];
+		TUESDAY: IShiftTime[];
+		WEDNESDAY: IShiftTime[];
+		THURSDAY: IShiftTime[];
+		FRIDAY: IShiftTime[];
+		SATURDAY: IShiftTime[];
 	}
 }
