@@ -3,7 +3,7 @@ import { AvailabilityExpand, constructAvailabilityObject } from '@components/Ava
 type PostBodyProps = { post: SW.PostingResponse };
 
 export const PostBody = ({ post }: PostBodyProps) => {
-	const availability = constructAvailabilityObject(post.posting.shifts);
+	const availability = post.posting.shifts;
 
 	return (
 		<div className='flex flex-col gap-5 p-5'>

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { DialogContentLayout } from '../Dialogs/DialogContentLayout';
-import { renderWidget } from './AvailabilityWidget';
+import { renderWidget } from './NewAvailabilityWidget/AvailabilityWidget';
 
 type Props = {
-	availability: SW.IAvailability;
+	availability: SW.IShift[];
 };
 
 export const AvailabilityExpand = ({ availability }: Props) => {
@@ -11,10 +11,10 @@ export const AvailabilityExpand = ({ availability }: Props) => {
 
 	return (
 		<div className='flex flex-col gap-5'>
-			<div className='h-[400px] overflow-y-auto pr-1'>{renderWidget({ readonly: true, availability })}</div>
+			<div className='h-[400px] overflow-y-auto pr-1'>{renderWidget({ readonly: true, events: availability })}</div>
 			<div className='self-end'>
 				<DialogContentLayout open={open} setOpen={setOpen} title='View Availability' description='' triggerLabel='Expand'>
-					<div className='h-full'>{renderWidget({ readonly: true, availability })}</div>
+					<div className='h-full'>{renderWidget({ readonly: true, events: availability })}</div>
 				</DialogContentLayout>
 			</div>
 		</div>
