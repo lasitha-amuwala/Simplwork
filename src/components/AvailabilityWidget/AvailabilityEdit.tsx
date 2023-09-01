@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { DialogContentLayout } from '../Dialogs/DialogContentLayout';
-import { renderWidget } from './AvailabilityWidget';
 import { SaveChangesButton } from '../Buttons/SaveChangesButton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchCandidate } from '@utils/simplwork';
 import { DialogCancelButton } from '../Dialogs/DialogCancelButton';
+import { convertAvailabilityToShifts } from './NewAvailabilityWidget/logic';
+import { renderWidget } from './NewAvailabilityWidget/AvailabilityWidget';
 
 type Props = {
 	availability: SW.IAvailability;
@@ -15,7 +16,9 @@ export const AvailabilityEdit = ({ availability }: Props) => {
 
 	return (
 		<div className='flex flex-col gap-3'>
-			<div className='h-[400px] overflow-y-auto pr-1'>{renderWidget({ readonly: true, availability: availability })}</div>
+			<div className='h-[400px] overflow-y-auto pr-1'>
+				{renderWidget({ readonly: true, events: convertAvailabilityToShifts(availability) })}
+			</div>
 			<div className='self-end'>
 				<DialogContentLayout
 					open={open}

@@ -4,24 +4,33 @@ import React, { useRef } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { CalendarApi, EventApi } from '@fullcalendar/core';
-import { createShift, getDateDetails, shiftToEvent } from './hepers';
+import { CalendarApi } from '@fullcalendar/core';
+import { convertShiftToEvent, convertAvailabilityToShifts, convertShiftsToAvailability, convertEventsToShifts } from './logic';
 
 type AvailabilityWidgetProps = {
 	readonly: boolean;
-	events: any;
+	events?: any;
 	backgroundEvents?: any;
+	availability?: SW.IAvailability;
+	onChange?: Dispatch<SetStateAction<SW.IAvailability>>;
 };
 
-export const renderWidget = (props: AvailabilityWidgetProps): JSX.Element => <AvailabilityWidget {...props} />;
+export const getEventsAsAvailability = () => {};
 
-export const AvailabilityWidget = ({ events, backgroundEvents, readonly = false }: AvailabilityWidgetProps) => {
+export const renderWidget = (props: AvailabilityWidgetProps): JSX.Element => <AvailabilityWidget {...props} />;
+export const AvailabilityWidget = ({
+	events = [],
+	backgroundEvents,
+	availability = [],
+	readonly = false,
+	onChange,
+}: AvailabilityWidgetProps) => {
 	const calendarRef = useRef(null);
 
 	const onSelect = (selectInfo: any) => {
 		const api = selectInfo.view.calendar;
 		api.addEvent({ start: selectInfo.start, end: selectInfo.end });
-		console.log(api.getEvents());
+		onChange(convertShiftsToAvailability(getEvents()));
 	};
 
 	const renderButton = (selectInfo: any) => {
@@ -34,30 +43,13 @@ export const AvailabilityWidget = ({ events, backgroundEvents, readonly = false 
 		);
 	};
 
-	const getEvents = () => {
+	const getEvents = (): SW.IShift[] => {
 		if (!calendarRef || !calendarRef.current) return;
 		let calendarApi: CalendarApi = calendarRef.current.getApi();
-		const events = calendarApi.getEvents();
-
-		let shifts: SW.IShift[] = [];
-		events.forEach((event: EventApi) => {
-			const { day: startDay, minuteOfDay: startInMinutes } = getDateDetails(new Date(event.startStr));
-			const { day: endDay, minuteOfDay: endInMinutes } = getDateDetails(new Date(event.endStr));
-
-			if (startDay === endDay) {
-				shifts.push(createShift(startDay, startInMinutes, endInMinutes));
-			} else {
-				const daysBetween = endDay - startDay - 1;
-				shifts.push(createShift(startDay, startInMinutes, 1440));
-				for (let i = 0; i < daysBetween; i++) {
-					shifts.push(createShift(startDay + 1 + i, 0, 1440));
-				}
-				shifts.push(createShift(endDay, 0, endInMinutes));
-			}
-		});
-
-		console.log(shifts);
+		return convertEventsToShifts(calendarApi.getEvents());
 	};
+
+	const handleEventChange = () => onChange(convertShiftsToAvailability(getEvents()));
 
 	return (
 		<FullCalendar
@@ -76,9 +68,10 @@ export const AvailabilityWidget = ({ events, backgroundEvents, readonly = false 
 			eventOverlap={false}
 			headerToolbar={false}
 			select={onSelect}
-			events={[...events]}
+			events={[...events, ...convertAvailabilityToShifts(availability)]}
 			eventContent={renderButton}
-			eventDataTransform={shiftToEvent}
+			eventChange={handleEventChange}
+			eventDataTransform={convertShiftToEvent}
 			views={{ timeGridWeek: { dayHeaderFormat: { weekday: 'short' } } }}
 		/>
 	);
