@@ -51,7 +51,8 @@ namespace SW {
 		candidateStatus: never;
 	}
 
-	interface IPostingMatch extends IPostingBase {
+	interface PostingResponse {
+		posting: IPosting;
 		employerStatus: Employer.Status;
 		candidateStatus: Candidate.Status;
 		walkCommuteTime: number;
@@ -64,8 +65,6 @@ namespace SW {
 		candScore: number;
 		shiftCompatibilities: IShiftCompatibilities[];
 	}
-
-	type PostingResponse = IPostingBase | IPostingMatch;
 
 	interface ILocation {
 		latitude: number;
