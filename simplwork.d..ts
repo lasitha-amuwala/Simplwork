@@ -97,6 +97,7 @@ namespace SW {
 			availability: IAvailability;
 			autoMatch: boolean;
 			picture: string;
+			maximumHours: number;
 		}
 
 		interface IProfile {

@@ -19,6 +19,7 @@ export const EditProfileForm = ({ profileData, afterSave }: EditProfileForm) => 
 		phoneNumber: profileData.phoneNumber ?? '',
 		age: profileData.age ?? '',
 		maxTravelTimes: profileData.maxTravelTimes ?? '',
+		maximumHours: profileData.maximumHours ?? '',
 	};
 
 	const patchCandidate = (data: any) => {
@@ -49,23 +50,37 @@ export const EditProfileForm = ({ profileData, afterSave }: EditProfileForm) => 
 		await mutateAsync(data);
 	};
 
+	const submitMaximumHours = async ({ maximumHours }: FormikValues) => {
+		const data = [{ op: 'replace', path: '/candidateProfile/maximumHours', value: maximumHours }];
+		await mutateAsync(data);
+	};
+
 	const onSubmit = (values: FormikValues) => {
 		setSaving(true);
 		submitUserInformation(values);
 		submitCommutePreferences(values);
+		submitMaximumHours(values);
 		afterSave();
 	};
 
 	return (
 		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={profileValidationSchema} formDisabled={saving}>
-			<h1 className='font-semibold text-xl pt-10'>Profile:</h1>
-			<ProfileForm />
-			<h1 className='font-semibold text-xl pt-10'>Commute Prefrences:</h1>
-			<div className='grid grid-cols-2 grid-rows-2 gap-5 pb-5'>
-				<FieldControl name='maxTravelTimes.CAR' label='Commute by car'></FieldControl>
-				<FieldControl name='maxTravelTimes.BIKE' label='Commute by car'></FieldControl>
-				<FieldControl name='maxTravelTimes.WALK' label='Commute by walking'></FieldControl>
-				<FieldControl name='maxTravelTimes.PUBLIC_TRANSIT' label='Commute by public transit'></FieldControl>
+			<div className='bg-gray-50 rounded-xl p-5 my-5'>
+				<h1 className='font-semibold text-xl'>Profile</h1>
+				<ProfileForm />
+			</div>
+			<div className='bg-gray-50 rounded-xl p-5 my-5'>
+				<h1 className='font-semibold text-xl mb-2'>Work Availability</h1>
+				<FieldControl name='maximumHours' label='Maximum work hours' />
+			</div>
+			<div className='bg-gray-50 rounded-xl p-5 my-5 border'>
+				<h1 className='font-semibold text-xl mb-2'>Commute Prefrences</h1>
+				<div className='grid grid-cols-2 grid-rows-2 gap-5 pb-5'>
+					<FieldControl name='maxTravelTimes.CAR' label='Commute by car' />
+					<FieldControl name='maxTravelTimes.BIKE' label='Commute by car' />
+					<FieldControl name='maxTravelTimes.WALK' label='Commute by walking' />
+					<FieldControl name='maxTravelTimes.PUBLIC_TRANSIT' label='Commute by public transit' />
+				</div>
 			</div>
 		</DialogFormLayout>
 	);
