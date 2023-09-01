@@ -1,9 +1,17 @@
+import { useAuth } from '@components/Auth/AuthProvider';
 import { AvailabilityExpand } from '@components/AvailabilityWidget';
+import { convertAvailabilityToShifts } from '@components/AvailabilityWidget/NewAvailabilityWidget/logic';
+import { useQuery } from '@tanstack/react-query';
+import { queries } from '@utils/simplwork';
 
 type PostBodyProps = { post: SW.PostingResponse };
 
 export const PostBody = ({ post }: PostBodyProps) => {
+	const { user } = useAuth();
 	const availability = post.posting.shifts;
+	const compatibleShifts = post.shiftCompatibilities;
+
+	const { data: candidate, isLoading, isError } = useQuery<SW.Candidate.ICandidate>(queries.candidate.getCandidate(user?.credential ?? ''));
 
 	let requiredMinutes = 0;
 	requiredMinutes = availability.reduce(
@@ -47,7 +55,7 @@ export const PostBody = ({ post }: PostBodyProps) => {
 			<div className='flex flex-col gap-1'>
 				<h1 className='font-semibold text-lg'>Availability</h1>
 				<div className='pr-1'>
-					<AvailabilityExpand availability={availability} />
+					<AvailabilityExpand availability={availability} backgroundShifts={convertAvailabilityToShifts(candidate?.availability)} />
 				</div>
 			</div>
 		</div>

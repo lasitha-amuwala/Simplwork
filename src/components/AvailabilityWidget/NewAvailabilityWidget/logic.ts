@@ -24,13 +24,16 @@ export const getDateDetails = (date: Date) => ({
 // Converstion Logic
 
 // convert shift to event object from fullCalender
-export const convertShiftToEvent = (eventData: EventInput) => {
-	const shift = eventData as SW.IShift;
-	return {
+export const convertShiftToEvent = (shifts: SW.IShift[], isBackgroundEvent: boolean) => {
+	if(!shifts) return []
+	const backgroundColor = isBackgroundEvent ? '#EC9F64' : '#63B3ED';
+	const events = shifts.map((shift) => ({
 		title: '',
 		start: convertShiftTimeToDate(shift.dayOfWeek, shift.shiftTimes.startTime),
 		end: convertShiftTimeToDate(shift.dayOfWeek, shift.shiftTimes.endTime),
-	};
+		backgroundColor,
+	}));
+	return events;
 };
 
 export const convertEventsToShifts = (events: EventApi[]): SW.IShift[] => {
@@ -70,7 +73,7 @@ export const convertShiftTimeToDate = (day: number, minutes: number) => {
 };
 
 // convert availibility object to list of shits, opposite of convertShiftsToAvailability
-export const convertAvailabilityToShifts = (availability: SW.IAvailability): SW.IShift[] => {
+export const convertAvailabilityToShifts = (availability: SW.IAvailability | undefined): SW.IShift[] => {
 	const shifts: SW.IShift[] = [];
 	if (!availability) return shifts;
 	Object.entries(availability).forEach(([dayOfWeek, shiftTimes]) => {

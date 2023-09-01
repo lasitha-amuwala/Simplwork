@@ -10,14 +10,13 @@ import { convertShiftToEvent, convertAvailabilityToShifts, convertShiftsToAvaila
 type AvailabilityWidgetProps = {
 	readonly: boolean;
 	events?: any;
-	backgroundEvents?: any;
+	backgroundEvents?: SW.IShift[];
 	availability?: SW.IAvailability;
 	onChange?: Dispatch<SetStateAction<SW.IAvailability>>;
 };
 
 export const getEventsAsAvailability = () => {};
 
-export const renderWidget = (props: AvailabilityWidgetProps): JSX.Element => <AvailabilityWidget {...props} />;
 export const AvailabilityWidget = ({
 	events = [],
 	backgroundEvents,
@@ -51,6 +50,12 @@ export const AvailabilityWidget = ({
 
 	const handleEventChange = () => onChange(convertShiftsToAvailability(getEvents()));
 
+	const eventsList = [
+		...convertShiftToEvent(events),
+		...convertShiftToEvent(convertAvailabilityToShifts(availability), false),
+		...convertShiftToEvent(backgroundEvents, true),
+	];
+	console.log(eventsList);
 	return (
 		<FullCalendar
 			ref={calendarRef}
@@ -59,7 +64,7 @@ export const AvailabilityWidget = ({
 			allDaySlot={false}
 			slotDuration={'02:00:00'}
 			snapDuration={'00:30'}
-			editable={true}
+			editable={!readonly}
 			expandRows={true}
 			selectable={!readonly}
 			selectMirror={true}
@@ -68,11 +73,14 @@ export const AvailabilityWidget = ({
 			eventOverlap={false}
 			headerToolbar={false}
 			select={onSelect}
-			events={[...events, ...convertAvailabilityToShifts(availability)]}
+			events={eventsList}
 			eventContent={renderButton}
 			eventChange={handleEventChange}
-			eventDataTransform={convertShiftToEvent}
+			eventBackgroundColor='#63B3ED'
+			eventBorderColor='#4299E1'
 			views={{ timeGridWeek: { dayHeaderFormat: { weekday: 'short' } } }}
 		/>
 	);
 };
+
+export const renderWidget = (props: AvailabilityWidgetProps): JSX.Element => <AvailabilityWidget {...props} />;

@@ -46,9 +46,19 @@ namespace SW {
 		id: number;
 	}
 
-	interface IPostingBase {
+	interface PostingResponse {
 		posting: IPosting;
-		candidateStatus: never;
+		employerStatus?: Employer.Status;
+		candidateStatus?: Candidate.Status;
+		walkCommuteTime?: number;
+		bikeCommuteTime?: number;
+		carCommuteTime?: number;
+		distance?: number;
+		matchingHours?: number;
+		shiftScore?: number;
+		potentialEarning?: number;
+		candScore?: number;
+		shiftCompatibilities?: IShiftCompatibilities[];
 	}
 
 	interface PostingResponse {

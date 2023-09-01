@@ -13,11 +13,12 @@ type Props = {
 
 export const AvailabilityEdit = ({ availability }: Props) => {
 	const [open, setOpen] = useState(false);
+	console.log(availability)
 
 	return (
 		<div className='flex flex-col gap-3'>
 			<div className='h-[400px] overflow-y-auto pr-1'>
-				{renderWidget({ readonly: true, events: convertAvailabilityToShifts(availability) })}
+				{renderWidget({ readonly: true, availability: availability })}
 			</div>
 			<div className='self-end'>
 				<DialogContentLayout
@@ -37,6 +38,7 @@ const EditAvialabilityDialogBody = ({ afterSave, availability }: { afterSave: ()
 	const queryClient = useQueryClient();
 	const [buttonDiabled, setButtonDiabled] = useState(false);
 	const [availabilityObj, setAvailabilityObj] = useState<SW.IAvailability>(availability);
+	console.log(availabilityObj)
 
 	const { mutate } = useMutation({
 		mutationFn: patchCandidate,
