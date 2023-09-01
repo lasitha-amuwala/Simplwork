@@ -27,6 +27,14 @@ const Home: NextPage = () => {
 
 	const { data, isLoading, isError, isSuccess } = useQuery({ ...postingQuery, refetchInterval: 30000 });
 
+	// sort matches
+	const matches: SW.PostingResponse[] = [];
+	const posts: SW.PostingResponse[] = [];
+
+	data?.forEach((post) => (post.candidateStatus ? matches.push(post) : posts.push(post)));
+	const sortedMatches = matches?.sort((a, b) => b.potentialEarning! - a.potentialEarning!);
+	const sortedPosts = [...sortedMatches, ...posts];
+
 	useEffect(() => {
 		if (router.query.search) {
 			setSearchQuery(router.query.search as string);
@@ -68,12 +76,12 @@ const Home: NextPage = () => {
 					</div>
 					<div className='flex gap-4'>
 						<div className='w-full md:w-[40%] pt-1'>
-							<PostPreviewList posts={data} selectedPost={selectedPost} isLoading={isLoading} />
+							<PostPreviewList posts={sortedPosts} selectedPost={selectedPost} isLoading={isLoading} />
 						</div>
 						<div className='hidden md:block md:w-[60%] lg:w-[60%]'>
 							{isLoading && <PostSkeleton />}
-							{!isLoading && isSuccess && data.length > 0 ? (
-								<Post post={data[selectedPost]} refetch={refetch} />
+							{!isLoading && isSuccess && sortedPosts.length > 0 ? (
+								<Post post={sortedPosts[selectedPost]} refetch={refetch} />
 							) : (
 								<div className='mt-1 bg-gray-200 w-full py-10 px-5 flex flex-col justify-center items-center rounded'>
 									<p className='py-10 font-semibold'>No Posts available, Please try again.</p>
