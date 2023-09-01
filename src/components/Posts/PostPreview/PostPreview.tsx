@@ -3,7 +3,7 @@ import { MdAttachMoney, MdCalendarMonth, MdOutlineAccessTime } from 'react-icons
 import { PostedDate } from '../PostedDate';
 import { PostTag } from '../PostTags';
 
-type PostListItemProps = {
+type PostPreviewItemProps = {
 	post: any;
 	status: string;
 	active?: boolean;
@@ -37,7 +37,7 @@ const AvailableDayOfWeek = (weekAvailability: { dayOfWeek: number }[]) => {
 	);
 };
 
-export const PostCard = memo(({ post, status, active }: PostListItemProps) => {
+export const PostPreview = memo(({ post, status, active }: PostPreviewItemProps) => {
 	let statusString = status;
 	let statusBGColor = 'bg-green-50';
 	let statusTextColor = 'text-green-600';
@@ -88,4 +88,4 @@ export const PostCard = memo(({ post, status, active }: PostListItemProps) => {
 	);
 });
 
-PostCard.displayName = 'PostCard';
+PostPreview.displayName = 'PostPreview';

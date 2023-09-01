@@ -1,4 +1,4 @@
-import { PostCard, PostCardSkeleton } from '@components/Posts/PostCard';
+import { PostPreview, PostPreviewSkeleton } from '@components/Posts/PostPreview';
 import { isError, useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { queries } from '@utils/simplwork';
@@ -23,7 +23,7 @@ export const MatchStatusList = ({ status, label }: { status: string; label: stri
 				{isLoading ? (
 					[...Array(3).fill(0)].map((key, i) => (
 						<div key={`${key}-${i}`} className='min-w-[350px] w-full'>
-							<PostCardSkeleton />
+							<PostPreviewSkeleton />
 						</div>
 					))
 				) : isError ? (
@@ -37,7 +37,7 @@ export const MatchStatusList = ({ status, label }: { status: string; label: stri
 							href={{ pathname: '/applications', query: { status: status.toLowerCase(), id: posting.id } }}
 							key={`${posting.id}`}
 							className='min-w-[350px] w-full'>
-							<PostCard post={posting} status={candidateStatus} />
+							<PostPreview post={posting} status={candidateStatus} />
 						</Link>
 					))
 				) : (

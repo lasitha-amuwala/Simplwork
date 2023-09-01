@@ -5,7 +5,7 @@ import { queries } from '@utils/simplwork';
 import { MdErrorOutline } from 'react-icons/md';
 import { SearchBar } from '@components/SearchBar';
 import { useAuth } from '@components/Auth/AuthProvider';
-import { PostCardList } from '@components/Posts/PostCard';
+import { PostPreviewList } from '@components/Posts/PostPreview';
 import { Post, PostSkeleton } from '@components/Posts/Post';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -68,7 +68,7 @@ const Home: NextPage = () => {
 					</div>
 					<div className='flex gap-4'>
 						<div className='w-full md:w-[40%] pt-1'>
-							<PostCardList posts={data} selectedPost={selectedPost} isLoading={isLoading} />
+							<PostPreviewList posts={data} selectedPost={selectedPost} isLoading={isLoading} />
 						</div>
 						<div className='hidden md:block md:w-[60%] lg:w-[60%]'>
 							{isLoading && <PostSkeleton />}
