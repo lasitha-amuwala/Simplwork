@@ -4,8 +4,8 @@ import { SaveChangesButton } from '../Buttons/SaveChangesButton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchCandidate } from '@utils/simplwork';
 import { DialogCancelButton } from '../Dialogs/DialogCancelButton';
-import { convertAvailabilityToShifts } from './NewAvailabilityWidget/logic';
-import { renderWidget } from './NewAvailabilityWidget/AvailabilityWidget';
+import { convertAvailabilityToShifts, convertShiftsToEvents } from './NewAvailabilityWidget/logic';
+import { AvailabilityWidget } from './NewAvailabilityWidget/AvailabilityWidget';
 
 type Props = {
 	availability: SW.IAvailability;
@@ -13,12 +13,12 @@ type Props = {
 
 export const AvailabilityEdit = ({ availability }: Props) => {
 	const [open, setOpen] = useState(false);
-	console.log(availability)
+	console.log(availability);
 
 	return (
 		<div className='flex flex-col gap-3'>
 			<div className='h-[400px] overflow-y-auto pr-1'>
-				{renderWidget({ readonly: true, availability: availability })}
+				<AvailabilityWidget events={convertShiftsToEvents(convertAvailabilityToShifts(availability), false)} readonly />
 			</div>
 			<div className='self-end'>
 				<DialogContentLayout
@@ -38,7 +38,7 @@ const EditAvialabilityDialogBody = ({ afterSave, availability }: { afterSave: ()
 	const queryClient = useQueryClient();
 	const [buttonDiabled, setButtonDiabled] = useState(false);
 	const [availabilityObj, setAvailabilityObj] = useState<SW.IAvailability>(availability);
-	console.log(availabilityObj)
+	console.log(availabilityObj);
 
 	const { mutate } = useMutation({
 		mutationFn: patchCandidate,
@@ -57,7 +57,9 @@ const EditAvialabilityDialogBody = ({ afterSave, availability }: { afterSave: ()
 	return (
 		<fieldset className='group' disabled={buttonDiabled}>
 			<form onSubmit={onSave}>
-				<div className='h-full py-5'>{renderWidget({ readonly: false, availability: availabilityObj, onChange: setAvailabilityObj })}</div>
+				<div className='h-full py-5 w-[50vw]'>
+					<AvailabilityWidget events={convertShiftsToEvents(convertAvailabilityToShifts(availability), false)} onChange={setAvailabilityObj} />
+				</div>
 				<div className='flex w-full justify-end gap-3'>
 					<DialogCancelButton />
 					<SaveChangesButton />

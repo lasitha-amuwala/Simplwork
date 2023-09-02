@@ -1,6 +1,6 @@
 import { useAuth } from '@components/Auth/AuthProvider';
-import { AvailabilityExpand } from '@components/AvailabilityWidget';
-import { convertAvailabilityToShifts } from '@components/AvailabilityWidget/NewAvailabilityWidget/logic';
+import { AvailabilityExpandDialog } from '@components/AvailabilityWidget/NewAvailabilityWidget/AvailabilityViewDialog';
+import { convertAvailabilityToShifts, convertShiftsToEvents } from '@components/AvailabilityWidget/NewAvailabilityWidget/logic';
 import { useQuery } from '@tanstack/react-query';
 import { queries } from '@utils/simplwork';
 
@@ -8,13 +8,12 @@ type PostBodyProps = { post: SW.PostingResponse };
 
 export const PostBody = ({ post }: PostBodyProps) => {
 	const { user } = useAuth();
-	const availability = post.posting.shifts;
-	const compatibleShifts = post.shiftCompatibilities;
+	const shifts = post.posting.shifts;
 
 	const { data: candidate, isLoading, isError } = useQuery<SW.Candidate.ICandidate>(queries.candidate.getCandidate(user?.credential ?? ''));
 
 	let requiredMinutes = 0;
-	requiredMinutes = availability.reduce(
+	requiredMinutes = shifts.reduce(
 		(acc: number, curr: SW.IShift) => acc + (curr.shiftTimes.endTime - curr.shiftTimes.startTime),
 		requiredMinutes
 	);
@@ -52,11 +51,13 @@ export const PostBody = ({ post }: PostBodyProps) => {
 				<h1 className='font-semibold text-lg'>Benefits</h1>
 				<p className='text-gray-500'>{post.posting.benefits}</p>
 			</div>
-			<div className='flex flex-col gap-1'>
-				<h1 className='font-semibold text-lg'>Availability</h1>
-				<div className='pr-1'>
-					<AvailabilityExpand availability={availability} backgroundShifts={convertAvailabilityToShifts(candidate?.availability)} />
-				</div>
+			<div className='pr-1'>
+				<AvailabilityExpandDialog
+					events={[
+						...convertShiftsToEvents(shifts, false),
+						...convertShiftsToEvents(convertAvailabilityToShifts(candidate?.availability), true),
+					]}
+				/>
 			</div>
 		</div>
 	);

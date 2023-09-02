@@ -24,8 +24,8 @@ export const getDateDetails = (date: Date) => ({
 // Converstion Logic
 
 // convert shift to event object from fullCalender
-export const convertShiftToEvent = (shifts: SW.IShift[], isBackgroundEvent: boolean) => {
-	if(!shifts) return []
+export const convertShiftsToEvents = (shifts: SW.IShift[], isBackgroundEvent: boolean) => {
+	if (!shifts) return [];
 	const backgroundColor = isBackgroundEvent ? '#EC9F64' : '#63B3ED';
 	const events = shifts.map((shift) => ({
 		title: '',
