@@ -141,6 +141,20 @@ namespace SW {
 			jobs: IPosting[];
 			noOfJobs: number;
 		}
+		namespace Postings {
+			interface IJobPosting extends Omit<IPosting, 'employer'> {
+				branch: { branchName: string };
+			}
+
+			interface IOverview {
+				jobPosting: JobPosting;
+				new_count: number;
+				reviewed_count: number;
+				interview_requested_count: number;
+				ready_for_interview_count: number;
+				rejected_count: number;
+			}
+		}
 	}
 
 	interface IAvailability {

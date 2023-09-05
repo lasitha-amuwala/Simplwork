@@ -32,11 +32,19 @@ export const queries = {
 			queryFn: (): Promise<SW.Employer.IEmployer> => get(createURL(`employer/${employerName}/branch`)),
 			enabled: !!credential,
 		}),
-		getBranches: (credential: string, employerName: string , params: Params) => ({
+		getBranches: (credential: string, employerName: string, params: Params) => ({
 			queryKey: ['branches', employerName, params],
 			queryFn: (): Promise<SW.Employer.IBranch[]> => get(createURL(`employer/${employerName}/branch`, params)),
 			enabled: !!credential && !!employerName,
 		}),
+		postings: {
+			getOverviews: (credential: string, employerName: string, params: Params) => ({
+				queryKey: ['postings', 'overviews', employerName, params],
+				queryFn: (): Promise<SW.Employer.Postings.IOverview[]> =>
+					get(createURL(`employer/postings/overview`, { employerName: employerName, ...params })),
+				enabled: !!credential && !!employerName,
+			}),
+		},
 	},
 	user: {
 		employerList: (credential: string) => ({
