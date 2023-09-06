@@ -1,16 +1,19 @@
+import Image from 'next/image';
+import Head from 'next/head';
+import { useQuery } from '@tanstack/react-query';
+import { NextPage } from 'next';
+
 import { useAuth } from '@components/Auth/AuthProvider';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
 import { ExperienceList } from '@components/Lists/Experience/ExperienceList';
 import { queries } from '@utils/simplwork';
-import { useQuery } from '@tanstack/react-query';
-import { NextPage } from 'next';
-import { AvailabilityEdit } from '@components/AvailabilityWidget';
 import { AddExperienceDialog } from '@components/Dialogs/AddExperience/AddExperienceDialog';
 import { EditProfileDialog } from '@components/Dialogs/EditProfile/EditProfileDialog';
 import { HeaderWithButton } from '@components/Profile/HeaderWithButton';
 import { ProfileInfoCard } from '@components/Profile/ProfileInfoCard';
-import Image from 'next/image';
-import Head from 'next/head';
+import { convertAvailabilityToShifts, convertShiftToEvent } from '@components/AvailabilityWidget/logic';
+import { AvailabilityEditDialog } from '@components/AvailabilityWidget/AvailabilityEditDialog';
+import { CandidateAvailabilityEditDialog } from '@components/AvailabilityWidget/CandidateAvailabilityEditDialog';
 
 const Profile: NextPage = () => {
 	const { user } = useAuth();
@@ -62,10 +65,7 @@ const Profile: NextPage = () => {
 							</HeaderWithButton>
 							<ProfileInfoCard candidate={candidate} />
 						</div>
-						<div>
-							<h1 className='text-2xl font-semibold pb-3'>My Availability</h1>
-							<AvailabilityEdit availability={candidate?.availability} />
-						</div>
+						<CandidateAvailabilityEditDialog availability={candidate?.availability} />
 					</div>
 				</div>
 			</div>

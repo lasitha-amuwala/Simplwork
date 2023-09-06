@@ -1,30 +1,70 @@
-import { memo } from 'react';
-import dayjs from 'dayjs';
-import ScheduleSelector from 'react-schedule-selector';
-import { computeAvailabilityToSchedule, computeScheduleToAvailability } from './helpers';
-import { AvailabilityWidgetProps } from './types';
+import React, { ForwardedRef, forwardRef } from 'react';
+import FullCalendar from '@fullcalendar/react';
+import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import { convertAvailabilityToShifts, convertShiftToEvent } from './logic';
+import { RiCloseFill } from 'react-icons/ri';
 
-export const AvailabilityWidget = memo(({ availability, hourlyChunks = 1, readonly, onChange }: AvailabilityWidgetProps) => {
-	const startDate = dayjs('2000-01-02').toDate();
-	const schedule: Date[] = availability ? computeAvailabilityToSchedule(availability, startDate, hourlyChunks) : [];
+export type AvailabilityWidgetProps = {
+	readonly?: boolean;
+	shifts?: SW.IShift[];
+	availability?: SW.IAvailability;
+};
 
-	const handleOnChange = (schedule: Date[]) => onChange && onChange(computeScheduleToAvailability(schedule, hourlyChunks));
+export const AvailabilityWidget = forwardRef(
+	({ shifts = [], readonly, availability }: AvailabilityWidgetProps, ref: ForwardedRef<FullCalendar>) => {
+		const onSelect = (selectInfo: any) => {
+			const api = selectInfo.view.calendar;
+			api.addEvent({ start: selectInfo.start, end: selectInfo.end });
+		};
 
-	return (
-		<div className={`${readonly && 'pointer-events-none touch-none cursor-none'} w-full h-auto`}>
-			<ScheduleSelector
-				selection={schedule}
-				onChange={handleOnChange}
-				minTime={0}
-				maxTime={24}
-				startDate={startDate}
-				timeFormat='h:mm a'
-				dateFormat='ddd'
-				hourlyChunks={hourlyChunks}
+		const renderButton = (selectInfo: any) => {
+			const { event, timeText } = selectInfo;
+			const removeEvent = () => event.remove();
+
+			return (
+				<div className=' relative p-0.5 group/event w-full h-full overflow-hidden'>
+					{timeText}
+					<button
+						className={`absolute right-0 top-0 p-0.5 m-0.5 bg-black rounded-full hidden ${
+							!readonly ? 'group-hover/event:block' : 'group-hover:hidden'
+						}`}
+						onClick={removeEvent}>
+						<RiCloseFill className='text-lg' />
+					</button>
+				</div>
+			);
+		};
+
+		return (
+			<FullCalendar
+				ref={ref}
+				select={onSelect}
+				editable={!readonly}
+				selectable={!readonly}
+				eventContent={renderButton}
+				eventDataTransform={convertShiftToEvent}
+				plugins={[timeGridPlugin, interactionPlugin]}
+				views={{ timeGridWeek: { dayHeaderFormat: { weekday: 'short' } } }}
+				aspectRatio={80 / 50}
+				snapDuration={'00:30'}
+				slotDuration={'02:00:00'}
+				initialView='timeGridWeek'
+				expandRows={true}
+				droppable={false}
+				allDaySlot={false}
+				selectMirror={true}
+				unselectAuto={false}
+				eventOverlap={false}
+				selectOverlap={false}
+				headerToolbar={false}
+				eventResizableFromStart={true}
+				eventBorderColor='#4299E1'
+				eventBackgroundColor='#63B3ED'
+				eventSources={[{ events: shifts, backgroundColor: '#3182CE' }, { events: convertAvailabilityToShifts(availability) }]}
 			/>
-		</div>
-	);
-});
+		);
+	}
+);
 
-AvailabilityWidget.displayName = 'AvailabilityWidget';
 export const renderWidget = (props: AvailabilityWidgetProps): JSX.Element => <AvailabilityWidget {...props} />;
