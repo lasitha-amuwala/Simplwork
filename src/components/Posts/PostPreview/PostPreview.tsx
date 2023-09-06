@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { MdAttachMoney, MdCalendarMonth, MdOutlineAccessTime } from 'react-icons/md';
-import { PostedDate } from '../PostedDate';
 import { PostTag } from '../PostTags';
+import { timeFromNow } from '@utils/helpers';
 
 type PostPreviewItemProps = {
 	post: any;
@@ -83,7 +83,7 @@ export const PostPreview = memo(({ post, status, active }: PostPreviewItemProps)
 				</div>
 				<p className='w-full text-gray-600 line-clamp-2'>{post.jobDescription}</p>
 			</div>
-			<PostedDate date={post.createdAt} />
+			<p className='text-xs pt-3 text-gray-500'>{timeFromNow(post.createdAt)}</p>
 		</div>
 	);
 });
