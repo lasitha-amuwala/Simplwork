@@ -2,7 +2,6 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { FieldControl } from '../inputs/FieldControl';
 import { Field } from 'formik';
 import { AutoComplete } from '../../AutoComplete';
-import { AvailabilityWidget } from '../../AvailabilityWidget';
 
 type Props = {
 	updateLocation: (arg: SW.ILocation) => void;
@@ -25,9 +24,7 @@ export const PostingForm = ({ updateLocation, availability, setAvailability }: P
 				<Field name='estimatedHours' type='number' className='inputStyle w-20' min='0' max='168' />
 			</label>
 			<h1 className='font-semibold'>Create weekly shift schedule:</h1>
-			<div className='h-[400px] overflow-auto'>
-				<AvailabilityWidget availability={availability} onChange={setAvailability} />
-			</div>
+			<div className='h-[400px] overflow-auto'>{/* <AvailabilityWidget availability={availability} onChange={setAvailability} /> */}</div>
 			<FieldControl name='jobDescription' type='text' label='Job Description' as='textarea' className='h-32  inputStyle' />
 			<FieldControl name='benefits' type='text' label='Benefits' />
 		</div>

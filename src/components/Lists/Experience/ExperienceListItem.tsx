@@ -16,7 +16,7 @@ export const ExperienceListItem = ({ data, index }: ExperienceListItem) => (
 			</div>
 			<div className='flex gap-3 items-start'>
 				<EditExperienceDialog index={index} data={data} />
-				<DeleteExperienceDialog index={index} data={data} />
+				<DeleteExperienceDialog id={index} />
 			</div>
 			<div className='flex gap-1'>
 				{data.startDate && <p>{dateFormatString(data.startDate)}</p>}

@@ -1,21 +1,17 @@
-import { useState } from 'react';
-import { MdDelete } from 'react-icons/md';
-import { WorkHistory } from '@components/Lists/Experience/ExperienceList';
-import { DeleteFormButtons } from './DeleteFormButtons';
-import { DialogContentLayout } from '@components/Dialogs/DialogContentLayout';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { patchCandidate } from '@utils/simplwork';
+import { DeleteDialog } from '../DeleteDialog';
 
-export const DeleteExperienceDialog = ({ index, data }: { index: number; data: WorkHistory }) => {
-	const [open, setOpen] = useState(false);
+export const DeleteExperienceDialog = ({ id }: { id: number }) => {
+	const queryClient = useQueryClient();
 
-	return (
-		<DialogContentLayout
-			open={open}
-			setOpen={setOpen}
-			triggerLabel={<MdDelete />}
-			triggerClassName='p-2 rounded baby-red-btn'
-			title='Are You Sure?'
-			description={`This cannot be undone.`}>
-			<DeleteFormButtons afterDelete={() => setOpen(false)} index={index} />
-		</DialogContentLayout>
-	);
+	const { mutateAsync, isLoading, isSuccess } = useMutation({
+		mutationFn: patchCandidate,
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['candidate'] }),
+		onError: () => alert('There was an issue deleting your work experience, please try again later.'),
+	});
+
+	const onDelete = async () => await mutateAsync([{ op: 'remove', path: `/candidateProfile/workHistory/${id}` }]);
+
+	return <DeleteDialog onDelete={onDelete} isLoading={isLoading} isSuccess={isSuccess} />;
 };

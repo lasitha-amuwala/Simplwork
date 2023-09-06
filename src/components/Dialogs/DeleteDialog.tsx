@@ -4,7 +4,7 @@ import { DialogContentLayout } from '@components/Dialogs/DialogContentLayout';
 import { DialogCancelButton } from './DialogCancelButton';
 import { CgSpinner } from 'react-icons/cg';
 
-type DeleteDialogProps = { onDelete: () => void; isLoading: boolean; isError: boolean; isSuccess: boolean };
+type DeleteDialogProps = { onDelete: () => void; isLoading: boolean; isSuccess: boolean };
 export const DeleteDialog = ({ onDelete, isLoading, isSuccess }: DeleteDialogProps) => {
 	const [open, setOpen] = useState(false);
 
