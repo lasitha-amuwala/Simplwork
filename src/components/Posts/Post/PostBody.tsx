@@ -1,6 +1,5 @@
 import { useAuth } from '@components/Auth/AuthProvider';
-import { AvailabilityExpandDialog } from '@components/AvailabilityWidget/NewAvailabilityWidget/AvailabilityViewDialog';
-import { convertAvailabilityToShifts, convertShiftsToEvents } from '@components/AvailabilityWidget/NewAvailabilityWidget/logic';
+import { AvailabilityViewDialog } from '@components/AvailabilityWidget/AvailabilityViewDialog';
 import { useQuery } from '@tanstack/react-query';
 import { queries } from '@utils/simplwork';
 
@@ -52,12 +51,7 @@ export const PostBody = ({ post }: PostBodyProps) => {
 				<p className='text-gray-500'>{post.posting.benefits}</p>
 			</div>
 			<div className='pr-1'>
-				<AvailabilityExpandDialog
-					events={[
-						...convertShiftsToEvents(shifts, false),
-						...convertShiftsToEvents(convertAvailabilityToShifts(candidate?.availability), true),
-					]}
-				/>
+				<AvailabilityViewDialog shifts={shifts} availability={candidate?.availability} />
 			</div>
 		</div>
 	);

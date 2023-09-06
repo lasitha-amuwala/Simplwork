@@ -11,10 +11,11 @@ import { StepHeader } from '../StepHeader';
 import { ProfileForm } from '../../Formik/Forms/ProfileForm';
 import { createCandidateRequestBody } from '@utils/authHelpers';
 import { profileValidationSchema, validationSchemaStepTwo, workHistoryValidationSchema } from '../../Formik/FormValidation';
-import { AvailabilityWidget, constructAvailabilityObject } from '@components/AvailabilityWidget';
 import { RegisterLayout } from '../RegisterLayout';
 import { StepperButtons } from '../StepperButtons';
 import { Step } from '../Step';
+import { convertShiftsToAvailability, createAvailabilityObject } from '@components/AvailabilityWidget/logic';
+import { AvailabilityEditSignUp } from '@components/AvailabilityWidget/AvailabilityEditSignUp';
 
 export type ValueUserTypes = {
 	fullName: string;
@@ -58,7 +59,7 @@ export const CandidateSignUp = ({ credential, resetSignUp }: SignUpFlowProps) =>
 	const initialLocation = { latitude: 0, longitude: 0, postalCode: '' };
 	const [step, setStep] = useState<number>(0);
 	const [location, setLocation] = useState<SW.ILocation>(initialLocation);
-	const [availability, setAvailability] = useState<SW.IAvailability>(constructAvailabilityObject());
+	const [availability, setAvailability] = useState<SW.IAvailability>(createAvailabilityObject());
 	const [isCandidateCreated, setCandidateCreated] = useState<boolean>(false);
 
 	// callback to get location coordinates from autocomplete
@@ -103,6 +104,8 @@ export const CandidateSignUp = ({ credential, resetSignUp }: SignUpFlowProps) =>
 			stepId: 3,
 		},
 	];
+
+	const onAvailabilitySave = (shifts: SW.IShift[]) => setAvailability(convertShiftsToAvailability(shifts));
 
 	return (
 		<RegisterLayout step={step} stepProgressHeaders={progressHeaders}>
@@ -183,8 +186,8 @@ export const CandidateSignUp = ({ credential, resetSignUp }: SignUpFlowProps) =>
 									</div>
 									<div className='w-full'>
 										<h1 className='font-medium leading-[35px]'>Select the time segments that you are available to work.</h1>
-										<div className='h-[500px] overflow-y-auto'>
-											<AvailabilityWidget availability={availability} onChange={setAvailability} />
+										<div className='overflow-y-auto'>
+											<AvailabilityEditSignUp availability={availability} onSave={onAvailabilitySave} />
 										</div>
 									</div>
 									<StepperButtons step={step} updateStep={setStep} renderBackButton={true} />

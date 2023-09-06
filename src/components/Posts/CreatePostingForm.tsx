@@ -4,9 +4,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { SimplworkApi, queries } from '@utils/simplwork';
 import { DialogFormLayout } from '../Dialogs/DialogFormLayout';
 import { jobPostingValidationSchema } from '../Formik/FormValidation';
-import { constructAvailabilityObject } from '../AvailabilityWidget';
 import { PostingForm } from '../Formik/Forms/PostingForm';
 import { useAuth } from '../Auth/AuthProvider';
+import { createAvailabilityObject } from '@components/AvailabilityWidget/logic';
 
 type CreatePostingFormProps = { afterSave: () => void };
 
@@ -15,7 +15,7 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
 	const [location, setLocation] = useState<SW.ILocation>({ latitude: 0, longitude: 0, postalCode: '' });
-	const [availability, setAvailability] = useState<SW.IAvailability>(constructAvailabilityObject());
+	const [availability, setAvailability] = useState<SW.IAvailability>(createAvailabilityObject());
 
 	type PostingValues = {
 		positionTitle: string;
