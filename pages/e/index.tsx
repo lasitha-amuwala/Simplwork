@@ -33,6 +33,7 @@ const Home: NextPage = (props: Props) => {
 						</div>
 						{data?.map(({ jobPosting, new_count, reviewed_count, interview_requested_count, ready_for_interview_count, rejected_count }) => (
 							<PostOverview
+								key={jobPosting.id}
 								post={jobPosting}
 								newCount={new_count}
 								reviewedCount={reviewed_count}

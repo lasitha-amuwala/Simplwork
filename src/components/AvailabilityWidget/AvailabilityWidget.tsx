@@ -68,3 +68,5 @@ export const AvailabilityWidget = forwardRef(
 );
 
 export const renderWidget = (props: AvailabilityWidgetProps): JSX.Element => <AvailabilityWidget {...props} />;
+
+AvailabilityWidget.displayName = 'AvailabilityWidget';
