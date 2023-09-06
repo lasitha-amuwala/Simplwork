@@ -38,7 +38,8 @@ export const Post = memo(({ post, refetch }: PostProps) => {
 						<div className='flex'>
 							<div className='flex flex-col grow'>
 								<h1 className='font-semibold text-xl'>{post.posting.employer.companyName}</h1>
-								<p className='font-normal text-lg '>{post.posting.employer?.branches[0].branchName}</p>
+								<p className='font-medium text-lg  '>{post.posting.employer?.branches[0].branchName}</p>
+								<span className='font-normal text-gray-600'>{post.posting.employer?.branches[0].location.fullAddress}</span>
 							</div>
 							{!post.candidateStatus || post.candidateStatus === 'WITHDRAWN' ? (
 								<button className='btn-blue self-start' onClick={() => onStatusChangeClick('APPLIED')}>
@@ -50,9 +51,9 @@ export const Post = memo(({ post, refetch }: PostProps) => {
 								</button>
 							)}
 						</div>
-						<p className='text-md text-gray-500'>{post.posting.employer.companyDescription}</p>
 					</div>
 				</div>
+				<p className='text-md text-gray-600'>{post.posting.employer.companyDescription}</p>
 				{isMatch && (
 					<CommutePostTags
 						distance={post.distance}
