@@ -12,15 +12,15 @@ export const AvailabilityViewDialog = (props: AvailabilityWidgetProps) => {
 	return (
 		<div>
 			<div className='flex justify-between pb-2'>
-				<h1 className='text-2xl font-semibold self-end'>Availability</h1>
+				<h1 className='text-lg font-semibold self-end'>Availability</h1>
 				<div className='flex gap-3 self-end'>
-					<div className='w-5 h-5 bg-[#3182CE] rounded-full' />
-					<h1 className='font-medium'>Job Shfit Schedule</h1>
-					<div className='w-5 h-5 ml-5 bg-[#63B3ED] rounded-full' />
+					<div className='w-3 h-3 bg-[#3182CE] rounded-full' />
+					<h1 className='font-medium text-sm'>Job Shfit Schedule</h1>
+					<div className='w-3 h-3 ml-5 bg-[#63B3ED] rounded-full' />
 					<h1 className='font-medium'>My Availability</h1>
 				</div>
 				<DialogContentLayout open={open} setOpen={setOpen} title='View Availability' description='' triggerLabel='Expand'>
-					<div className='h-auto w-[50vw]'>{renderWidget()}</div>
+					<div className='h-auto w-[60vw] max-w-5xl'>{renderWidget()}</div>
 				</DialogContentLayout>
 			</div>
 			{renderWidget()}

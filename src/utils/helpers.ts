@@ -1,8 +1,11 @@
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import isoWeek from 'dayjs/plugin/isoWeek';
+
 dayjs.extend(customParseFormat);
 dayjs.extend(relativeTime);
+dayjs.extend(isoWeek);
 
 // https://stackoverflow.com/questions/33076177/getting-name-initials-using-js
 export const getInitials = (fullName: string) => {
@@ -33,3 +36,5 @@ export const unEscape = (htmlStr: string) => {
 	htmlStr = htmlStr.replace(/&amp;/g, '&');
 	return htmlStr;
 };
+
+export const getWeekDay = (day: number) => dayjs().isoWeekday(day);

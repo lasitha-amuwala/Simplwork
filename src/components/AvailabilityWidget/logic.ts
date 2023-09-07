@@ -1,11 +1,12 @@
 import { EventApi, EventInput } from '@fullcalendar/core';
+import { getWeekDay } from '@utils/helpers';
 import dayjs from 'dayjs';
 
 // Getters
 
 const dayOfWeekStrings: SW.DayOfWeekString[] = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
 
-export const getCustomDayNumber = (day: number): number => (day == 0 ? 7 : day);
+export const getCustomDayNumber = (day: number): number => getWeekDay(day).day();
 
 export const getDayStringByNumber = (dayOfWeek: number): SW.DayOfWeekString => dayOfWeekStrings[dayOfWeek - 1];
 
@@ -15,11 +16,14 @@ export const getDayNumberByString = (dayOfWeek: SW.DayOfWeekString): number => {
 	return index + 1;
 };
 
-export const getDateDetails = (date: Date) => ({
-	day: getCustomDayNumber(date.getDay()),
-	hour: date.getHours(),
-	minuteOfDay: date.getHours() * 60 + date.getMinutes(),
-});
+export const getDateDetails = (date: Date) => {
+	const newDate = dayjs(date);
+	return {
+		day: newDate.isoWeekday(),
+		hour: newDate.minute(),
+		minuteOfDay: newDate.hour() * 60 + newDate.minute(),
+	};
+};
 
 // Converstion Logic
 
@@ -39,10 +43,12 @@ export const convertEventsToShifts = (events: EventApi[]): SW.IShift[] => {
 		const { day: startDay, minuteOfDay: startInMinutes } = getDateDetails(new Date(event.startStr));
 		const { day: endDay, minuteOfDay: endInMinutes } = getDateDetails(new Date(event.endStr));
 
+		console.log(startDay, endDay);
 		if (startDay === endDay) {
 			shifts.push(createShift(startDay, startInMinutes, endInMinutes));
 		} else {
-			const daysBetween = endDay - startDay - 1;
+			const daysBetween = Math.abs(endDay - startDay) - 1;
+			console.log(endDay, startDay, daysBetween);
 			if (endInMinutes === 0 && daysBetween === 0) {
 				shifts.push(createShift(startDay, startInMinutes, 1440));
 			} else {
@@ -54,14 +60,24 @@ export const convertEventsToShifts = (events: EventApi[]): SW.IShift[] => {
 			}
 		}
 	});
+	console.log(shifts);
 	return shifts;
 };
 
 // convert minutes in a day to a date object
 export const convertShiftTimeToDate = (day: number, minutes: number) => {
 	const hour = Math.floor(minutes / 60);
+	console.log(
+		dayjs()
+			.isoWeekday(day == 7 ? 0 : day)
+			.hour(hour)
+			.minute(minutes - hour * 60)
+			.second(0)
+			.millisecond(0)
+			.toDate()
+	);
 	return dayjs()
-		.day(day)
+		.isoWeekday(day)
 		.hour(hour)
 		.minute(minutes - hour * 60)
 		.second(0)

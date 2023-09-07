@@ -19,7 +19,9 @@ export const AvailabilityEditDialog = ({ onSave, isLoading, ...rest }: Availabil
 	const getEvents = (): SW.IShift[] => {
 		if (!calendarRef || !calendarRef.current) return [];
 		let calendarApi: CalendarApi = calendarRef.current.getApi();
-		return convertEventsToShifts(calendarApi.getEvents());
+		const events = calendarApi.getEvents()
+		console.log(events)
+		return convertEventsToShifts(events);
 	};
 
 	const onSubmit = (e: FormEvent<HTMLFormElement>) => {

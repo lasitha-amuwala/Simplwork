@@ -5,7 +5,7 @@ import { timeFromNow } from '@utils/helpers';
 
 type PostPreviewItemProps = {
 	post: any;
-	status: string;
+	status?: string;
 	active?: boolean;
 };
 
@@ -37,7 +37,7 @@ const AvailableDayOfWeek = (weekAvailability: { dayOfWeek: number }[]) => {
 	);
 };
 
-export const PostPreview = memo(({ post, status, active }: PostPreviewItemProps) => {
+export const PostPreview = memo(({ post, status = '', active }: PostPreviewItemProps) => {
 	let statusString = status;
 	let statusBGColor = 'bg-green-50';
 	let statusTextColor = 'text-green-600';

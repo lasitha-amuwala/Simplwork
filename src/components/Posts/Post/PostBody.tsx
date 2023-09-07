@@ -23,22 +23,22 @@ export const PostBody = ({ post }: PostBodyProps) => {
 		<div className='flex flex-col gap-5 p-5'>
 			<div className='flex flex-col gap-1'>
 				{post.potentialEarning && (
-					<div className='text-xl font-medium'>
+					<div className='text-lg font-medium'>
 						Potential earnings per week: <span className='font-bold'>${post.potentialEarning}</span>
 					</div>
 				)}
 				{post.posting.shifts && (
-					<div className='text-xl font-medium'>
+					<div className='text-lg font-medium'>
 						Hours required for job: <span className='font-bold'>{requiredHours} hours</span>
 					</div>
 				)}
 				{post.matchingHours && (
-					<div className='text-xl font-medium'>
+					<div className='text-lg font-medium'>
 						Hours matching your availability: <span className='font-bold'>{post.matchingHours} hours</span>
 					</div>
 				)}
 				<div className='text-lg font-medium'>
-					Hourly Rate:
+					Hourly rate:
 					<span className='font-bold'> ${post.posting.pay}</span>
 				</div>
 			</div>

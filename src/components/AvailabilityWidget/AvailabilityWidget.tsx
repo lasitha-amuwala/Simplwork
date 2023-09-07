@@ -39,13 +39,14 @@ export const AvailabilityWidget = forwardRef(
 		return (
 			<FullCalendar
 				ref={ref}
+				timeZone='UTC'
 				select={onSelect}
 				editable={!readonly}
 				selectable={!readonly}
 				eventContent={renderButton}
 				eventDataTransform={convertShiftToEvent}
 				plugins={[timeGridPlugin, interactionPlugin]}
-				views={{ timeGridWeek: { dayHeaderFormat: { weekday: 'short' } } }}
+				// views={{ timeGridWeek: { dayHeaderFormat: { weekday: 'short' } } }}
 				aspectRatio={80 / 50}
 				snapDuration={'00:30'}
 				slotDuration={'02:00:00'}
