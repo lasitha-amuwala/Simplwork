@@ -4,6 +4,7 @@ import { SimplworkApi } from '@utils/simplwork';
 import { CommutePostTags } from '../PostTags/CommutePostTags';
 import { PostBody } from './PostBody';
 import axios from 'axios';
+import { unEscape } from '@utils/helpers';
 
 type PostProps = {
 	post: SW.PostingResponse;
@@ -33,7 +34,7 @@ export const Post = memo(({ post, refetch }: PostProps) => {
 		return (
 			<div className='bg-[#64B1EC]/10 border-b p-4 flex flex-col gap-4 overflow-auto'>
 				<div className='h-auto flex gap-4'>
-					<div className='h-20 w-20 bg-blue-300 rounded-md shrink-0'></div>
+					<div className='h-20 w-20 bg-blue-300 rounded-md shrink-0'/>
 					<div className='grow'>
 						<div className='flex'>
 							<div className='flex flex-col grow'>
@@ -53,7 +54,7 @@ export const Post = memo(({ post, refetch }: PostProps) => {
 						</div>
 					</div>
 				</div>
-				<p className='text-md text-gray-600'>{post.posting.employer.companyDescription}</p>
+				<p className='text-md text-gray-600'>{unEscape(post.posting.employer.companyDescription)}</p>
 				{isMatch && (
 					<CommutePostTags
 						distance={post.distance}
