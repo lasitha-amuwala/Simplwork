@@ -6,6 +6,9 @@ export const createCandidateRequestBody = (
 	availability: SW.IAvailability,
 	email: string
 ): SW.Candidate.IPostRequest => {
+	const maxTravelTimes =
+		Object.keys(values.maxTravelTimes).length === 0 ? { WALK: 20, BIKE: 30, CAR: 90, PUBLIC_TRANSIT: 90 } : values.maxTravelTimes;
+
 	const candidateProfile: SW.Candidate.IProfile = {
 		workHistory: [],
 		minimumPay: 0,
@@ -13,7 +16,7 @@ export const createCandidateRequestBody = (
 		location,
 		availability,
 		maxLiftWeight: 0,
-		maxTravelTimes: values.maxTravelTimes,
+		maxTravelTimes,
 		autoMatch: true,
 	};
 

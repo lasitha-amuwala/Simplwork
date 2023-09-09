@@ -19,6 +19,7 @@ export const EditProfileForm = ({ profileData, afterSave }: EditProfileForm) => 
 		gender: profileData.gender ?? '',
 		phoneNumber: profileData.phoneNumber ?? '',
 		age: profileData.age ?? '',
+		commuteTypes: profileData.maxTravelTimes ? Object.keys(profileData.maxTravelTimes).map((key) => key) : [],
 		maxTravelTimes: profileData.maxTravelTimes ?? '',
 		maximumHours: profileData.maximumHours ?? '',
 	};
@@ -77,10 +78,10 @@ export const EditProfileForm = ({ profileData, afterSave }: EditProfileForm) => 
 			<Card className='bg-gray-50 rounded-xl my-5'>
 				<h1 className='font-semibold text-xl mb-2'>Commute Prefrences</h1>
 				<div className='grid grid-cols-2 grid-rows-2 gap-5 pb-5'>
-					<FieldControl name='maxTravelTimes.CAR' label='Commute by car' />
-					<FieldControl name='maxTravelTimes.BIKE' label='Commute by car' />
-					<FieldControl name='maxTravelTimes.WALK' label='Commute by walking' />
-					<FieldControl name='maxTravelTimes.PUBLIC_TRANSIT' label='Commute by public transit' />
+					<FieldControl name='maxTravelTimes.CAR' label='Commute by car' type='number' />
+					<FieldControl name='maxTravelTimes.BIKE' label='Commute by bicycle' type='number' />
+					<FieldControl name='maxTravelTimes.WALK' label='Commute by walking' type='number' />
+					<FieldControl name='maxTravelTimes.PUBLIC_TRANSIT' label='Commute by public transit' type='number' />
 				</div>
 			</Card>
 		</DialogFormLayout>

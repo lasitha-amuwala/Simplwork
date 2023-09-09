@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../Auth/AuthProvider';
-import { ArrayHelpers, ErrorMessage, Field, FieldArray, Form, Formik, FormikValues } from 'formik';
+import { ErrorMessage, Field, Form, Formik, FormikValues } from 'formik';
 import { AutoComplete } from '../../AutoComplete';
 import { SimplworkApi } from '@utils/simplwork';
 import { StepProgressHeaderObj } from '../StepProgressHeader';
-import { CommuteCheckBoxButton, commuteTypes } from './CommuteCheckBox';
 import { SignUpExperienceForm } from '../../Formik/Forms/Signup/SignUpExperienceForm';
 import { StepHeader } from '../StepHeader';
 import { ProfileForm } from '../../Formik/Forms/ProfileForm';
@@ -16,6 +15,7 @@ import { StepperButtons } from '../StepperButtons';
 import { Step } from '../Step';
 import { convertShiftsToAvailability, createAvailabilityObject } from '@components/AvailabilityWidget/logic';
 import { AvailabilityEditSignUp } from '@components/AvailabilityWidget/AvailabilityEditSignUp';
+import { CommuteSelect } from './CommuteSelect';
 
 export type ValueUserTypes = {
 	fullName: string;
@@ -38,19 +38,13 @@ const initialValues: ValueUserTypes & ValueAvailabilityTypes = {
 	phoneNumber: '',
 	maximumHours: '',
 	commuteTypes: [],
-	maxTravelTimes: { WALK: 20, BIKE: 30, CAR: 90, PUBLIC_TRANSIT: 90 },
+	maxTravelTimes: {},
 	workHistory: [],
 };
 
 const validationSchema = [profileValidationSchema, null, validationSchemaStepTwo, workHistoryValidationSchema];
 
 type SignUpFlowProps = { credential: string; resetSignUp?: () => void };
-
-// const tempLocation: CandidateLocation = {
-// 	latitude: 43.676444420388805,
-// 	longitude: -79.55569588996742,
-// 	postalCode: 'M9R0B3',
-// };
 
 export const CandidateSignUp = ({ credential, resetSignUp }: SignUpFlowProps) => {
 	const router = useRouter();
@@ -141,30 +135,7 @@ export const CandidateSignUp = ({ credential, resetSignUp }: SignUpFlowProps) =>
 										<h1 className='text-md pt-3 font-medium'>
 											Select the modes of transport available to you and the maximum amount of time you are willing to commute each way
 										</h1>
-										<div className='flex gap-3 w-[450px] justify-between'>
-											{Object.values(commuteTypes).map(({ value, text, icon }, index) => (
-												<label key={`${text}${index}`}>
-													<Field type='checkbox' name='commuteTypes' value={value} label={text} icon={icon} component={CommuteCheckBoxButton} />
-												</label>
-											))}
-										</div>
-										<FieldArray
-											name='maxTravelTimes'
-											render={(arrayHelpers: ArrayHelpers) => (
-												<div className='flex flex-col gap-5'>
-													{values.commuteTypes &&
-														values.commuteTypes.length > 0 &&
-														values.commuteTypes.map((commuteType, index) => (
-															<div key={index}>
-																<label className='flex flex-row gap-5 items-center w-full justify-between'>
-																	<span className='font-medium'>Maximum commute time by {commuteTypes[commuteType].text}</span>
-																	<Field type='number' min={0} name={`maxTravelTimes[${commuteType}]`} placeholder='min' className='inputStyle w-20' />
-																</label>
-															</div>
-														))}
-												</div>
-											)}
-										/>
+										<CommuteSelect values={values} />
 									</div>
 									<StepperButtons step={step} updateStep={setStep} />
 								</Step>

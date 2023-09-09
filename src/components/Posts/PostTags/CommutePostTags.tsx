@@ -40,12 +40,12 @@ export const CommutePostTags = ({
 					<p>{`${bikeCommuteTime} min`}</p>
 				</PostTag>
 			)}
-			{walkCommuteTime != undefined && CarCommuteTime != null && (
+			{walkCommuteTime != undefined && walkCommuteTime != null && (
 				<PostTag icon={commuteTypes.WALK.icon}>
 					<p>{`${walkCommuteTime} min`}</p>
 				</PostTag>
 			)}
-			{publicTransiteCommuteTime != undefined && CarCommuteTime != null && (
+			{publicTransiteCommuteTime != undefined && publicTransiteCommuteTime != null && (
 				<PostTag icon={commuteTypes.PUBLIC_TRANSIT.icon}>
 					<p>{`${publicTransiteCommuteTime} min`}</p>
 				</PostTag>
