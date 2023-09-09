@@ -39,14 +39,12 @@ export const AvailabilityWidget = forwardRef(
 		return (
 			<FullCalendar
 				ref={ref}
-				timeZone='UTC'
 				select={onSelect}
 				editable={!readonly}
 				selectable={!readonly}
 				eventContent={renderButton}
-				eventDataTransform={convertShiftToEvent}
 				plugins={[timeGridPlugin, interactionPlugin]}
-				// views={{ timeGridWeek: { dayHeaderFormat: { weekday: 'short' } } }}
+				views={{ timeGridWeek: { dayHeaderFormat: { weekday: 'short' } } }}
 				aspectRatio={80 / 50}
 				snapDuration={'00:30'}
 				slotDuration={'02:00:00'}
@@ -62,6 +60,7 @@ export const AvailabilityWidget = forwardRef(
 				eventResizableFromStart={true}
 				eventBorderColor='#4299E1'
 				eventBackgroundColor='#63B3ED'
+				eventDataTransform={convertShiftToEvent}
 				eventSources={[{ events: shifts, backgroundColor: '#3182CE' }, { events: convertAvailabilityToShifts(availability) }]}
 			/>
 		);

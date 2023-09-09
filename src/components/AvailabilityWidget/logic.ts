@@ -29,11 +29,11 @@ export const getDateDetails = (date: Date) => {
 
 // convert shift to event object from fullCalender
 export const convertShiftToEvent = (eventData: EventInput) => {
-	const shift = eventData as SW.IShift;
+	const { dayOfWeek, shiftTimes } = eventData as SW.IShift;
 	return {
 		title: '',
-		start: convertShiftTimeToDate(shift.dayOfWeek, shift.shiftTimes.startTime),
-		end: convertShiftTimeToDate(shift.dayOfWeek, shift.shiftTimes.endTime),
+		start: convertShiftTimeToDate(dayOfWeek, shiftTimes.startTime),
+		end: convertShiftTimeToDate(dayOfWeek, shiftTimes.endTime == 1440 ? 1439 : shiftTimes.endTime),
 	};
 };
 
@@ -42,13 +42,10 @@ export const convertEventsToShifts = (events: EventApi[]): SW.IShift[] => {
 	events.forEach((event: EventApi) => {
 		const { day: startDay, minuteOfDay: startInMinutes } = getDateDetails(new Date(event.startStr));
 		const { day: endDay, minuteOfDay: endInMinutes } = getDateDetails(new Date(event.endStr));
-
-		console.log(startDay, endDay);
 		if (startDay === endDay) {
 			shifts.push(createShift(startDay, startInMinutes, endInMinutes));
 		} else {
 			const daysBetween = Math.abs(endDay - startDay) - 1;
-			console.log(endDay, startDay, daysBetween);
 			if (endInMinutes === 0 && daysBetween === 0) {
 				shifts.push(createShift(startDay, startInMinutes, 1440));
 			} else {
@@ -60,26 +57,15 @@ export const convertEventsToShifts = (events: EventApi[]): SW.IShift[] => {
 			}
 		}
 	});
-	console.log(shifts);
 	return shifts;
 };
 
 // convert minutes in a day to a date object
 export const convertShiftTimeToDate = (day: number, minutes: number) => {
-	const hour = Math.floor(minutes / 60);
-	console.log(
-		dayjs()
-			.isoWeekday(day == 7 ? 0 : day)
-			.hour(hour)
-			.minute(minutes - hour * 60)
-			.second(0)
-			.millisecond(0)
-			.toDate()
-	);
 	return dayjs()
-		.isoWeekday(day)
-		.hour(hour)
-		.minute(minutes - hour * 60)
+		.isoWeekday(day == 7 ? 0 : day)
+		.hour(Math.floor(minutes / 60))
+		.minute(minutes % 60)
 		.second(0)
 		.millisecond(0)
 		.toDate();

@@ -19,8 +19,7 @@ export const AvailabilityEditDialog = ({ onSave, isLoading, ...rest }: Availabil
 	const getEvents = (): SW.IShift[] => {
 		if (!calendarRef || !calendarRef.current) return [];
 		let calendarApi: CalendarApi = calendarRef.current.getApi();
-		const events = calendarApi.getEvents()
-		console.log(events)
+		const events = calendarApi.getEvents();
 		return convertEventsToShifts(events);
 	};
 

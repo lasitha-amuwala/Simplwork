@@ -17,9 +17,8 @@ export const CandidateAvailabilityEditDialog = ({ availability }: Props) => {
 		onError: () => alert('There was an issue updating your availability, please try again later.'),
 	});
 
-	const onSave = (shifts: SW.IShift[]) => {
+	const onSave = (shifts: SW.IShift[]) =>
 		mutate([{ op: 'replace', path: `/candidateProfile/availability`, value: convertShiftsToAvailability(shifts) }]);
-	};
 
 	return <AvailabilityEditDialog onSave={onSave} isLoading={isLoading} availability={availability} />;
 };

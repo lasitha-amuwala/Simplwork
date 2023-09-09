@@ -18,7 +18,7 @@ type Props = {};
 const Home: NextPage = (props: Props) => {
 	const { user } = useAuth();
 	const params = {};
-	const employerName = 'LasithaA';
+	const employerName = 'Employer';
 	const [open, setOpen] = useState<boolean>(false);
 	const router = useRouter();
 
@@ -31,43 +31,44 @@ const Home: NextPage = (props: Props) => {
 		}
 	}, [router]);
 
-	const { data: postings } = useQuery({
+	const { data: employer } = useQuery({ ...queries.user.employerList(user?.credential ?? '') });
+	const { data } = useQuery({
 		...queries.employer.postings.getOverviews(user?.credential ?? '', employerName, params),
 		refetchInterval: 10000,
 	});
 
-	const data: SW.Employer.Postings.IOverview[] = [
-		{
-			jobPosting: {
-				pay: 15,
-				positionTitle: 'Backend Dev',
-				jobDescription: 'Testing Tests',
-				benefits: 'Test',
-				createdAt: new Date(),
-				shifts: [
-					{
-						dayOfWeek: 1,
-						shiftTimes: {
-							startTime: 300,
-							endTime: 1100,
-						},
-						id: 1,
-					},
-				],
-				isFixedSchedule: true,
-				estimatedHours: 10,
-				id: 0,
-				branch: {
-					branchName: 'Lasi',
-				},
-			},
-			new_count: 10,
-			reviewed_count: 11,
-			interview_requested_count: 12,
-			ready_for_interview_count: 13,
-			rejected_count: 14,
-		},
-	];
+	// const data: SW.Employer.Postings.IOverview[] = [
+	// 	{
+	// 		jobPosting: {
+	// 			pay: 15,
+	// 			positionTitle: 'Backend Dev',
+	// 			jobDescription: 'Testing Tests',
+	// 			benefits: 'Test',
+	// 			createdAt: new Date(),
+	// 			shifts: [
+	// 				{
+	// 					dayOfWeek: 1,
+	// 					shiftTimes: {
+	// 						startTime: 300,
+	// 						endTime: 1100,
+	// 					},
+	// 					id: 1,
+	// 				},
+	// 			],
+	// 			isFixedSchedule: true,
+	// 			estimatedHours: 10,
+	// 			id: 0,
+	// 			branch: {
+	// 				branchName: 'Lasi',
+	// 			},
+	// 		},
+	// 		new_count: 10,
+	// 		reviewed_count: 11,
+	// 		interview_requested_count: 12,
+	// 		ready_for_interview_count: 13,
+	// 		rejected_count: 14,
+	// 	},
+	// ];
 
 	return (
 		<>
