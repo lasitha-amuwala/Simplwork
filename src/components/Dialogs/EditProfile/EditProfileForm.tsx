@@ -6,6 +6,7 @@ import { FieldControl } from '@components/Formik/inputs/FieldControl';
 import { DialogFormLayout } from '@components/Dialogs/DialogFormLayout';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { profileValidationSchema } from '@components/Formik/FormValidation';
+import { Card } from '@components/Card';
 
 type EditProfileForm = { profileData: any; afterSave: () => void };
 
@@ -65,15 +66,15 @@ export const EditProfileForm = ({ profileData, afterSave }: EditProfileForm) => 
 
 	return (
 		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={profileValidationSchema} formDisabled={saving}>
-			<div className='bg-gray-50 rounded-xl p-5 my-5'>
+			<Card className='bg-gray-50 rounded-xl my-5'>
 				<h1 className='font-semibold text-xl'>Profile</h1>
 				<ProfileForm />
-			</div>
-			<div className='bg-gray-50 rounded-xl p-5 my-5'>
+			</Card>
+			<Card className='bg-gray-50 rounded-xl my-5'>
 				<h1 className='font-semibold text-xl mb-2'>Work Availability</h1>
 				<FieldControl name='maximumHours' label='Maximum work hours' />
-			</div>
-			<div className='bg-gray-50 rounded-xl p-5 my-5 border'>
+			</Card>
+			<Card className='bg-gray-50 rounded-xl my-5'>
 				<h1 className='font-semibold text-xl mb-2'>Commute Prefrences</h1>
 				<div className='grid grid-cols-2 grid-rows-2 gap-5 pb-5'>
 					<FieldControl name='maxTravelTimes.CAR' label='Commute by car' />
@@ -81,7 +82,7 @@ export const EditProfileForm = ({ profileData, afterSave }: EditProfileForm) => 
 					<FieldControl name='maxTravelTimes.WALK' label='Commute by walking' />
 					<FieldControl name='maxTravelTimes.PUBLIC_TRANSIT' label='Commute by public transit' />
 				</div>
-			</div>
+			</Card>
 		</DialogFormLayout>
 	);
 };

@@ -46,7 +46,7 @@ export const AddExperienceForm = ({ afterSave }: AddExperienceFormProps) => {
 
 	return (
 		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={workHistoryValidationSchema} formDisabled={saving}>
-			<ExperienceForm />
+				<ExperienceForm />
 		</DialogFormLayout>
 	);
 };

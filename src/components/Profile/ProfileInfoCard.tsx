@@ -1,3 +1,4 @@
+import { Card } from '@components/Card';
 import { CommutePostTags } from '@components/Posts/PostTags';
 import React from 'react';
 
@@ -7,7 +8,7 @@ type ProfileInfoCardProps = {
 
 export const ProfileInfoCard = ({ candidate }: ProfileInfoCardProps) => {
 	return (
-		<div className=' bg-gray-100 p-5 rounded-md flex flex-col gap-3 overflow-hidden'>
+		<Card className=' bg-gray-50 p-5 rounded-md flex flex-col gap-3 overflow-hidden'>
 			<div className=''>
 				<h1 className='font-semibold'>Email:</h1>
 				<p>{candidate?.email}</p>
@@ -37,6 +38,6 @@ export const ProfileInfoCard = ({ candidate }: ProfileInfoCardProps) => {
 					publicTransiteCommuteTime={candidate.maxTravelTimes.PUBLIC_TRANSIT}
 				/>
 			</div>
-		</div>
+		</Card>
 	);
 };
