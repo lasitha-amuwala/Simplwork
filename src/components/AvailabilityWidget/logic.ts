@@ -18,10 +18,11 @@ export const getDayNumberByString = (dayOfWeek: SW.DayOfWeekString): number => {
 
 export const getDateDetails = (date: Date) => {
 	const newDate = dayjs(date);
+	const minuteOfDay = newDate.hour() * 60 + newDate.minute();
 	return {
-		day: newDate.isoWeekday(),
-		hour: newDate.minute(),
-		minuteOfDay: newDate.hour() * 60 + newDate.minute(),
+		day: newDate.date(),
+		dayOfWeek: newDate.isoWeekday(),
+		minuteOfDay: minuteOfDay == 1440 ? 1439 : minuteOfDay,
 	};
 };
 
@@ -40,22 +41,51 @@ export const convertShiftToEvent = (eventData: EventInput) => {
 export const convertEventsToShifts = (events: EventApi[]): SW.IShift[] => {
 	let shifts: SW.IShift[] = [];
 	events.forEach((event: EventApi) => {
-		const { day: startDay, minuteOfDay: startInMinutes } = getDateDetails(new Date(event.startStr));
-		const { day: endDay, minuteOfDay: endInMinutes } = getDateDetails(new Date(event.endStr));
-		if (startDay === endDay) {
-			shifts.push(createShift(startDay, startInMinutes, endInMinutes));
-		} else {
-			const daysBetween = Math.abs(endDay - startDay) - 1;
-			if (endInMinutes === 0 && daysBetween === 0) {
-				shifts.push(createShift(startDay, startInMinutes, 1440));
+		const { day: startDay, dayOfWeek: startWeekDay, minuteOfDay: startInMinutes } = getDateDetails(new Date(event.startStr));
+		const { day: endDay, dayOfWeek: endWeekDay, minuteOfDay: endInMinutes } = getDateDetails(new Date(event.endStr));
+
+		if (startWeekDay === endWeekDay) {
+			if (startDay === endDay) {
+				shifts.push(createShift(startWeekDay, startInMinutes, endInMinutes));
 			} else {
-				shifts.push(createShift(startDay, startInMinutes, 1440));
-				for (let i = 0; i < daysBetween; i++) {
-					shifts.push(createShift(startDay + 1 + i, 0, 1440));
-				}
-				shifts.push(createShift(endDay, 0, endInMinutes));
+				shifts.push(createShift(startWeekDay, startInMinutes, 1439));
+				for (let i = 1; i < 7; i++) shifts.push(createShift(i, 0, 1439));
 			}
+		} else {
+			let daysInBetween = endWeekDay - startWeekDay - 1;
+			let newEndInMinues = endInMinutes;
+
+			if (startWeekDay == 7) {
+				daysInBetween = endWeekDay - 1;
+			}
+
+			if (endInMinutes === 0) {
+				newEndInMinues = 1439;
+				daysInBetween -= 1;
+			}
+
+			shifts.push(createShift(startWeekDay, startInMinutes, 1439));
+			for (let i = 1; i < daysInBetween + 1; i++) shifts.push(createShift(startWeekDay == 7 ? i : startWeekDay + i, 0, 1439));
+			shifts.push(createShift(endInMinutes == 0 ? endWeekDay - 1 : endWeekDay, 0, newEndInMinues));
 		}
+
+		// if (startDay === endDay) {
+		// 	shifts.push(createShift(startDay, startInMinutes, endInMinutes));
+		// } else {
+		// if (startDay === 7) {
+		// 	shifts.push(createShift(startDay, startInMinutes, 1440));
+		// 	console.log(endDay);
+		// 	for (let i = 1; i < endDay + 1; i++) shifts.push(createShift(i, 0, i == endDay ? endInMinutes : 1440));
+		// } else {
+		// 	const daysBetween = Math.abs(endDay - startDay) - 1;
+		//  else {
+		// 		shifts.push(createShift(startDay, startInMinutes, 1440));
+		// 		for (let i = 0; i < daysBetween; i++) {
+		// 			shifts.push(createShift(startDay + 1 + i, 0, 1440));
+		// 		}
+		// 		shifts.push(createShift(endDay, 0, endInMinutes));
+		// 	}
+		// }
 	});
 	return shifts;
 };
@@ -85,8 +115,13 @@ export const convertAvailabilityToShifts = (availability: SW.IAvailability | und
 
 // convert list of shifts to Availability object, opposite of convertAvailabilityToShifts
 export const convertShiftsToAvailability = (shifts: SW.IShift[]): SW.IAvailability => {
+	console.log(shifts);
 	const availabilityObject = createAvailabilityObject();
-	shifts.forEach(({ dayOfWeek, shiftTimes }) => availabilityObject[getDayStringByNumber(dayOfWeek)].push(shiftTimes));
+	shifts.forEach(({ dayOfWeek, shiftTimes }) => {
+		console.log(dayOfWeek, shiftTimes);
+		return availabilityObject[getDayStringByNumber(dayOfWeek)].push(shiftTimes);
+	});
+
 	return availabilityObject;
 };
 
