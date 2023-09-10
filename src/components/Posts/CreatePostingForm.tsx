@@ -48,7 +48,7 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 			if (branches) return SimplworkApi.post(`employer/postings?employerName=${employerName}&branchName=${branches[0].branchName}`, data);
 			return Promise.reject();
 		},
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['candidate'] }),
+		onSuccess: () => queryClient.invalidateQueries(),
 		onError: () => {
 			alert('There was an issue creating job posting, please try again later.');
 			afterSave();
