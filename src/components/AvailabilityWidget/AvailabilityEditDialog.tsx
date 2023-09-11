@@ -40,7 +40,7 @@ export const AvailabilityEditDialog = ({ onSave, isLoading, ...rest }: Availabil
 					description='Select the time and days that you are available to work.'
 					triggerLabel='Edit Availability'>
 					<fieldset className='group' disabled={isLoading}>
-						<form onSubmit={onSubmit} className='w-[50vw] flex flex-col gap-3'>
+						<form onSubmit={onSubmit} className='h-auto w-[60vw] max-w-5xl flex flex-col gap-3'>
 							<AvailabilityWidget ref={calendarRef} {...rest} />
 							<div className='self-end'>
 								<SaveChangesButton />

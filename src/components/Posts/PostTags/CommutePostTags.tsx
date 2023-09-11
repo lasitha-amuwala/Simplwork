@@ -1,14 +1,9 @@
 import { MdLocationPin } from 'react-icons/md';
 import { PostTag } from './PostTag';
 import { commuteTypes } from '../../SignUp/Candidate/CommuteCheckBox';
+import { displayDistance } from '@utils/helpers';
 
-const displayDistance = (distance: number) => {
-	if (distance < 0.1) {
-		const distanceInMetres = Math.round(distance * 1000);
-		return `${Number.parseFloat(distanceInMetres.toFixed(1))}m`;
-	}
-	return `${Number.parseFloat(distance.toFixed(1))}km`;
-};
+
 
 export const CommutePostTags = ({
 	distance,

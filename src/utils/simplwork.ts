@@ -39,10 +39,14 @@ export const queries = {
 		}),
 		postings: {
 			getOverviews: (credential: string, employerName: string, params: Params) => ({
-				queryKey: ['postings', 'overviews', employerName, params],
+				queryKey: ['employer/postings/overviews', employerName, params],
 				queryFn: (): Promise<SW.Employer.Postings.IOverview[]> =>
 					get(createURL(`employer/postings/overview`, { employerName: employerName, ...params })),
 				enabled: !!credential && !!employerName,
+			}),
+			getMatchesbyId: (credential: string, id: number, status: SW.Employer.Status, params: Params) => ({
+				queryKey: ['employer/postings/match', id, status, params],
+				queryFn: (): Promise<SW.Employer.Postings.Match[]> => get(createURL(`employer/postings/match/${id}`, { status, ...params })),
 			}),
 		},
 	},

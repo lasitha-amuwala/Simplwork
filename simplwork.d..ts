@@ -131,7 +131,7 @@ namespace SW {
 
 		interface IEmployer {
 			companyName: string;
-			companyDescription: string;
+			companyDescription: stdistancering;
 		}
 
 		interface IBranch {
@@ -153,6 +153,19 @@ namespace SW {
 				interview_requested_count: number;
 				ready_for_interview_count: number;
 				rejected_count: number;
+			}
+			interface Match {
+				posting: { branch: SW.Employer.IBranch; id: number };
+				candidateProfile: Pick<
+					ICandidate,
+					'candidateName' | 'phoneNumber' | 'email' | 'gender' | 'age' | 'workHistory' | 'availability' | 'id'
+				>;
+				employerStatus: Employer.Status;
+				shiftCompatibilities: IShiftCompatibilities[];
+				distance: number;
+				matchingHours: number;
+				shiftScore: number;
+				empScore: number;
 			}
 		}
 	}

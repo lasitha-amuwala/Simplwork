@@ -26,7 +26,7 @@ export const ProfileInfoCard = ({ candidate }: ProfileInfoCardProps) => {
 				<p>{candidate?.phoneNumber}</p>
 			</div>
 			<div>
-				<h1 className='font-semibold pb-1'>Work Hours:</h1>
+				<h1 className='font-semibold pb-1'>Maximum Work Hours:</h1>
 				<p>{candidate?.maximumHours}</p>
 			</div>
 			<div>

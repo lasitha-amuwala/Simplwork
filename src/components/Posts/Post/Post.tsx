@@ -5,6 +5,7 @@ import { CommutePostTags } from '../PostTags/CommutePostTags';
 import { PostBody } from './PostBody';
 import axios from 'axios';
 import { unEscape } from '@utils/helpers';
+import { Card } from '@components/Card';
 
 type PostProps = {
 	post: SW.PostingResponse;
@@ -32,9 +33,9 @@ export const Post = memo(({ post, refetch }: PostProps) => {
 
 	const CompanyHeaderCard = () => {
 		return (
-			<div className='bg-[#64B1EC]/10 border-b p-4 flex flex-col gap-4 overflow-auto'>
+			<div className='bg-[#64B1EC]/10 border-b p-5 flex flex-col gap-4 overflow-auto'>
 				<div className='h-auto flex gap-4'>
-					<div className='h-20 w-20 bg-blue-300 rounded-md shrink-0'/>
+					<div className='h-20 w-20 bg-blue-300 rounded-md shrink-0' />
 					<div className='grow'>
 						<div className='flex'>
 							<div className='flex flex-col grow'>
@@ -68,10 +69,10 @@ export const Post = memo(({ post, refetch }: PostProps) => {
 	};
 
 	return (
-		<div className='bg-white rounded-md border border-gray-200 mt-1 sticky top-[80px] max-h-[90vh] overflow-auto'>
+		<Card className='mt-1 sticky top-[80px] max-h-[90vh] overflow-auto p-0'>
 			<CompanyHeaderCard />
 			<PostBody post={post} />
-		</div>
+		</Card>
 	);
 });
 

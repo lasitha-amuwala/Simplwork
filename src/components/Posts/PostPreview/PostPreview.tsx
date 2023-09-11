@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { MdAttachMoney, MdCalendarMonth, MdOutlineAccessTime } from 'react-icons/md';
 import { PostTag } from '../PostTags';
 import { timeFromNow } from '@utils/helpers';
+import { Card } from '@components/Card';
 
 type PostPreviewItemProps = {
 	post: any;
@@ -57,10 +58,7 @@ export const PostPreview = memo(({ post, status = '', active }: PostPreviewItemP
 	}
 
 	return (
-		<div
-			className={`w-full h-auto bg-white rounded-md border border-gray-200 p-4 text-start ring-sw hover:ring transition-shadow duration-150 ${
-				active && 'ring'
-			}`}>
+		<Card className={`p-4 text-start ring-sw hover:ring transition-shadow duration-150 ${active && 'ring'}`}>
 			<div className='w-full flex flex-col gap-3 overflow-hidden'>
 				<div className='flex gap-4'>
 					{/* <div className='w-[50px] h-[50px] bg-sky-300 rounded-md'></div> */}
@@ -84,7 +82,7 @@ export const PostPreview = memo(({ post, status = '', active }: PostPreviewItemP
 				<p className='w-full text-gray-600 line-clamp-2'>{post.jobDescription}</p>
 			</div>
 			<p className='text-xs pt-3 text-gray-500'>{timeFromNow(post.createdAt)}</p>
-		</div>
+		</Card>
 	);
 });
 

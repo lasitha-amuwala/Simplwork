@@ -4,7 +4,7 @@
 
 :root {
 	--foreground: #ffffff;
-	--background: hsl(210, 12%, 96%);
+	--background: hsl(210, 20%, 97%);
 	--header-height: 64px;
 }
 
@@ -36,7 +36,13 @@ body {
 		@apply bg-red-50 text-red-600 hover:bg-red-100 disabled:hover:bg-red-50;
 	}
 }
-
+/* shadows from https://shadows.brumm.af/*/
+.shadowSmooth {
+	box-shadow: 0px 0px 0px -7px rgba(0, 0, 0, 0.011), 0.1px 0.1px 0.2px -7px rgba(0, 0, 0, 0.016), 0.1px 0.1px 0.4px -7px rgba(0, 0, 0, 0.019),
+		0.2px 0.2px 0.8px -7px rgba(0, 0, 0, 0.022), 0.3px 0.3px 1.4px -7px rgba(0, 0, 0, 0.025), 0.4px 0.4px 2.3px -7px rgba(0, 0, 0, 0.028),
+		0.5px 0.5px 3.7px -7px rgba(0, 0, 0, 0.031), 0.7px 0.7px 6.1px -7px rgba(0, 0, 0, 0.034), 1.1px 1.1px 10.4px -7px rgba(0, 0, 0, 0.039),
+		2px 2px 20px -7px rgba(0, 0, 0, 0.05);
+}
 .PopoverContent {
 	border-radius: 5px;
 	padding: 20px;

@@ -38,3 +38,11 @@ export const unEscape = (htmlStr: string) => {
 };
 
 export const getWeekDay = (day: number) => dayjs().isoWeekday(day);
+
+export const displayDistance = (distance: number) => {
+	if (distance < 0.1) {
+		const distanceInMetres = Math.round(distance * 1000);
+		return `${Number.parseFloat(distanceInMetres.toFixed(1))}m`;
+	}
+	return `${Number.parseFloat(distance.toFixed(1))}km`;
+};
