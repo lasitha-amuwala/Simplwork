@@ -33,7 +33,7 @@ export const PostOverview = ({
 			<div>
 				<h1 className='font-semibold text-lg'>{post.positionTitle}</h1>
 				<p className='font-medium text-md'>
-					{post.branch.branchName} - <span className='text-gray-500 font-normal'>{post.branch.location.addressComponents.place}</span>
+					{post.branch.branchName} - <span className='text-gray-500 font-normal'>{post.branch.location.addressComponents?.place}</span>
 				</p>
 			</div>
 			<div className='flex justify-between gap-7'>

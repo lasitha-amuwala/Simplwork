@@ -79,8 +79,9 @@ namespace SW {
 	interface ILocation {
 		latitude: number;
 		longitude: number;
-		fullAddress: string;
-		addressComponents: {
+		fullAddress?: string;
+		postalCode: string
+		addressComponents?: {
 			country: string;
 			postode: string;
 			neighborhood: string;

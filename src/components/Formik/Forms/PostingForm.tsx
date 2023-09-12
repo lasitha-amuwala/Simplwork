@@ -24,7 +24,7 @@ export const PostingForm = ({ branches, availability, setAvailability }: Props) 
 					Choose branch here
 				</option>
 				{branches?.map((branch) => (
-					<option value={branch.branchName} className='flex flex-col'>
+					<option key={branch.branchName} value={branch.branchName} className='flex flex-col'>
 						<span className='font-medium'>{`${branch.branchName} - ${branch.location.fullAddress}`}</span>
 					</option>
 				))}
