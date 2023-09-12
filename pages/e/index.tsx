@@ -57,7 +57,7 @@ const Home: NextPage = (props: Props) => {
 						</div>
 						{data ? (
 							data?.map(({ jobPosting, new_count, reviewed_count, interview_requested_count, ready_for_interview_count, rejected_count }) => (
-								<Link href={{ pathname: '/e/', query: { id: jobPosting.id } }} key={jobPosting.id} className='w-full'>
+								<Link href={{ pathname: '/e/', query: { id: jobPosting.id } }} key={jobPosting.id} className='w-full px-1.5 pb-2 ring-sw'>
 									<PostOverview
 										post={jobPosting}
 										newCount={new_count}

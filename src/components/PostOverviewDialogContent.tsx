@@ -55,7 +55,7 @@ const TabBody = ({
 	return (
 		<div className='w-full flex max-h-[75vh] min-h-[55vh] gap-5'>
 			<div className='w-1/3 flex flex-col gap-2 border-r pr-3'>
-				<h1 className='font-semibold text-lg px-1.5'>Applications</h1>
+				<h1 className='font-semibold text-lg px-1.5'>{`Applications (${matches.length})`}</h1>
 				<ul className='flex flex-col gap-2 overflow-auto p-1.5'>
 					{matches.length == 0 && <li className='flex justify-center items-center min-h-[55vh] font-medium'>No Applications.</li>}
 					{matches?.map((match, i) => (

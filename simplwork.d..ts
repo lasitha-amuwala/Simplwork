@@ -79,7 +79,14 @@ namespace SW {
 	interface ILocation {
 		latitude: number;
 		longitude: number;
-		postalCode: string;
+		fullAddress: string;
+		addressComponents: {
+			country: string;
+			postode: string;
+			neighborhood: string;
+			place: string;
+			region: string;
+		};
 	}
 
 	interface IUserData {
@@ -143,7 +150,7 @@ namespace SW {
 		}
 		namespace Postings {
 			interface IJobPosting extends Omit<IPosting, 'employer'> {
-				branch: { branchName: string };
+				branch: { branchName: string; location: SW.ILocation };
 			}
 
 			interface IOverview {

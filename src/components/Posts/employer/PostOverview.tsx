@@ -29,11 +29,11 @@ export const PostOverview = ({
 	};
 
 	return (
-		<div className='flex flex-col gap-4 w-full shadowSmooth bg-white rounded-lg border border-gray-200 p-5 group/postOverview hover:cursor-pointer'>
+		<div className='flex flex-col gap-4 w-full shadowSmooth bg-white rounded-lg border border-gray-200 p-5 group/postOverview hover:cursor-pointer hover:ring ring-2'>
 			<div>
 				<h1 className='font-semibold text-lg'>{post.positionTitle}</h1>
 				<p className='font-medium text-md'>
-					{post.branch.branchName} - <span className='text-gray-500 font-normal'>branch location</span>
+					{post.branch.branchName} - <span className='text-gray-500 font-normal'>{post.branch.location.addressComponents.place}</span>
 				</p>
 			</div>
 			<div className='flex justify-between gap-7'>
