@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 				if (res.status >= 200 && res.status <= 299) {
 					setLoggedIn(true);
 					setLocalStorage(credential);
+					localStorage.setItem('userType', 'candidate');
 					router.replace('/');
 					return;
 				}
@@ -68,6 +69,8 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 					if (res.data.length > 0) {
 						setLoggedIn(true);
 						setLocalStorage(credential);
+						localStorage.setItem('employerName', res.data[0].employer.companyName);
+						localStorage.setItem('userType', 'employer');
 						router.replace('/e/');
 						return;
 					} else {
@@ -128,7 +131,8 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 		const credential = localStorage.getItem('token');
 		if (credential && !isTokenExpired(credential)) {
 			signInUser(credential);
-			router.replace('/');
+			const userType = localStorage.getItem('userType');
+			router.replace(userType == 'employer' ? '/e/' : '/');
 		}
 	}, []);
 

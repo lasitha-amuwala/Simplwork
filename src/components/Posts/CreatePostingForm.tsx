@@ -15,6 +15,7 @@ export type PostingValues = {
 	jobDescription: string;
 	estimatedHours: number;
 	benefits: string;
+	branch: string;
 };
 
 type CreatePostingFormProps = { afterSave: () => void };
@@ -23,17 +24,7 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 	const { user } = useAuth();
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
-	const [location, setLocation] = useState<SW.ILocation>({ latitude: 0, longitude: 0, postalCode: '' });
 	const [availability, setAvailability] = useState<SW.IAvailability>(createAvailabilityObject());
-
-	const initialValues: PostingValues = {
-		positionTitle: '',
-		pay: 0,
-		fixedSchedule: false,
-		jobDescription: '',
-		estimatedHours: 0,
-		benefits: '',
-	};
 
 	const employerName = window.localStorage.getItem('employerName') ?? '';
 
@@ -45,7 +36,7 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 
 	const { mutate } = useMutation({
 		mutationFn: (data: any) => {
-			if (branches) return SimplworkApi.post(`employer/postings?employerName=${employerName}&branchName=${branches[0].branchName}`, data);
+			if (branches) return SimplworkApi.post(`employer/postings?employerName=${employerName}&branchName=${data.branch}`, data.data);
 			return Promise.reject();
 		},
 		onSuccess: () => queryClient.invalidateQueries(),
@@ -64,7 +55,8 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 		industryType: string;
 		shifts: SW.IShift[];
 	}
-	const onSubmit = async ({ positionTitle, pay, jobDescription, fixedSchedule, benefits }: FormikValues) => {
+
+	const onSubmit = async ({ positionTitle, pay, jobDescription, fixedSchedule, benefits, branch }: FormikValues) => {
 		setSaving(true);
 		const data: IPostPosting = {
 			positionTitle,
@@ -75,13 +67,23 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 			shifts: [{ dayOfWeek: 1, shiftTimes: { startTime: 0, endTime: 120 } }],
 			industryType: 'RETAIL',
 		};
-		mutate(data);
+		mutate({ data, branch });
 		afterSave();
+	};
+
+	const initialValues: PostingValues = {
+		positionTitle: '',
+		pay: 0,
+		fixedSchedule: false,
+		jobDescription: '',
+		estimatedHours: 0,
+		benefits: '',
+		branch: '',
 	};
 
 	return (
 		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={jobPostingValidationSchema} formDisabled={saving}>
-			<PostingForm updateLocation={setLocation} availability={availability} setAvailability={setAvailability} />
+			<PostingForm branches={branches} availability={availability} setAvailability={setAvailability} />
 		</DialogFormLayout>
 	);
 };

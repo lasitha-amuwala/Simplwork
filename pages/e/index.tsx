@@ -12,30 +12,28 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { string } from 'yup';
 
 type Props = {};
 
 const Home: NextPage = (props: Props) => {
 	const { user } = useAuth();
+	const [employerName, setEmployerName] = useState('');
 	const params = {};
-	const employerName = 'Lasitha';
-	const [open, setOpen] = useState(false);
+
+	useEffect(() => {
+		const employerName = localStorage.getItem('employerName') as string;
+		setEmployerName(employerName);
+	}, []);
+
 	const [buttonState, setButtonState] = useState(0);
 
 	const router = useRouter();
 	const overviewId = parseInt(router.query.id as string);
-	useEffect(() => {
-		if (router.query.id) {
-			router.query.id;
-			setOpen(true);
-		} else {
-			setOpen(false);
-		}
-	}, [router]);
 
 	const onOpenChange = (isOpen: boolean) => {
 		if (isOpen == false) setButtonState(0);
-		setOpen(isOpen);
+		router.push('');
 	};
 
 	// const { data: employer } = useQuery(queries.user.employerList(user?.credential ?? ''));
@@ -78,31 +76,31 @@ const Home: NextPage = (props: Props) => {
 						)}
 					</div>
 				</main>
-				<Dialog open={open} onOpenChange={onOpenChange}>
+				<Dialog open={!!overviewId} onOpenChange={onOpenChange}>
 					{buttonState == 0 && (
 						<DialogContent className='h-auto w-[300px] bg-gray-50 flex flex-col gap-3'>
-							<button className='button' onClick={() => setButtonState(1)}>
-								View Applications
-							</button>
-							<button className='button' onClick={() => setButtonState(2)}>
+							<Link href={`?${new URLSearchParams({ id: router.query.id as string, action: 'manage' })}`} shallow className='button text-center'>
+								Manage Applications
+							</Link>
+							<Link href={`?${new URLSearchParams({ id: router.query.id as string, action: 'edit' })}`} shallow className='button text-center'>
 								Edit Posting
-							</button>
-							<button className='btn-red' onClick={() => setButtonState(3)}>
+							</Link>
+							<Link href={`?${new URLSearchParams({ id: router.query.id as string, action: 'delete' })}`} shallow className='btn-red text-center'>
 								Delete Posting
-							</button>
+							</Link>
 						</DialogContent>
 					)}
-					{buttonState == 1 && (
+					{router.query.action == 'manage' && (
 						<DialogContent className='h-auto max-w-5xl bg-gray-50'>
-							<PostOverviewDialogContent />;
+							<PostOverviewDialogContent />
 						</DialogContent>
 					)}
-					{buttonState == 2 && (
+					{router.query.action == 'edit' && (
 						<DialogContent className='h-auto max-w-5xl bg-gray-50'>
 							<div>coming soon</div>
 						</DialogContent>
 					)}
-					{buttonState == 3 && (
+					{router.query.action == 'delete' && (
 						<DialogContent className='h-auto max-w-5xl bg-gray-50'>
 							<DeletePostingDialog id={overviewId} />
 						</DialogContent>
@@ -112,6 +110,5 @@ const Home: NextPage = (props: Props) => {
 		</>
 	);
 };
-{
-}
+
 export default Home;

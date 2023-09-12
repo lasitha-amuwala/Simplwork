@@ -23,7 +23,7 @@ export const AvailabilityWidget = forwardRef(
 			const removeEvent = () => event.remove();
 
 			return (
-				<div className=' relative p-0.5 group/event w-full h-full overflow-hidden'>
+				<div className=' relative p-0.5 pt-0 group/event w-full h-full overflow-hidden'>
 					{timeText}
 					<button
 						className={`absolute right-0 top-0 p-0.5 m-0.5 bg-black rounded-full hidden ${

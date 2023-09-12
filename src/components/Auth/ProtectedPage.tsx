@@ -12,7 +12,10 @@ export const ProtectedPage = ({ children }: PropsWithChildren<Props>) => {
 
 	useEffect(() => {
 		setLoading(true);
-		if (!user || !isLoggedIn) router.replace('/signin');
+		if (!user || !isLoggedIn) {
+			const userType = localStorage.getItem('userType');
+			router.replace(userType == 'employer' ? '/e/signin' : '/signin');
+		}
 		if (user && isLoggedIn) setLoading(false);
 	}, [user, router, isLoggedIn]);
 
