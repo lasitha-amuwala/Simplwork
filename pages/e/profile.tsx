@@ -2,10 +2,10 @@ import React from 'react'
 
 type Props = {}
 
-const messages = (props: Props) => {
+const Profile = (props: Props) => {
   return (
     <div>Comming Soon...</div>
   )
 }
 
-export default messages
+export default Profile

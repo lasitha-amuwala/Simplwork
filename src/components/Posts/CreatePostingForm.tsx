@@ -8,6 +8,15 @@ import { PostingForm } from '../Formik/Forms/PostingForm';
 import { useAuth } from '../Auth/AuthProvider';
 import { createAvailabilityObject } from '@components/AvailabilityWidget/logic';
 
+export type PostingValues = {
+	positionTitle: string;
+	pay: number;
+	fixedSchedule: boolean;
+	jobDescription: string;
+	estimatedHours: number;
+	benefits: string;
+};
+
 type CreatePostingFormProps = { afterSave: () => void };
 
 export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
@@ -16,15 +25,6 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 	const [saving, setSaving] = useState(false);
 	const [location, setLocation] = useState<SW.ILocation>({ latitude: 0, longitude: 0, postalCode: '' });
 	const [availability, setAvailability] = useState<SW.IAvailability>(createAvailabilityObject());
-
-	type PostingValues = {
-		positionTitle: string;
-		pay: number;
-		fixedSchedule: boolean;
-		jobDescription: string;
-		estimatedHours: number;
-		benefits: string;
-	};
 
 	const initialValues: PostingValues = {
 		positionTitle: '',

@@ -21,7 +21,7 @@ export const CreatePostingDialog = (props: Props) => {
 			setOpen={setOpen}
 			triggerLabel={<TriggerButton />}
 			title='Create Job Posting'
-			description={`Add job posting information here. Click Post when you're done.`}>
+			description={`Create and post job posting. Click save when you're done.`}>
 			<CreatePostingForm afterSave={() => setOpen(false)} />
 		</DialogContentLayout>
 	);

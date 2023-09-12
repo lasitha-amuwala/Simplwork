@@ -19,7 +19,7 @@ const Navbar = () => {
 	const employerLinks = [
 		{ name: 'Job Posting', href: '/e/' },
 		{ name: 'Branches', href: '/e/branches' },
-		{ name: 'Messages', href: '/e/messages' },
+		{ name: 'Profile', href: '/e/profile' },
 	];
 
 	const navLinks = pathname.split('/')[1] == 'e' ? employerLinks : candidateLinks;
