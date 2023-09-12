@@ -4,7 +4,7 @@ import { Field, useFormikContext } from 'formik';
 import { AutoComplete } from '../../AutoComplete';
 import { AvailabilityEditDialog } from '@components/AvailabilityWidget/AvailabilityEditDialog';
 import { convertShiftsToAvailability } from '@components/AvailabilityWidget/logic';
-import Tooltip from '@components/Tooltip';
+import { Tooltip } from '@components/Tooltip';
 import { LuInfo } from 'react-icons/lu';
 import { PostingValues } from '@components/Posts/CreatePostingForm';
 
