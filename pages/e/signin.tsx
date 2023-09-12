@@ -13,7 +13,7 @@ const SignIn: NextPageWithLayout = (props: Props) => {
 
 	return (
 		<CenterPage>
-			<AuthCard title='Employer Sign in or Register' subtitle='Continue with Google to sign in or register.'>
+			<AuthCard title='Employer Sign In' subtitle='Continue with Google to sign in or register.'>
 				<GoogleLogin
 					useOneTap
 					width={250}

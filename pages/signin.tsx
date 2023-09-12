@@ -18,7 +18,7 @@ const SignIn: NextPageWithLayout = () => {
 
 	return (
 		<CenterPage>
-			<AuthCard title='Sign in or Register' subtitle='Continue with Google to sign in or register.'>
+			<AuthCard title='Candidate Sign In' subtitle='Continue with Google to sign in or register.'>
 				<GoogleLogin useOneTap width={250} shape='pill' text='continue_with' onSuccess={onSignIn} onError={() => console.log('Login Failed')} />
 				<Link href='/e/signin' className='font-medium text-xs'>
 					Employer? Sign in or register<span className='text-blue-700 '> here</span>
