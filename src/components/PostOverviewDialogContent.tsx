@@ -1,15 +1,14 @@
 import React, { PropsWithChildren, useState } from 'react';
 import * as Tabs from '@radix-ui/react-tabs';
-import { MdLocationOn, MdOutlineLocationOn } from 'react-icons/md';
 import { AvailabilityViewDialog } from './AvailabilityWidget/AvailabilityViewDialog';
 import { ExperienceList } from './Lists/Experience/ExperienceList';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { SimplworkApi, queries } from '@utils/simplwork';
 import { useAuth } from './Auth/AuthProvider';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Ring } from '@uiball/loaders';
 import { displayDistance } from '@utils/helpers';
+import { CgSpinner } from 'react-icons/cg';
+import Link from 'next/link';
 
 type Props = {};
 
@@ -24,7 +23,7 @@ const TabBody = ({
 }) => {
 	const router = useRouter();
 	const { user } = useAuth();
-	const [currMatch, setCurrMatch] = useState<number | null>(null);
+	const canId = parseInt(router.query.canId as string);
 	const postId = parseInt(router.query.id as string);
 	const queryClient = useQueryClient();
 
@@ -34,75 +33,90 @@ const TabBody = ({
 		isError,
 	} = useQuery(queries.employer.postings.getMatchesbyId(user?.credential ?? '', postId, status, {}));
 
-	const { mutate } = useMutation({
+	const currMatch = matches?.find((match) => match.candidateProfile.id == canId);
+
+	const { mutate, isLoading: mutateIsLoading } = useMutation({
 		mutationFn: ({ candidateID, postingID, newStatus }: { candidateID: number; postingID: number; newStatus: SW.Employer.Status }) =>
 			SimplworkApi.post('employer/postings/status', null, { params: { candidateID, postingID, newStatus } }),
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['employer/postings/match', postId, status] }),
+		onSuccess: () => queryClient.invalidateQueries(),
 		onError: () => alert('There was an issue deleting your postings, please try again later.'),
 	});
 
 	const updateMatchStatus = (candidateID: number, postingID: number, newStatus: SW.Employer.Status) =>
 		mutate({ candidateID, postingID, newStatus });
 
-	if (isLoading)
-		return (
-			<div className='min-h-[55vh] flex justify-center items-center text-sw-500'>
-				<Ring size={40} speed={2} lineWeight={5} color='#3182CE' />
-			</div>
-		);
 	if (isError) return <div>...error</div>;
 
 	return (
 		<div className='w-full flex max-h-[75vh] min-h-[55vh] gap-5'>
-			<div className='w-1/3 flex flex-col gap-2 border-r pr-3'>
-				<h1 className='font-semibold text-lg px-1.5'>{`Applications (${matches.length})`}</h1>
-				<ul className='flex flex-col gap-2 overflow-auto p-1.5'>
-					{matches.length == 0 && <li className='flex justify-center items-center min-h-[55vh] font-medium'>No Applications.</li>}
-					{matches?.map((match, i) => (
-						<button
-							key={`${postId}-${i}`}
-							onClick={() => setCurrMatch(i)}
-							className={`flex flex-col ring-sw hover:ring rounded text-start ${postId == i && 'ring '}`}>
-							<MatchListItem match={match} />
-						</button>
-					))}
-				</ul>
-			</div>
-			<div className='w-2/3 h-52 rounded-lg'>
-				{currMatch !== null ? (
-					<div className='flex flex-col gap-5'>
-						<div className='flex gap-5'>
-							<div className='grow'>
-								<h1 className='text-2xl font-semibold'>{matches[currMatch].candidateProfile.candidateName}</h1>
-								<h1 className='text-lg font-medium text-gray-500'>location</h1>
-							</div>
-							<div className='flex h-full gap-3'>
-								<button className='button' onClick={() => updateMatchStatus(matches[currMatch].candidateProfile.id, postId, newStatus)}>
-									{actionBtnText}
-								</button>
-								<button className='btn-red' onClick={() => updateMatchStatus(matches[currMatch].candidateProfile.id, postId, 'REJECTED')}>
-									Reject
-								</button>
-							</div>
-						</div>
-						<div>
-							<h1 className='text-lg font-medium'>Contact Info</h1>
-							<p className=''>
-								Email: <span className='font-medium'>{matches[currMatch].candidateProfile.email}</span>
-							</p>
-							<p className=''>
-								Phone Number: <span className='font-medium'>{matches[currMatch].candidateProfile.phoneNumber}</span>
-							</p>
-						</div>
-						<AvailabilityViewDialog availability={matches[currMatch].candidateProfile.availability} />
-						<ExperienceList history={matches[currMatch].candidateProfile.workHistory} />
+			{isLoading ? (
+				<div className='w-full justify-center flex items-center'>
+					<CgSpinner className='w-12 h-12 absolute animate-spin text-sw-500' />
+				</div>
+			) : isError ? (
+				<div className='w-full justify-center flex items-center'>
+					<h1 className='text-lg dont-medium'>Oops, Something went wrong, try again</h1>
+				</div>
+			) : (
+				<>
+					<div className='w-1/3 flex flex-col gap-2 border-r pr-3'>
+						<h1 className='font-semibold text-lg px-1.5'>{`Applications (${matches.length})`}</h1>
+						<ul className='flex flex-col gap-2 overflow-auto p-1.5'>
+							{matches.length == 0 && <li className='flex justify-center items-center min-h-[55vh] font-medium'>No Applications.</li>}
+							{matches.map((match, i) => (
+								<Link
+									key={`${canId}-${i}`}
+									className={`flex flex-col ring-sw hover:ring rounded text-start ${match.candidateProfile.id == canId && 'ring '}`}
+									href={`?${new URLSearchParams({
+										...router.query,
+										canId: match.candidateProfile.id,
+									})}`}>
+									<MatchListItem match={match} />
+								</Link>
+							))}
+						</ul>
 					</div>
-				) : (
-					<div className='flex justify-center items-center h-full min-h-[55vh] font-medium'>
-						Choose an application to view candidate profile.
+					<div className='w-2/3 h-52 rounded-lg'>
+						{currMatch ? (
+							<div className='flex flex-col gap-5'>
+								<div className='flex gap-5'>
+									<div className='grow'>
+										<h1 className='text-2xl font-semibold'>{currMatch.candidateProfile.candidateName}</h1>
+										<h1 className='text-lg font-medium text-gray-500'>location</h1>
+									</div>
+									<div className='flex h-full gap-3'>
+										<button
+											disabled={mutateIsLoading}
+											className='button inline-flex justify-center items-center group/button disabled:pointer-events-none'
+											onClick={() => updateMatchStatus(canId, postId, newStatus)}>
+											<CgSpinner className='w-5 h-5 absolute group-enabled/button:opacity-0 animate-spin ' />
+											<span className='group-disabled/button:opacity-0 '>{actionBtnText}</span>
+										</button>
+										<button className='btn-red' onClick={() => updateMatchStatus(canId, postId, 'REJECTED')}>
+											Reject
+										</button>
+									</div>
+								</div>
+								<div>
+									<h1 className='text-lg font-medium'>Contact Info</h1>
+									<p className=''>
+										Email: <span className='font-medium'>{currMatch.candidateProfile.email}</span>
+									</p>
+									<p className=''>
+										Phone Number: <span className='font-medium'>{currMatch.candidateProfile.phoneNumber}</span>
+									</p>
+								</div>
+								<AvailabilityViewDialog availability={currMatch.candidateProfile.availability} />
+								<ExperienceList history={currMatch.candidateProfile.workHistory} />
+							</div>
+						) : (
+							<div className='flex justify-center items-center h-full min-h-[55vh] font-medium'>
+								Choose an application to view candidate profile.
+							</div>
+						)}
 					</div>
-				)}
-			</div>
+				</>
+			)}
 		</div>
 	);
 };
@@ -127,7 +141,7 @@ export const PostOverviewDialogContent = (props: Props) => {
 				<TabBody status='INTERVIEW_REQUESTED' actionBtnText='Ready For Interview' newStatus={'READY_FOR_INTERVIEW'} />
 			</TabContent>
 			<TabContent value='tab4'>
-				<TabBody status='READY_FOR_INTERVIEW' actionBtnText='Ready For Interview' newStatus={'READY_FOR_INTERVIEW'} />
+				<TabBody status='READY_FOR_INTERVIEW' actionBtnText='Ready For Interview' newStatus={'NEW'} />
 			</TabContent>
 			<TabContent value='tab5'>
 				<TabBody status='REJECTED' actionBtnText='Ready For Interview' newStatus={'READY_FOR_INTERVIEW'} />
