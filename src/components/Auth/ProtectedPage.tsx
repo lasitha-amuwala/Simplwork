@@ -14,7 +14,7 @@ export const ProtectedPage = ({ children }: PropsWithChildren<Props>) => {
 		setLoading(true);
 		if (!user || !isLoggedIn) {
 			const userType = localStorage.getItem('userType');
-			router.replace(userType == 'employer' ? '/e/signin' : '/signin');
+			router.replace('/signin');
 		}
 		if (user && isLoggedIn) setLoading(false);
 	}, [user, router, isLoggedIn]);
