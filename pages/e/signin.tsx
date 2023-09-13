@@ -5,6 +5,7 @@ import { CenterPage } from '@components/CenterPage';
 import { GoogleLogin } from '@react-oauth/google';
 import { EmptyLayout } from '../../src/Layouts/EmptyLayout';
 import { NextPageWithLayout } from '@typings/NextPageWithLayout';
+import Link from 'next/link';
 
 type Props = {};
 
@@ -22,6 +23,9 @@ const SignIn: NextPageWithLayout = (props: Props) => {
 					onSuccess={onEmplyerSignIn}
 					onError={() => console.log('Login Failed')}
 				/>
+				<Link href='/' className='font-medium text-xs'>
+					Candidate? Sign in or register<span className='text-blue-700 '> here</span>
+				</Link>
 			</AuthCard>
 		</CenterPage>
 	);
