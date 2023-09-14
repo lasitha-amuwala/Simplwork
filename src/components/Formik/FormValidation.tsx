@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { boolean, number, object, string } from 'yup';
+import { boolean, number, object, string, date } from 'yup';
 import { formatDate } from '../../utils/helpers';
 
 export const profileValidationSchema = object().shape({
@@ -22,8 +22,11 @@ export const workHistoryValidationSchema = object().shape({
 	positionTitle: string().required('Position title is required.'),
 	companyName: string().required('Compnay name is required.'),
 	details: string().required('Position details is required.'),
-	startDate: string().required('Start date is required.'),
-	endDate: string().required('End date is required.').nullable(),
+	startDate: date().required('Start date is required.').max(new Date(), 'Please choose past date'),
+	endDate: date()
+		.required('End date is required.')
+		.max(new Date(), 'Please choose past date')
+		.when('startDate', (startDate, schema) => startDate && schema.min(startDate, 'End date cannot be before start date')),
 	currWorking: boolean(),
 });
 

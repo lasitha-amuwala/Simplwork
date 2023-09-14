@@ -7,6 +7,7 @@ import { DialogFormLayout } from '@components/Dialogs/DialogFormLayout';
 import { WorkExperienceForm } from '@components/Formik/Forms/WorkExperienceForm';
 import { workHistoryValidationSchema } from '@components/Formik/FormValidation';
 import { WorkHistoryValuesType } from '../EditExperience/EditExperienceForm';
+import dayjs from 'dayjs';
 
 type AddExperienceFormProps = { afterSave?(): void };
 
@@ -17,8 +18,8 @@ export const AddExperienceForm = ({ afterSave }: AddExperienceFormProps) => {
 	const initialValues: WorkHistoryValuesType = {
 		positionTitle: '',
 		companyName: '',
-		startDate: '',
-		endDate: '',
+		startDate: dayjs().toDate(),
+		endDate: dayjs().toDate(),
 		details: '',
 	};
 

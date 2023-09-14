@@ -20,7 +20,7 @@ export const getInitials = (fullName: string) => {
 };
 
 export const formatDate = (date: string): string => {
-	return dayjs(date, 'DD-MM-YYYY', true).isValid() ? date : dayjs(date).format('DD-MM-YYYY');
+	return dayjs(date, 'DD-MM-YYYY').isValid() ? date : dayjs(date).format('DD-MM-YYYY');
 };
 
 export const timeFromNow = (date: Date) => {

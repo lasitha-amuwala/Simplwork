@@ -7,12 +7,13 @@ import { patchCandidate } from '@utils/simplwork';
 import { DialogFormLayout } from '@components/Dialogs/DialogFormLayout';
 import { workHistoryValidationSchema } from '@components/Formik/FormValidation';
 import { WorkExperienceForm } from '@components/Formik/Forms/WorkExperienceForm';
+import dayjs from 'dayjs';
 
 export type WorkHistoryValuesType = {
 	positionTitle: string;
 	companyName: string;
-	startDate: string;
-	endDate: string;
+	startDate: Date;
+	endDate: Date;
 	details: string;
 };
 
@@ -25,8 +26,8 @@ export const WorkExperienceEditForm = ({ afterSave, index, data }: WorkExperienc
 	const initialValues: WorkHistoryValuesType = {
 		positionTitle: data.positionTitle ?? '',
 		companyName: data.companyName ?? '',
-		startDate: data.startDate ?? '',
-		endDate: data.endDate ?? '',
+		startDate: data.startDate ? dayjs(data.startDate, 'DD-MM-YYYY').toDate() : dayjs().toDate(),
+		endDate: data.endDate ? dayjs(data.endDate, 'DD-MM-YYYY').toDate() : dayjs().toDate(),
 		details: data.details ?? '',
 	};
 
