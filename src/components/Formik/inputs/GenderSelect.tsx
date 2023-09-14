@@ -8,7 +8,6 @@ export const GenderSelect = (props: Props) => {
 			<option value='' label='Select a gender'></option>
 			<option value='MALE'>Male</option>
 			<option value='FEMALE'>Female</option>
-			<option value='OTHER'>Other</option>
 		</FieldControl>
 	);
 };

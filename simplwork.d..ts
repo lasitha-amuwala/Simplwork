@@ -80,7 +80,7 @@ namespace SW {
 		latitude: number;
 		longitude: number;
 		fullAddress?: string;
-		postalCode: string
+		postalCode: string;
 		addressComponents?: {
 			country: string;
 			postode: string;
@@ -106,7 +106,7 @@ namespace SW {
 			candidateName: string;
 			phoneNumber: string;
 			email: string;
-			gender: 'MALE' | 'FEMALE' | 'OTHER';
+			gender: 'MALE' | 'FEMALE';
 			age: number;
 			maxTravelTimes: IMaxTravelTimes;
 			workHistory: IWorkHistory[];
