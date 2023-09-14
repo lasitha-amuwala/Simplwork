@@ -20,26 +20,29 @@ export const PostBody = ({ post }: PostBodyProps) => {
 	const requiredHours = requiredMinutes / 60;
 
 	return (
-		<div className='flex flex-col gap-5 p-5'>
-			<div className='flex flex-col gap-1'>
-				{post.potentialEarning && (
-					<div className='text-lg font-medium'>
-						Potential earnings per week: <span className='font-bold'>${post.potentialEarning}</span>
+		<div className='flex flex-col gap-4 p-5'>
+			<div>
+				<h1 className='font-semibold text-2xl pb-2'>{post.posting.positionTitle}</h1>
+				<div className='flex flex-col'>
+					{post.potentialEarning && (
+						<div className=' font-medium'>
+							Potential earnings per week: <span className='font-bold'>${post.potentialEarning}</span>
+						</div>
+					)}
+					{post.posting.shifts && (
+						<div className=' font-medium'>
+							Hours required for job: <span className='font-bold'>{requiredHours} hours</span>
+						</div>
+					)}
+					{post.matchingHours && (
+						<div className='font-medium'>
+							Hours matching your availability: <span className='font-bold'>{post.matchingHours} hours</span>
+						</div>
+					)}
+					<div className='font-medium'>
+						Hourly rate:
+						<span className='font-bold'> ${post.posting.pay}</span>
 					</div>
-				)}
-				{post.posting.shifts && (
-					<div className='text-lg font-medium'>
-						Hours required for job: <span className='font-bold'>{requiredHours} hours</span>
-					</div>
-				)}
-				{post.matchingHours && (
-					<div className='text-lg font-medium'>
-						Hours matching your availability: <span className='font-bold'>{post.matchingHours} hours</span>
-					</div>
-				)}
-				<div className='text-lg font-medium'>
-					Hourly rate:
-					<span className='font-bold'> ${post.posting.pay}</span>
 				</div>
 			</div>
 			<div className='flex flex-col gap-1'>
