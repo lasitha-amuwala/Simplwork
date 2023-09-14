@@ -6,9 +6,9 @@ type ProfileInfoCardProps = {
 	candidate: SW.Candidate.ICandidate;
 };
 
-export const ProfileInfoCard = ({ candidate }: ProfileInfoCardProps) => {
+export const MyInformationCard = ({ candidate }: ProfileInfoCardProps) => {
 	return (
-		<Card className=' bg-gray-50 p-5 rounded-md flex flex-col gap-3 overflow-hidden'>
+		<Card className='flex flex-col gap-3 overflow-hidden'>
 			<div className=''>
 				<h1 className='font-semibold'>Email:</h1>
 				<p>{candidate?.email}</p>

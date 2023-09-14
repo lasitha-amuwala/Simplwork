@@ -10,8 +10,9 @@ import { queries } from '@utils/simplwork';
 import { AddExperienceDialog } from '@components/Dialogs/AddExperience/AddExperienceDialog';
 import { EditProfileDialog } from '@components/Dialogs/EditProfile/EditProfileDialog';
 import { HeaderWithButton } from '@components/Profile/HeaderWithButton';
-import { ProfileInfoCard } from '@components/Profile/ProfileInfoCard';
+import { MyInformationCard } from '@components/Profile/MyInformationCard';
 import { CandidateAvailabilityEditDialog } from '@components/AvailabilityWidget/CandidateAvailabilityEditDialog';
+import { Card } from '@components/Card';
 
 const Profile: NextPage = () => {
 	const { user } = useAuth();
@@ -24,31 +25,33 @@ const Profile: NextPage = () => {
 			<Head>
 				<title>Profile - Simplwork</title>
 			</Head>
-			<div className='bg-white rounded-lg border mt-7 w-full overflow-hidden'>
-				<div className='relative'>
-					<div className='h-36 bg-gradient-to-r from-white to-sw-300 w-full' />
-					<div className='h-auto flex justify-between bg-white p-5'>
-						{candidate && <h1 className='text-4xl font-semibold ml-52'>{candidate.candidateName}</h1>}
-						<div className='absolute top-11 left-5 rounded-full w-[175px] h-[175px] bg-sw-100 overflow-hidden flex justify-center items-center shadow-lg '>
-							<div className='w-[165px] h-[165px] rounded-full relative overflow-hidden'>
-								{user?.picture && (
-									<Image
-										className='object-cover'
-										src={user?.picture.replace('s96-c', 's384-c')}
-										alt='profile picture'
-										fill
-										quality={100}
-										priority
-										placeholder='blur'
-										blurDataURL={user?.picture}
-									/>
-								)}
-							</div>
+			<div className='w-full overflow-hidden py-10'>
+				<div className='h-auto flex px-5 gap-7 items-center pb-10'>
+					<div className='rounded-full w-[175px] h-[175px] bg-sw-100 overflow-hidden flex justify-center items-center shadow-lg '>
+						<div className='w-[165px] h-[165px] rounded-full relative overflow-hidden'>
+							{user?.picture && (
+								<Image
+									className='object-cover'
+									src={user?.picture.replace('s96-c', 's384-c')}
+									alt='profile picture'
+									fill
+									quality={100}
+									priority
+									placeholder='blur'
+									blurDataURL={user?.picture}
+								/>
+							)}
 						</div>
 					</div>
+					{candidate && (
+						<div>
+							<h1 className='text-4xl font-semibold'>{candidate.candidateName}</h1>
+							<h1 className='text-lg text-gray-600'>{candidate.email}</h1>
+						</div>
+					)}
 				</div>
-				<div className='p-5 flex gap-5'>
-					<div className='w-7/12 h-auto'>
+				<div className='px-5 flex gap-4'>
+					<div className='w-6/12 h-auto'>
 						<HeaderWithButton title='My Experience'>
 							<AddExperienceDialog />
 						</HeaderWithButton>
@@ -56,14 +59,16 @@ const Profile: NextPage = () => {
 							<ExperienceList history={candidate?.workHistory ?? []} />
 						</div>
 					</div>
-					<div className='w-5/12 flex flex-col gap-5 '>
+					<div className='w-6/12 flex flex-col gap-5 '>
 						<div>
 							<HeaderWithButton title='My Information'>
 								<EditProfileDialog profileData={candidate} />
 							</HeaderWithButton>
-							<ProfileInfoCard candidate={candidate} />
+							<MyInformationCard candidate={candidate} />
 						</div>
-						<CandidateAvailabilityEditDialog availability={candidate?.availability} />
+						<Card className='bg-white'>
+							<CandidateAvailabilityEditDialog availability={candidate?.availability} />
+						</Card>
 					</div>
 				</div>
 			</div>
