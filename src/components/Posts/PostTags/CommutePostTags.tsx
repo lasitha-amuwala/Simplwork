@@ -3,8 +3,6 @@ import { PostTag } from './PostTag';
 import { commuteTypes } from '../../SignUp/Candidate/CommuteCheckBox';
 import { displayDistance } from '@utils/helpers';
 
-
-
 export const CommutePostTags = ({
 	distance,
 	CarCommuteTime,
@@ -20,7 +18,7 @@ export const CommutePostTags = ({
 }) => {
 	return (
 		<div className='flex gap-3 text-gray-600 flex-nowrap'>
-			{distance && (
+			{distance != undefined && distance != null && (
 				<PostTag icon={<MdLocationPin />}>
 					<p>{`${displayDistance(distance)}`}</p>
 				</PostTag>

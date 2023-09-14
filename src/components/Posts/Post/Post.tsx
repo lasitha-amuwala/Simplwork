@@ -13,7 +13,7 @@ export const Post = memo(({ post, isLoading, isSuccess }: PostProps) => {
 			{isSuccess && (
 				<>
 					{post ? (
-						<Card className='mt-1 sticky top-[80px] max-h-[90vh] overflow-auto p-0'>
+						<Card className='sticky top-[80px] max-h-[90vh] overflow-auto p-0'>
 							<CompanyHeaderCard post={post} />
 							<PostBody post={post} />
 						</Card>
