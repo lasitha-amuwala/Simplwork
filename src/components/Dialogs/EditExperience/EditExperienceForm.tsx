@@ -4,11 +4,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { formatDate } from '@utils/helpers';
 import { WorkHistory } from '@components/Lists/Experience/ExperienceList';
 import { patchCandidate } from '@utils/simplwork';
-import { ExperienceForm } from '@components/Formik/Forms/ExperienceForm';
 import { DialogFormLayout } from '@components/Dialogs/DialogFormLayout';
 import { workHistoryValidationSchema } from '@components/Formik/FormValidation';
-
-type WorkExperienceFormProps = { afterSave: () => void; index: number; data: WorkHistory };
+import { WorkExperienceForm } from '@components/Formik/Forms/WorkExperienceForm';
 
 export type WorkHistoryValuesType = {
 	positionTitle: string;
@@ -18,7 +16,9 @@ export type WorkHistoryValuesType = {
 	details: string;
 };
 
-export const WorkExperienceForm = ({ afterSave, index, data }: WorkExperienceFormProps) => {
+type WorkExperienceEditFormProps = { afterSave: () => void; index: number; data: WorkHistory };
+
+export const WorkExperienceEditForm = ({ afterSave, index, data }: WorkExperienceEditFormProps) => {
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
 
@@ -34,7 +34,6 @@ export const WorkExperienceForm = ({ afterSave, index, data }: WorkExperienceFor
 		mutationFn: patchCandidate,
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['candidate'] }),
 		onError: (err) => {
-			console.log(err);
 			alert('There was an issue editing your work experience, please try again later.');
 			afterSave();
 		},
@@ -54,8 +53,8 @@ export const WorkExperienceForm = ({ afterSave, index, data }: WorkExperienceFor
 	};
 
 	return (
-		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={workHistoryValidationSchema}>
-			<ExperienceForm />
+		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={workHistoryValidationSchema} formDisabled={saving}>
+			<WorkExperienceForm />
 		</DialogFormLayout>
 	);
 };

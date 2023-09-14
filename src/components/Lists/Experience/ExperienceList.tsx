@@ -1,3 +1,4 @@
+import { Card } from '@components/Card';
 import { ExperienceListItem } from './ExperienceListItem';
 
 export type WorkHistory = {
@@ -14,12 +15,12 @@ export const ExperienceList = ({ history }: ExperienceListProps) => {
 	return (
 		<>
 			{history.length === 0 ? (
-				<div className='bg-gray-50 w-full py-10 px-5 flex flex-col justify-center items-center'>
-					<p className=''>No work history to display.</p>
+				<Card className='w-full py-10 px-5 flex flex-col justify-center items-center'>
+					<p>No work history to display.</p>
 					<p>
 						Click <span className='font-semibold'>Add Experience</span> to add your work history.
 					</p>
-				</div>
+				</Card>
 			) : (
 				<div className='flex flex-col gap-3'>
 					{history.map((data, i) => (

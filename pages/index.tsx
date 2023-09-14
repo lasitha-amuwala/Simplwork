@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { queries } from '@utils/simplwork';
-import { MdErrorOutline } from 'react-icons/md';
 import { SearchBar } from '@components/SearchBar';
 import { useAuth } from '@components/Auth/AuthProvider';
 import { PostPreviewList } from '@components/Posts/PostPreview';
@@ -10,6 +9,7 @@ import { Post, PostSkeleton } from '@components/Posts/Post';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
+import { ErrorTryAgain } from '@components/ErrorTryAgain';
 
 const Home: NextPage = () => {
 	const router = useRouter();
@@ -62,13 +62,7 @@ const Home: NextPage = () => {
 				<title>Find Jobs - Simplwork</title>
 			</Head>
 			{isError ? (
-				<div className='flex flex-col gap-3 w-full h-[50vh] justify-center items-center text-gray-600'>
-					<MdErrorOutline className='text-8xl' />
-					<h1 className='text-3xl font-medium'>An Error Occured</h1>
-					<button className='button rounded-full' onClick={() => router.reload()}>
-						Try again
-					</button>
-				</div>
+				<ErrorTryAgain />
 			) : (
 				<div className='flex w-full flex-col pt-5 md:pt-14 gap-3 pb-20'>
 					<div className='flex w-full gap-4'>
@@ -89,7 +83,6 @@ const Home: NextPage = () => {
 							)}
 						</div>
 					</div>
-					{/* <pre className='text-xs'>{user.credential}</pre> */}
 				</div>
 			)}
 		</ProtectedPage>

@@ -1,7 +1,7 @@
 import { Form, Formik, FormikConfig, FormikValues } from 'formik';
 import React, { ReactNode } from 'react';
 
-export const FormikBaseLayout = ({ initialValues, onSubmit, children, ...rest }: FormikConfig<FormikValues>) => {
+export const FormikLayout = ({ initialValues, onSubmit, children, ...rest }: FormikConfig<FormikValues>) => {
 	return (
 		<Formik initialValues={initialValues} onSubmit={onSubmit} {...rest}>
 			{({ values, setFieldValue }) => (

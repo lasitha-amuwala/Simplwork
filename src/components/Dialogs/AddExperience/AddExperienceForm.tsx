@@ -4,11 +4,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { formatDate } from '@utils/helpers';
 import { patchCandidate } from '@utils/simplwork';
 import { DialogFormLayout } from '@components/Dialogs/DialogFormLayout';
-import { ExperienceForm } from '@components/Formik/Forms/ExperienceForm';
+import { WorkExperienceForm } from '@components/Formik/Forms/WorkExperienceForm';
 import { workHistoryValidationSchema } from '@components/Formik/FormValidation';
 import { WorkHistoryValuesType } from '../EditExperience/EditExperienceForm';
 
-type AddExperienceFormProps = { afterSave: () => void };
+type AddExperienceFormProps = { afterSave?(): void };
 
 export const AddExperienceForm = ({ afterSave }: AddExperienceFormProps) => {
 	const queryClient = useQueryClient();
@@ -27,7 +27,7 @@ export const AddExperienceForm = ({ afterSave }: AddExperienceFormProps) => {
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['candidate'] }),
 		onError: () => {
 			alert('There was an issue adding your work experience, please try again later.');
-			afterSave();
+			!!afterSave && afterSave();
 		},
 	});
 
@@ -41,12 +41,12 @@ export const AddExperienceForm = ({ afterSave }: AddExperienceFormProps) => {
 			},
 		];
 		await mutateAsync(data);
-		afterSave();
+		!!afterSave && afterSave();
 	};
 
 	return (
 		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={workHistoryValidationSchema} formDisabled={saving}>
-				<ExperienceForm />
+			<WorkExperienceForm />
 		</DialogFormLayout>
 	);
 };

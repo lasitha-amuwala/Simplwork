@@ -5,7 +5,6 @@ import { ErrorMessage, Field, Form, Formik, FormikValues } from 'formik';
 import { AutoComplete } from '../../AutoComplete';
 import { SimplworkApi } from '@utils/simplwork';
 import { StepProgressHeaderObj } from '../StepProgressHeader';
-import { SignUpExperienceForm } from '../../Formik/Forms/Signup/SignUpExperienceForm';
 import { StepHeader } from '../StepHeader';
 import { ProfileForm } from '../../Formik/Forms/ProfileForm';
 import { createCandidateRequestBody } from '@utils/authHelpers';
@@ -16,6 +15,7 @@ import { Step } from '../Step';
 import { convertShiftsToAvailability, createAvailabilityObject } from '@components/AvailabilityWidget/logic';
 import { AvailabilityEditSignUp } from '@components/AvailabilityWidget/AvailabilityEditSignUp';
 import { CommuteSelect } from './CommuteSelect';
+import { SignUpExperienceForm } from '@components/Dialogs/AddExperience/SignUpExperienceForm';
 
 export type ValueUserTypes = {
 	fullName: string;
@@ -93,7 +93,7 @@ export const CandidateSignUp = ({ credential, resetSignUp }: SignUpFlowProps) =>
 			stepId: 2,
 		},
 		{
-			name: 'Add Work Experience',
+			name: 'Work Experience',
 			description: 'Enter your work experience',
 			stepId: 3,
 		},
@@ -105,10 +105,10 @@ export const CandidateSignUp = ({ credential, resetSignUp }: SignUpFlowProps) =>
 		<RegisterLayout step={step} stepProgressHeaders={progressHeaders}>
 			{isCandidateCreated ? (
 				<Step>
-					<StepHeader title='Add Work Experience' subtitle='Enter your work experience' />
+					<StepHeader title='Work Experience' subtitle='Add work experience to help' />
 					<SignUpExperienceForm />
 					<button
-						className='btn-blue'
+						className='btn-blue '
 						onClick={() => {
 							signInUser(credential);
 							router.push('/');

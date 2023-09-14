@@ -35,6 +35,9 @@ body {
 	.baby-red-btn {
 		@apply bg-red-50 text-red-600 hover:bg-red-100 disabled:hover:bg-red-50;
 	}
+	.ligth-blue-round-btn {
+		@apply button rounded-full p-2 bg-sw/[15%] hover:bg-sw/[25%] active:bg-sw/[40%] text-black;
+	}
 }
 /* shadows from https://shadows.brumm.af/*/
 .shadowSmooth {

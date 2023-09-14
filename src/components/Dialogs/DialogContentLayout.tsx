@@ -3,34 +3,30 @@ import DialogContent, { Dialog, DialogDescription, DialogTitle, DialogTrigger } 
 
 type DialogTemplate = {
 	open: boolean;
-	setOpen: (arg: boolean) => void;
+	setOpen(arg: boolean): void;
 	triggerLabel: string | ReactNode;
 	triggerClassName?: string;
 	title: string;
 	description: string;
 };
 
-export const DialogContentLayout = ({
-	open,
-	setOpen,
-	triggerLabel: triggerText,
-	title,
-	description,
-	triggerClassName,
-	children,
-}: PropsWithChildren<DialogTemplate>) => {
-	return (
-		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger asChild>
-				<button className={triggerClassName ?? 'button'}>{triggerText}</button>
-			</DialogTrigger>
-			<DialogContent className='flex flex-col gap-3 w-auto px-5 md:px-10'>
-				<div>
-					<DialogTitle>{title}</DialogTitle>
-					<DialogDescription>{description}</DialogDescription>
-				</div>
-				{children}
-			</DialogContent>
-		</Dialog>
-	);
-};
+export const DialogContentLayout = (props: PropsWithChildren<DialogTemplate>) => (
+	<Dialog open={props.open} onOpenChange={props.setOpen}>
+		<DialogTrigger asChild>
+			<button className={props.triggerClassName ?? 'button'}>{props.triggerLabel}</button>
+		</DialogTrigger>
+		<BaseDialogContent title={props.title} description={props.description}>
+			{props.children}
+		</BaseDialogContent>
+	</Dialog>
+);
+
+const BaseDialogContent = ({ title, description, children }: PropsWithChildren<{ title: string; description: string }>) => (
+	<DialogContent className='flex flex-col gap-3 w-auto px-5 md:px-10'>
+		<div className='min-w-[400px]'>
+			<DialogTitle>{title}</DialogTitle>
+			<DialogDescription>{description}</DialogDescription>
+		</div>
+		{children}
+	</DialogContent>
+);

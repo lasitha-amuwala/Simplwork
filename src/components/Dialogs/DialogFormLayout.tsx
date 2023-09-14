@@ -1,8 +1,7 @@
 import { FormikValues } from 'formik';
 import { PropsWithChildren } from 'react';
-import { DialogCancelButton } from './DialogCancelButton';
 import { SaveChangesButton } from '../Buttons/SaveChangesButton';
-import { FormikBaseLayout } from '../Formik/FormikBaseLayout';
+import { FormikLayout } from '../Formik/FormikBaseLayout';
 
 type Props = {
 	initialValues: {};
@@ -19,14 +18,13 @@ export const DialogFormLayout = ({
 	children,
 }: PropsWithChildren<Props>) => {
 	return (
-		<FormikBaseLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+		<FormikLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
 			<fieldset className='group' disabled={formDisabled}>
 				{children}
 				<div className='flex w-full justify-end gap-3'>
-					<DialogCancelButton />
 					<SaveChangesButton />
 				</div>
 			</fieldset>
-		</FormikBaseLayout>
+		</FormikLayout>
 	);
 };
