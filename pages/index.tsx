@@ -5,27 +5,28 @@ import { queries } from '@utils/simplwork';
 import { SearchBar } from '@components/SearchBar';
 import { useAuth } from '@components/Auth/AuthProvider';
 import { PostPreviewList } from '@components/Posts/PostPreview';
-import { Post, PostSkeleton } from '@components/Posts/Post';
+import { Post } from '@components/Posts/Post';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import Head from 'next/head';
+import { useQuery } from '@tanstack/react-query';
 import { ErrorTryAgain } from '@components/ErrorTryAgain';
+import Head from 'next/head';
 
 const Home: NextPage = () => {
 	const router = useRouter();
 	const { user } = useAuth();
-	const queryClient = useQueryClient();
+
 	const [selectedPost, setSelectedPost] = useState<number>(0);
 	const [searchInput, setSearchInput] = useState<string>('');
 	const [searchQuery, setSearchQuery] = useState<string>('');
 
-	const postingQuery = queries.candidate.searchCandidatePostings(user?.credential ?? '', {
-		queryString: searchQuery,
-		pageSize: '20',
-		pageNo: '0',
+	const { data, isLoading, isError, isSuccess } = useQuery({
+		...queries.candidate.searchCandidatePostings(user?.credential ?? '', {
+			queryString: searchQuery,
+			pageSize: '20',
+			pageNo: '0',
+		}),
+		refetchInterval: 30000,
 	});
-
-	const { data, isLoading, isError, isSuccess } = useQuery({ ...postingQuery, refetchInterval: 30000 });
 
 	// sort matches
 	const matches: SW.PostingResponse[] = [];
@@ -44,8 +45,6 @@ const Home: NextPage = () => {
 
 	// if url has id, set id as selected post
 	useEffect(() => setSelectedPost(parseInt((router.query.id as string) ?? 0)), [router]);
-	// refetch postings
-	const refetch = () => queryClient.invalidateQueries(postingQuery);
 
 	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearchInput(e.target.value);
 
@@ -64,23 +63,16 @@ const Home: NextPage = () => {
 			{isError ? (
 				<ErrorTryAgain />
 			) : (
-				<div className='flex w-full flex-col pt-5 md:pt-14 gap-3 pb-20'>
+				<div className='flex w-full flex-col pt-5 md:pt-10 gap-5 pb-20'>
 					<div className='flex w-full gap-4'>
 						<SearchBar value={searchInput} onChange={handleSearch} onClick={handleSearchSubmit} />
 					</div>
 					<div className='flex gap-4'>
-						<div className='w-full md:w-[40%] pt-1'>
-							<PostPreviewList posts={sortedPosts} selectedPost={selectedPost} isLoading={isLoading} />
+						<div className='w-full md:w-[40%]'>
+							<PostPreviewList posts={sortedPosts} selectedPost={selectedPost} isLoading={isLoading} isSuccess={isSuccess} />
 						</div>
 						<div className='hidden md:block md:w-[60%] lg:w-[60%]'>
-							{isLoading && <PostSkeleton />}
-							{!isLoading && isSuccess && sortedPosts.length > 0 ? (
-								<Post post={sortedPosts[selectedPost]} refetch={refetch} />
-							) : (
-								<div className='mt-1 bg-gray-200 w-full py-10 px-5 flex flex-col justify-center items-center rounded'>
-									<p className='py-10 font-semibold'>No Posts available, Please try again.</p>
-								</div>
-							)}
+							<Post post={sortedPosts[selectedPost]} isLoading={isLoading} isSuccess={isSuccess} />
 						</div>
 					</div>
 				</div>
