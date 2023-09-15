@@ -1,6 +1,7 @@
 import { ArrayHelpers, Field, FieldArray, FormikValues } from 'formik';
 import React from 'react';
 import { CommuteCheckBoxButton, commuteTypes } from './CommuteCheckBox';
+import { CustomErrorMessage } from '@components/CustomErrorMessage';
 
 type Props = {
 	values: FormikValues;
@@ -26,8 +27,9 @@ export const CommuteSelect = ({ values }: Props) => {
 								<div key={index}>
 									<label className='flex flex-row gap-5 items-center w-full justify-between'>
 										<span className='font-medium'>Maximum commute time by {commuteTypes[commuteType].text}</span>
-										<Field type='number' min={0} name={`maxTravelTimes[${commuteType}]`} placeholder='min' className='inputStyle w-20' />
+										<Field type='number' min={0} max={100000} name={`maxTravelTimes.${commuteType}`} placeholder='min' className='inputStyle w-20' />
 									</label>
+									<CustomErrorMessage name={`maxTravelTimes.${commuteType}`} />
 								</div>
 							))}
 					</div>

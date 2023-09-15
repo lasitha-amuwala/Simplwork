@@ -6,8 +6,12 @@ export const createCandidateRequestBody = (
 	availability: SW.IAvailability,
 	email: string
 ): SW.Candidate.IPostRequest => {
-	const maxTravelTimes =
-		Object.keys(values.maxTravelTimes).length === 0 ? { WALK: 20, BIKE: 30, CAR: 90, PUBLIC_TRANSIT: 90 } : values.maxTravelTimes;
+	let maxTravelTimes = { WALK: 20, BIKE: 30, CAR: 90, PUBLIC_TRANSIT: 90 };
+	if (values.commuteTypes.length !== 0) {
+		const selectedTravelTimes = new Map();
+		values.commuteTypes.map((type: string) => selectedTravelTimes.set(type, values.maxTravelTimes[type]));
+		maxTravelTimes = Object.fromEntries(selectedTravelTimes);
+	}
 
 	const candidateProfile: SW.Candidate.IProfile = {
 		workHistory: [],

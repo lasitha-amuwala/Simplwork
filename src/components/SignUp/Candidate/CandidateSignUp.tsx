@@ -1,21 +1,26 @@
+import { Step } from '../Step';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth } from '../../Auth/AuthProvider';
-import { ErrorMessage, Field, Form, Formik, FormikValues } from 'formik';
-import { AutoComplete } from '../../AutoComplete';
+import { useAuth } from '@components/Auth/AuthProvider';
+import { AutoComplete } from '@components/AutoComplete';
 import { SimplworkApi } from '@utils/simplwork';
-import { StepProgressHeaderObj } from '../StepProgressHeader';
-import { StepHeader } from '../StepHeader';
-import { ProfileForm } from '../../Formik/Forms/ProfileForm';
+import { StepProgressHeaderObj } from '@components/SignUp/StepProgressHeader';
+import { StepHeader } from '@components/SignUp/StepHeader';
+import { ProfileForm } from '@components/Formik/Forms/ProfileForm';
 import { createCandidateRequestBody } from '@utils/authHelpers';
-import { profileValidationSchema, validationSchemaStepTwo, workHistoryValidationSchema } from '../../Formik/FormValidation';
-import { RegisterLayout } from '../RegisterLayout';
-import { StepperButtons } from '../StepperButtons';
-import { Step } from '../Step';
+import { RegisterLayout } from '@components/SignUp/RegisterLayout';
+import { StepperButtons } from '@components/SignUp/StepperButtons';
+import { ErrorMessage, Field, Form, Formik, FormikValues } from 'formik';
 import { convertShiftsToAvailability, createAvailabilityObject } from '@components/AvailabilityWidget/logic';
 import { AvailabilityEditSignUp } from '@components/AvailabilityWidget/AvailabilityEditSignUp';
 import { CommuteSelect } from './CommuteSelect';
 import { SignUpExperienceForm } from '@components/Dialogs/AddExperience/SignUpExperienceForm';
+import {
+	commutePreferencesValidationSchema,
+	profileValidationSchema,
+	validationSchemaStepTwo,
+	workHistoryValidationSchema,
+} from '@components/Formik/FormValidation';
 
 export type ValueUserTypes = {
 	fullName: string;
@@ -38,11 +43,16 @@ const initialValues: ValueUserTypes & ValueAvailabilityTypes = {
 	phoneNumber: '',
 	maximumHours: '',
 	commuteTypes: [],
-	maxTravelTimes: {},
+	maxTravelTimes: { WALK: 20, BIKE: 30, CAR: 90, PUBLIC_TRANSIT: 90 },
 	workHistory: [],
 };
 
-const validationSchema = [profileValidationSchema, null, validationSchemaStepTwo, workHistoryValidationSchema];
+const validationSchema = [
+	profileValidationSchema,
+	commutePreferencesValidationSchema,
+	validationSchemaStepTwo,
+	workHistoryValidationSchema,
+];
 
 type SignUpFlowProps = { credential: string; resetSignUp?: () => void };
 

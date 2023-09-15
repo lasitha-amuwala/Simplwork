@@ -22,12 +22,22 @@ export const workHistoryValidationSchema = object().shape({
 	positionTitle: string().required('Position title is required.'),
 	companyName: string().required('Compnay name is required.'),
 	details: string().required('Position details is required.'),
-	startDate: date().required('Start date is required.').max(new Date(), 'Please choose past date'),
+	startDate: date().default(dayjs().toDate()).required('Start date is required.').max(dayjs().toDate(), 'Please choose past date'),
 	endDate: date()
+		.default(dayjs().toDate())
 		.required('End date is required.')
-		.max(new Date(), 'Please choose past date')
+		.max(dayjs().toDate(), 'Please choose past date')
 		.when('startDate', (startDate, schema) => startDate && schema.min(startDate, 'End date cannot be before start date')),
 	currWorking: boolean(),
+});
+
+export const commutePreferencesValidationSchema = object().shape({
+	maxTravelTimes: object({
+		WALK: number().positive('Value must be a positive number').max(100000, 'Value too large'),
+		BIKE: number().positive('Value must be a positive number').max(100000, 'Value too large'),
+		CAR: number().positive('Value must be a positive number').max(100000, 'Value too large'),
+		PUBLIC_TRANSIT: number().positive('Value must be a positive number').max(100000, 'Value too large'),
+	}),
 });
 
 export const employerProfile = object().shape({
