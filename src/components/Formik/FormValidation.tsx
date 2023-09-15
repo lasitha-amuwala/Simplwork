@@ -55,3 +55,7 @@ export const jobPostingValidationSchema = object().shape({
 	jobDescription: string().required('Job Description is required.'),
 	benefits: string().required('Benefits is required.'),
 });
+
+export const BranchValidationSchema = object().shape({
+	branchName: string().required('Branch name is required'),
+});

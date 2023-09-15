@@ -18,7 +18,7 @@ export const MatchStatusList = ({ status, label }: { status: string; label: stri
 
 	return (
 		<div>
-			<h1 className='text-3xl pl-1 font-bold'>{data?.length ? `${label} (${data.length})` : `${label} (0)`}</h1>
+			<h1 className='text-2xl pl-1 font-semibold'>{data?.length ? `${label} (${data.length})` : `${label} (0)`}</h1>
 			<div className='flex gap-3 pt-5 overflow-x-auto p-1'>
 				{isLoading ? (
 					[...Array(3).fill(0)].map((key, i) => (

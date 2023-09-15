@@ -28,12 +28,12 @@ export const queries = {
 	},
 	employer: {
 		getEmployer: (credential: string, employerName: string) => ({
-			queryKey: ['employer'],
-			queryFn: (): Promise<SW.Employer.IEmployer> => get(createURL(`employer/${employerName}/branch`)),
+			queryKey: [`employer/${employerName}`],
+			queryFn: (): Promise<SW.Employer.IEmployer> => get(createURL(`employer/${employerName}`)),
 			enabled: !!credential,
 		}),
-		getBranches: (credential: string, employerName: string, params: Params) => ({
-			queryKey: ['branches', employerName, params],
+		getBranches: (credential: string, employerName: string | null, params: Params) => ({
+			queryKey: [`employer/${employerName}/branch`, params],
 			queryFn: (): Promise<SW.Employer.IBranch[]> => get(createURL(`employer/${employerName}/branch`, params)),
 			enabled: !!credential && !!employerName,
 		}),

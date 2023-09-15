@@ -1,7 +1,7 @@
 import { PropsWithChildren, ReactNode } from 'react';
 import DialogContent, { Dialog, DialogDescription, DialogTitle, DialogTrigger } from './Dialog';
 
-type DialogTemplate = {
+export type DialogContentLayoutProps = {
 	open: boolean;
 	setOpen(arg: boolean): void;
 	triggerLabel: string | ReactNode;
@@ -10,7 +10,7 @@ type DialogTemplate = {
 	description: string;
 };
 
-export const DialogContentLayout = (props: PropsWithChildren<DialogTemplate>) => (
+export const DialogContentLayout = (props: PropsWithChildren<DialogContentLayoutProps>) => (
 	<Dialog open={props.open} onOpenChange={props.setOpen}>
 		<DialogTrigger asChild>
 			<button className={props.triggerClassName ?? 'button'}>{props.triggerLabel}</button>

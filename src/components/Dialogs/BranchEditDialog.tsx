@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { MdEdit } from 'react-icons/md';
-import { WorkHistory } from '@components/Lists/Experience/ExperienceList';
-import { WorkExperienceEditForm } from './EditExperienceForm';
 import { DialogContentLayout } from '@components/Dialogs/DialogContentLayout';
+import { BranchEditForm } from './BranchEditForm';
 
-export const EditExperienceDialog = ({ index, data }: { index: number; data: WorkHistory }) => {
+export const EditBranchDialog = ({ employerName, data }: { data: SW.Employer.IBranch; employerName: string }) => {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -15,7 +14,7 @@ export const EditExperienceDialog = ({ index, data }: { index: number; data: Wor
 			triggerClassName='light-blue-round-btn'
 			title='Edit Work Experience'
 			description={`Add work history here. Click add when you're done.`}>
-			<WorkExperienceEditForm index={index} data={data} afterSave={() => setOpen(false)} />
+			<BranchEditForm employerName={employerName} afterSave={() => setOpen(false)} data={data} />
 		</DialogContentLayout>
 	);
 };

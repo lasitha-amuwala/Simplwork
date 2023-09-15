@@ -13,7 +13,7 @@ export const EditProfileDialog = ({ profileData }: PropsWithChildren<EditProfile
 			open={open}
 			setOpen={setOpen}
 			triggerLabel={<MdEdit />}
-			triggerClassName='ligth-blue-round-btn'
+			triggerClassName='light-blue-round-btn'
 			title='Edit Profile'
 			description={`Make changes to your profile here. Click save when you're done.`}>
 			<EditProfileForm profileData={profileData} afterSave={() => setOpen(false)} />

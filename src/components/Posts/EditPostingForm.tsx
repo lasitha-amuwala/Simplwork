@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FormikValues } from 'formik';
+import { Formik, FormikValues } from 'formik';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { SimplworkApi, queries } from '@utils/simplwork';
 import { DialogFormLayout } from '../Dialogs/DialogFormLayout';
@@ -18,9 +18,9 @@ export type PostingValues = {
 	branch: string;
 };
 
-type CreatePostingFormProps = { afterSave: () => void };
+type EditPostingForm = {};
 
-export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
+export const EditPostingForm = ({}: EditPostingForm) => {
 	const { user } = useAuth();
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
@@ -42,7 +42,6 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 		onSuccess: () => queryClient.invalidateQueries(),
 		onError: () => {
 			alert('There was an issue creating job posting, please try again later.');
-			afterSave();
 		},
 	});
 
@@ -68,7 +67,6 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 			industryType: 'RETAIL',
 		};
 		mutate({ data, branch });
-		afterSave();
 	};
 
 	const initialValues: PostingValues = {
@@ -82,8 +80,8 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 	};
 
 	return (
-		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={jobPostingValidationSchema} formDisabled={saving}>
-			<PostingForm branches={branches} availability={availability} setAvailability={setAvailability} />
-		</DialogFormLayout>
+		<Formik initialValues={initialValues} onSubmit={onSubmit}>
+			{() => <PostingForm branches={branches} availability={availability} setAvailability={setAvailability} />}
+		</Formik>
 	);
 };

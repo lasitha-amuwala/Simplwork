@@ -25,7 +25,7 @@ export const SignUpExperienceForm = (props: Props) => {
 				<ExperienceList history={candidate?.workHistory ?? []} />
 			</div>
 			<div className='self-end'>
-				<AddExperienceDialog />
+				<AddExperienceDialog triggerLabel='Add Experience' />
 			</div>
 		</div>
 	);

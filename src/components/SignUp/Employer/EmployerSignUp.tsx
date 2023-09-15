@@ -8,7 +8,7 @@ import { Step } from '../Step';
 import { StepHeader } from '../StepHeader';
 import { FieldControl } from '@components/Formik/inputs/FieldControl';
 import { StepperButtons } from '../StepperButtons';
-import { SignUpBranchForm } from '../../Formik/Forms/Signup/SignUpBranchesForm';
+import { SignUpBranchForm } from '../../Formik/Forms/Signup/SignUpBranchForm';
 import { useRouter } from 'next/router';
 
 type Props = {};

@@ -1,3 +1,4 @@
+import { Card } from '@components/Card';
 import { DeletePostingDialog } from '@components/Dialogs/DeletePostingDialog';
 import { timeFromNow } from '@utils/helpers';
 import React from 'react';
@@ -29,7 +30,7 @@ export const PostOverview = ({
 	};
 
 	return (
-		<div className='flex flex-col gap-4 w-full shadowSmooth bg-white rounded-lg border border-gray-200 p-5 group/postOverview hover:cursor-pointer hover:ring ring-2'>
+		<Card className='flex flex-col gap-4 w-full group/postOverview hover:cursor-pointer ring-sw hover:ring ring-2 select-none'>
 			<div>
 				<h1 className='font-semibold text-lg'>{post.positionTitle}</h1>
 				<p className='font-medium text-md'>
@@ -44,6 +45,6 @@ export const PostOverview = ({
 				<DataDisplay value={rejectedCount} text='Rejected' />
 			</div>
 			<p className='text-sm text-gray-500'>{timeFromNow(new Date(post.createdAt))}</p>
-		</div>
+		</Card>
 	);
 };

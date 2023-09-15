@@ -1,14 +1,21 @@
+import { Card } from '@components/Card';
+import { EditBranchDialog } from '@components/Dialogs/BranchEditDialog';
 import React from 'react';
 
-type BranchListItemProps = {
+export type BranchEditProps = {
 	branch: SW.Employer.IBranch;
 };
 
-export const BranchListItem = ({ branch }: BranchListItemProps) => {
+export const BranchListItem = ({ branch }: BranchEditProps) => {
 	return (
-		<div className='p-5 rounded bg-gray-100 flex gap-5'>
-			<h1 className='font-semibold'>{branch.branchName}</h1>
-			<h1 className='font-medium'>{branch.location.postalCode}</h1>
-		</div>
+		<Card className='w-full'>
+			<div className='flex justify-between items-center'>
+				<h1 className='font-semibold'>{branch.branchName}</h1>
+				<div>
+					<EditBranchDialog data={branch} />
+				</div>
+			</div>
+			<p className='text-gray-500'>{branch.location.fullAddress}</p>
+		</Card>
 	);
 };

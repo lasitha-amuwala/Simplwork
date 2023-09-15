@@ -14,9 +14,9 @@ type Props = {};
 const Applications: NextPage = (props: Props) => {
 	const [open, setOpen] = useState<boolean>(false);
 	const router = useRouter();
-	const { user } = useAuth();
-
-	const { data } = useQuery(queries.candidate.getCandidatePostings(user?.credential as string, {}));
+	
+	// const { user } = useAuth();
+	// const { data } = useQuery(queries.candidate.getCandidatePostings(user?.credential as string, {}));
 
 	const renderPostDialog = (): JSX.Element => {
 		return <>{/* <Post post={} /> */}</>;
