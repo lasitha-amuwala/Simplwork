@@ -8,7 +8,7 @@ import { PostPreviewList } from '@components/Posts/PostPreview';
 import { Post } from '@components/Posts/Post';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
 import { useQuery } from '@tanstack/react-query';
-//import { ErrorTryAgain } from '@components/ErrorTryAgain';
+import { ErrorTryAgain } from '@components/ErrorTryAgain';
 import Head from 'next/head';
 
 const Home: NextPage = () => {
@@ -61,10 +61,9 @@ const Home: NextPage = () => {
 				<title>Find Jobs - Simplwork</title>
 			</Head>
 			{isError ? (
-				//<ErrorTryAgain />
-			<></>
+				<ErrorTryAgain />
 			) : (
-				<div className='flex w-full flex-col pt-5 md:pt-10 gap-5 pb-20'>
+				<div className='flex w-full flex-col pt-5 md:pt-10 gap-5 pb-20 relative'>
 					<div className='flex w-full gap-4'>
 						<SearchBar value={searchInput} onChange={handleSearch} onClick={handleSearchSubmit} />
 					</div>
