@@ -13,6 +13,8 @@ import { HeaderWithButton } from '@components/Profile/HeaderWithButton';
 import { MyInformationCard } from '@components/Profile/MyInformationCard';
 import { CandidateAvailabilityEditDialog } from '@components/AvailabilityWidget/CandidateAvailabilityEditDialog';
 import { Card } from '@components/Card';
+import { CgMathPlus } from 'react-icons/cg';
+import { ProfileImage } from '@components/ProfileImage';
 
 const Profile: NextPage = () => {
 	const { user } = useAuth();
@@ -27,22 +29,7 @@ const Profile: NextPage = () => {
 			</Head>
 			<div className='w-full overflow-hidden py-10'>
 				<div className='h-auto flex px-5 gap-7 items-center pb-10'>
-					<div className='rounded-full w-[175px] h-[175px] bg-sw-100 overflow-hidden flex justify-center items-center shadow-lg '>
-						<div className='w-[165px] h-[165px] rounded-full relative overflow-hidden'>
-							{user?.picture && (
-								<Image
-									className='object-cover'
-									src={user?.picture.replace('s96-c', 's384-c')}
-									alt='profile picture'
-									fill
-									quality={100}
-									priority
-									placeholder='blur'
-									blurDataURL={user?.picture}
-								/>
-							)}
-						</div>
-					</div>
+					<ProfileImage image={user?.picture} />
 					{candidate && (
 						<div>
 							<h1 className='text-4xl font-semibold'>{candidate.candidateName}</h1>
@@ -53,9 +40,9 @@ const Profile: NextPage = () => {
 				<div className='px-5 flex gap-4'>
 					<div className='w-6/12 h-auto'>
 						<HeaderWithButton title='My Experience'>
-							<AddExperienceDialog />
+							<AddExperienceDialog triggerLabel={<CgMathPlus />} triggerClassName='light-blue-round-btn' />
 						</HeaderWithButton>
-						<div className='max-h-[800px] overflow-y-auto pr-1'>
+						<div className='max-h-[800px] overflow-y-auto pr-2 pb-3'>
 							<ExperienceList history={candidate?.workHistory ?? []} />
 						</div>
 					</div>
