@@ -28,6 +28,7 @@ export type GoogleToken = {
 export type AuthContextType = {
 	user: GoogleProfileData | null;
 	isLoggedIn: boolean;
+	employerName: string | null;
 	signInUser: (credential: string) => void;
 	onSignIn: (credential: CredentialResponse) => void;
 	onEmplyerSignIn: (credential: CredentialResponse) => void;

@@ -23,14 +23,8 @@ import { string } from 'yup';
 type Props = {};
 
 const Home: NextPage = (props: Props) => {
-	const { user } = useAuth();
-	const [employerName, setEmployerName] = useState('');
+	const { user, employerName } = useAuth();
 	const params = {};
-
-	useEffect(() => {
-		const employerName = localStorage.getItem('employerName') as string;
-		setEmployerName(employerName);
-	}, []);
 
 	const [buttonState, setButtonState] = useState(0);
 
@@ -44,9 +38,11 @@ const Home: NextPage = (props: Props) => {
 
 	// const { data: employer } = useQuery(queries.user.employerList(user?.credential ?? ''));
 	const { data, isLoading, isSuccess, isError } = useQuery({
-		...queries.employer.postings.getOverviews(user?.credential ?? '', employerName, params),
+		...queries.employer.postings.getOverviews(user?.credential ?? '', employerName as string, params),
 		refetchInterval: 30000,
 	});
+
+	if (!employerName) return <ErrorTryAgain />;
 
 	return (
 		<>
@@ -62,7 +58,7 @@ const Home: NextPage = (props: Props) => {
 						{isLoading &&
 							Array(10)
 								.fill(0)
-								.map((v,i) => (
+								.map((v, i) => (
 									<div className='px-1.5 w-full' key={i}>
 										<Card className='h-[202px] p-5'>loading...</Card>
 									</div>

@@ -21,12 +21,10 @@ export type PostingValues = {
 type CreatePostingFormProps = { afterSave: () => void };
 
 export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
-	const { user } = useAuth();
+	const { user, employerName } = useAuth();
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
 	const [availability, setAvailability] = useState<SW.IAvailability>(createAvailabilityObject());
-
-	const employerName = 'Lasitha';
 
 	const {
 		data: branches,

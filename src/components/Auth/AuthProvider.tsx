@@ -30,6 +30,8 @@ export const isTokenExpired = (credential: string): boolean => {
 export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	const router = useRouter();
 	const [user, setUser] = useState<GoogleProfileData | null>(null);
+	const [employerName, setEmployerName] = useState<string | null>(null);
+
 	const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 
 	const onSignIn = ({ credential }: CredentialResponse) => {
@@ -42,6 +44,8 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 				if (res.status >= 200 && res.status <= 299) {
 					setLoggedIn(true);
 					setLocalStorage(credential);
+					setEmployerName(null)
+
 					localStorage.setItem('userType', 'candidate');
 					router.replace('/');
 					return;
@@ -69,6 +73,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 					if (res.data.length > 0) {
 						setLoggedIn(true);
 						setLocalStorage(credential);
+						setEmployerName(res.data[0].employer.companyName)
 						localStorage.setItem('employerName', res.data[0].employer.companyName);
 						localStorage.setItem('userType', 'employer');
 						router.replace('/e/');
@@ -91,6 +96,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 		setAuthorization('');
 		googleLogout();
 		setUser(null);
+		setEmployerName(null)
 		setLoggedIn(false);
 		router.replace('/signin');
 	};
@@ -101,6 +107,9 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 			alert('Session Expired, Please try again.');
 			return;
 		}
+		const userType = localStorage.getItem('userType')
+		const employerName = localStorage.getItem('employerName')
+		if(userType == 'employer') setEmployerName(employerName)
 		setAuthorization(credential);
 		setLocalStorage(credential);
 		setLoggedIn(true);
@@ -148,7 +157,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 	}, [signOutUser]);
 
 	return (
-		<AuthContext.Provider value={{ user, isLoggedIn: isLoggedIn, signInUser, onEmplyerSignIn, onSignIn, signOut }}>
+		<AuthContext.Provider value={{ user, isLoggedIn: isLoggedIn, signInUser, onEmplyerSignIn, onSignIn, signOut, employerName }}>
 			<GoogleOAuthProvider clientId='869487513689-u4hhunj2o95cf404asivk737j91fddgq.apps.googleusercontent.com'>{children}</GoogleOAuthProvider>
 		</AuthContext.Provider>
 	);

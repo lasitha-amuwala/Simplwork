@@ -5,23 +5,24 @@ import { SimplworkApi } from '@utils/simplwork';
 import { DialogFormLayout } from '@components/Dialogs/DialogFormLayout';
 import { BranchValidationSchema } from '@components/Formik/FormValidation';
 import { BranchForm } from '@components/Formik/Forms/BranchForm';
+import { useAuth } from '@components/Auth/AuthProvider';
 
 type BranchValueType = {
 	branchName: string;
 };
 
-type BranchEditFormProps = { employerName: string; afterSave: () => void; data: SW.Employer.IBranch };
+type BranchEditFormProps = { employerName: string; afterSave: () => void; branch: SW.Employer.IBranch };
 
-export const BranchEditForm = ({ employerName, afterSave, data }: BranchEditFormProps) => {
+export const BranchEditForm = ({ employerName, afterSave, branch }: BranchEditFormProps) => {
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
 	const [location, setLocation] = useState<SW.ILocation>({ latitude: 0, longitude: 0, postalCode: '' });
 
-	const initialValues: BranchValueType = { branchName: data.branchName ?? '' };
+	const initialValues: BranchValueType = { branchName: branch.branchName ?? '' };
 
 	const { mutate } = useMutation({
-		mutationFn: ({ employerName, branchName, data }: { employerName: string; branchName: string; data: any }) =>
-			SimplworkApi.patch(`employer/${employerName}/branch?branchName=${branchName}`, JSON.stringify(data), {
+		mutationFn: (data: { employerName: string; oldbranchName: string; data: any }) =>
+			SimplworkApi.patch(`employer/${data.employerName}/branch?branchName=${data.oldbranchName}`, JSON.stringify(data.data), {
 				headers: { 'Content-Type': 'application/json-patch+json' },
 			}),
 		onSuccess: () => queryClient.invalidateQueries(),
@@ -36,11 +37,11 @@ export const BranchEditForm = ({ employerName, afterSave, data }: BranchEditForm
 		const data = [
 			{
 				op: 'replace',
-				path: `/`,
-				value: { branchName, location },
+				path: `/branchName`,
+				value: { branchName },
 			},
 		];
-		mutate({ employerName, branchName, data });
+		mutate({ employerName, oldbranchName: branch.branchName, data });
 		afterSave();
 	};
 

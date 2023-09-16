@@ -19,7 +19,7 @@ export const SignUpBranchForm = ({ employerName }: SignUpBranchProps) => {
 	if (isLoading) return <div>Loading...</div>;
 	return (
 		<div className='flex flex-col gap-5'>
-			<BranchList branches={branches ?? []} />
+			<BranchList branches={branches ?? []} employerName={employerName} />
 			<CreateBranchForm employerName={employerName} afterSave={()=> {}}/>
 		</div>
 	);

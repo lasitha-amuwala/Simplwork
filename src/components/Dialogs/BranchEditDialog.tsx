@@ -3,7 +3,7 @@ import { MdEdit } from 'react-icons/md';
 import { DialogContentLayout } from '@components/Dialogs/DialogContentLayout';
 import { BranchEditForm } from './BranchEditForm';
 
-export const EditBranchDialog = ({ employerName, data }: { data: SW.Employer.IBranch; employerName: string }) => {
+export const EditBranchDialog = ({ employerName, branch }: { branch: SW.Employer.IBranch; employerName: string }) => {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -14,7 +14,7 @@ export const EditBranchDialog = ({ employerName, data }: { data: SW.Employer.IBr
 			triggerClassName='light-blue-round-btn'
 			title='Edit Work Experience'
 			description={`Add work history here. Click add when you're done.`}>
-			<BranchEditForm employerName={employerName} afterSave={() => setOpen(false)} data={data} />
+			<BranchEditForm employerName={employerName} afterSave={() => setOpen(false)} branch={branch} />
 		</DialogContentLayout>
 	);
 };

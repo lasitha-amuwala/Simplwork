@@ -1,7 +1,6 @@
 import { useAuth } from '@components/Auth/AuthProvider';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
 import { Card } from '@components/Card';
-import { CenterPage } from '@components/CenterPage';
 import { ProfileImage } from '@components/ProfileImage';
 import { useQuery } from '@tanstack/react-query';
 import { queries } from '@utils/simplwork';
@@ -11,8 +10,8 @@ import React from 'react';
 type Props = {};
 
 const Profile = (props: Props) => {
-	const { user } = useAuth();
-	const { data: employer, isLoading, isError } = useQuery(queries.employer.getEmployer(user?.credential ?? '', 'Lasitha'));
+	const { user, employerName } = useAuth();
+	const { data: employer, isLoading, isError } = useQuery(queries.employer.getEmployer(user?.credential ?? '', employerName as string));
 
 	if (isLoading) return <div>Loading</div>;
 	if (isError) return <div>error</div>;

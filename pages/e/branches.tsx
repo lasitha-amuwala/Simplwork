@@ -1,32 +1,25 @@
 import { useAuth } from '@components/Auth/AuthProvider';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
 import { CreateBranchDialog } from '@components/Dialogs/CreateBranchDialog';
+import { ErrorTryAgain } from '@components/ErrorTryAgain';
 import { BranchList } from '@components/Lists/Branches/BranchList';
 import { useQuery } from '@tanstack/react-query';
 import { queries } from '@utils/simplwork';
 import { NextPage } from 'next';
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
 
 type Props = {};
 
 const Branches: NextPage = (props: Props) => {
-	const { user } = useAuth();
-	const [employerName, setEmployerName] = useState('');
-
-	useEffect(() => {
-		if (typeof window !== 'undefined') {
-			const employer = localStorage.getItem('employerName');
-			setEmployerName(employer ?? 'Lasitha');
-		}
-	}, []);
+	const { user, employerName } = useAuth();
 
 	const {
 		data: branches,
 		isError,
 		isLoading,
-	} = useQuery(queries.employer.getBranches(user?.credential ?? '', employerName, { pageSize: '20', pageNo: '0' }));
+	} = useQuery(queries.employer.getBranches(user?.credential ?? '', employerName as string, { pageSize: '20', pageNo: '0' }));
 
+	if (!employerName) return <ErrorTryAgain />;
 	return (
 		<>
 			<Head>
@@ -38,7 +31,7 @@ const Branches: NextPage = (props: Props) => {
 						<div className='self-end'>
 							<CreateBranchDialog employerName={employerName} />
 						</div>
-						<BranchList branches={branches ?? []} />
+						<BranchList branches={branches ?? []} employerName={employerName} />
 					</div>
 				</div>
 			</ProtectedPage>
