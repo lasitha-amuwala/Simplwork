@@ -38,8 +38,9 @@ export const BranchEditForm = ({ employerName, afterSave, branch }: BranchEditFo
 			{
 				op: 'replace',
 				path: `/branchName`,
-				value: { branchName },
+				value: branchName,
 			},
+			{ op: 'replace', path: '/location', value: location },
 		];
 		mutate({ employerName, oldbranchName: branch.branchName, data });
 		afterSave();

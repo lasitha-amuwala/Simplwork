@@ -16,12 +16,10 @@ const TabBody = ({
 	status,
 	actionBtnText,
 	newStatus,
-	actionButton,
 }: {
 	status: SW.Employer.Status;
 	actionBtnText: string;
 	newStatus: SW.Employer.Status;
-	actionButton: ReactNode;
 }) => {
 	const router = useRouter();
 	const { user } = useAuth();
@@ -35,6 +33,33 @@ const TabBody = ({
 	} = useQuery(queries.employer.postings.getMatchesbyId(user?.credential ?? '', postId, status, {}));
 
 	const currMatch = matches?.find((match) => match.candidateProfile.id == canId);
+	const queryClient = useQueryClient();
+
+	const { mutate, isLoading: mutateIsLoading } = useMutation({
+		mutationFn: ({ candidateID, postingID, newStatus }: { candidateID: number; postingID: number; newStatus: SW.Employer.Status }) =>
+			SimplworkApi.post('employer/postings/status', null, { params: { candidateID, postingID, newStatus } }),
+		onSuccess: () => queryClient.invalidateQueries(),
+		onError: () => alert('There was an issue deleting your postings, please try again later.'),
+	});
+
+	const updateMatchStatus = (candidateID: number, postingID: number, newStatus: SW.Employer.Status) =>
+		mutate({ candidateID, postingID, newStatus });
+
+	const renderActionButton = (text: string, canId: number, postId: number, newStatus: SW.Employer.Status) => (
+		<button
+			disabled={mutateIsLoading}
+			className='button inline-flex justify-center items-center group/button disabled:pointer-events-none'
+			onClick={() => updateMatchStatus(canId, postId, newStatus)}>
+			<CgSpinner className='w-5 h-5 absolute group-enabled/button:opacity-0 animate-spin ' />
+			<span className='group-disabled/button:opacity-0 '>{text}</span>
+		</button>
+	);
+
+	const RejectButton = () => (
+		<button className='btn-red' onClick={() => updateMatchStatus(canId, postId, 'REJECTED')}>
+			Reject
+		</button>
+	);
 
 	if (isError) return <div>...error</div>;
 
@@ -75,7 +100,10 @@ const TabBody = ({
 										<h1 className='text-2xl font-semibold'>{currMatch.candidateProfile.candidateName}</h1>
 										<h1 className='text-lg font-medium text-gray-500'>location</h1>
 									</div>
-									<div className='flex h-full gap-3'>{actionButton}</div>
+									<div className='flex h-full gap-3'>
+										<>{renderActionButton(actionBtnText, canId, postId, newStatus)}</>
+										<RejectButton />
+									</div>
 								</div>
 								<div>
 									<h1 className='text-lg font-medium'>Contact Info</h1>
@@ -102,33 +130,6 @@ const TabBody = ({
 };
 
 export const PostOverviewDialogContent = (props: Props) => {
-	const queryClient = useQueryClient();
-
-	const { mutate, isLoading: mutateIsLoading } = useMutation({
-		mutationFn: ({ candidateID, postingID, newStatus }: { candidateID: number; postingID: number; newStatus: SW.Employer.Status }) =>
-			SimplworkApi.post('employer/postings/status', null, { params: { candidateID, postingID, newStatus } }),
-		onSuccess: () => queryClient.invalidateQueries(),
-		onError: () => alert('There was an issue deleting your postings, please try again later.'),
-	});
-
-	const updateMatchStatus = (candidateID: number, postingID: number, newStatus: SW.Employer.Status) =>
-		mutate({ candidateID, postingID, newStatus });
-
-	const renderActionButton = (text: string, canId: number, postId: number, newStatus: SW.Employer.Status) => (
-		<button
-			disabled={mutateIsLoading}
-			className='button inline-flex justify-center items-center group/button disabled:pointer-events-none'
-			onClick={() => updateMatchStatus(canId, postId, newStatus)}>
-			<CgSpinner className='w-5 h-5 absolute group-enabled/button:opacity-0 animate-spin ' />
-			<span className='group-disabled/button:opacity-0 '>{text}</span>
-		</button>
-	);
-
-	const RejectButton = () => (
-		<button className='btn-red' onClick={() => updateMatchStatus(canId, postId, 'REJECTED')}>
-			Reject
-		</button>
-	);
 	return (
 		<Tabs.Root className='flex flex-col' defaultValue='tab1'>
 			<Tabs.List className='shrink-0 flex ' aria-label='Manage your account'>
@@ -140,7 +141,7 @@ export const PostOverviewDialogContent = (props: Props) => {
 			</Tabs.List>
 
 			<TabContent value='tab1'>
-				<TabBody status='NEW' actionBtnText='Request Interview' actionButton={renderActionButton} />
+				<TabBody status='NEW' actionBtnText='Request Interview' newStatus={'INTERVIEW_REQUESTED'} />
 			</TabContent>
 			<TabContent value='tab2'>
 				<TabBody status='REVIEWED' actionBtnText='Request Interview' newStatus={'INTERVIEW_REQUESTED'} />
