@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { Formik, FormikValues } from 'formik';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { SimplworkApi, queries } from '@utils/simplwork';
-import { DialogFormLayout } from '../Dialogs/DialogFormLayout';
+import { DialogFormLayout } from './DialogFormLayout';
 import { jobPostingValidationSchema } from '../Formik/FormValidation';
 import { PostingForm } from '../Formik/Forms/PostingForm';
 import { useAuth } from '../Auth/AuthProvider';
 import { createAvailabilityObject } from '@components/AvailabilityWidget/logic';
+import { FormikLayout } from '@components/Formik/FormikBaseLayout';
 
 export type PostingValues = {
 	positionTitle: string;
@@ -26,11 +27,7 @@ export const EditPostingForm = ({}: EditPostingForm) => {
 	const [saving, setSaving] = useState(false);
 	const [availability, setAvailability] = useState<SW.IAvailability>(createAvailabilityObject());
 
-	const {
-		data: branches,
-		isError,
-		isLoading,
-	} = useQuery(queries.employer.getBranches(user?.credential ?? '', employerName, { pageSize: '20', pageNo: '0' }));
+	const { data: branches } = useQuery(queries.employer.getBranches(user?.credential ?? '', employerName, { pageSize: '20', pageNo: '0' }));
 
 	const { mutate } = useMutation({
 		mutationFn: (data: any) => {
@@ -78,8 +75,8 @@ export const EditPostingForm = ({}: EditPostingForm) => {
 	};
 
 	return (
-		<Formik initialValues={initialValues} onSubmit={onSubmit}>
-			{() => <PostingForm branches={branches} availability={availability} setAvailability={setAvailability} />}
-		</Formik>
+		<FormikLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={jobPostingValidationSchema}>
+			<PostingForm branches={branches} availability={availability} setAvailability={setAvailability} />
+		</FormikLayout>
 	);
 };

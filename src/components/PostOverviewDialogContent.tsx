@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { PropsWithChildren } from 'react';
 import * as Tabs from '@radix-ui/react-tabs';
 import { AvailabilityViewDialog } from './AvailabilityWidget/AvailabilityViewDialog';
 import { ExperienceList } from './Lists/Experience/ExperienceList';
@@ -22,7 +22,7 @@ const TabBody = ({
 	newStatus: SW.Employer.Status;
 }) => {
 	const router = useRouter();
-	const { user } = useAuth();
+	const { user, employerName } = useAuth();
 	const canId = parseInt(router.query.canId as string);
 	const postId = parseInt(router.query.id as string);
 
@@ -30,7 +30,8 @@ const TabBody = ({
 		data: matches,
 		isLoading,
 		isError,
-	} = useQuery(queries.employer.postings.getMatchesbyId(user?.credential ?? '', postId, status, {}));
+	} = useQuery(queries.employer.postings.getMatchesById(user?.credential ?? '', postId, status, {}));
+	const { data: post } = useQuery(queries.employer.postings.getPostingByID(user?.credential ?? '', postId));
 
 	const currMatch = matches?.find((match) => match.candidateProfile.id == canId);
 	const queryClient = useQueryClient();
@@ -114,7 +115,7 @@ const TabBody = ({
 										Phone Number: <span className='font-medium'>{currMatch.candidateProfile.phoneNumber}</span>
 									</p>
 								</div>
-								<AvailabilityViewDialog availability={currMatch.candidateProfile.availability} />
+								<AvailabilityViewDialog availability={currMatch.candidateProfile.availability} shifts={post?.shifts} />
 								<ExperienceList history={currMatch.candidateProfile.workHistory} />
 							</div>
 						) : (
@@ -129,7 +130,7 @@ const TabBody = ({
 	);
 };
 
-export const PostOverviewDialogContent = (props: Props) => {
+export const PostOverviewDialogContent = ({ id }: { id: number }) => {
 	return (
 		<Tabs.Root className='flex flex-col' defaultValue='tab1'>
 			<Tabs.List className='shrink-0 flex ' aria-label='Manage your account'>
@@ -139,7 +140,6 @@ export const PostOverviewDialogContent = (props: Props) => {
 				<TabTrigger label='Ready For Interview' value='tab4' />
 				<TabTrigger label='Rejected' value='tab5' />
 			</Tabs.List>
-
 			<TabContent value='tab1'>
 				<TabBody status='NEW' actionBtnText='Request Interview' newStatus={'INTERVIEW_REQUESTED'} />
 			</TabContent>

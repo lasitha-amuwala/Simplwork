@@ -1,15 +1,12 @@
 import { useAuth } from '@components/Auth/AuthProvider';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
-import { createAvailabilityObject } from '@components/AvailabilityWidget/logic';
 import { Card } from '@components/Card';
 import { DeletePostingDialog } from '@components/Dialogs/DeletePostingDialog';
 import DialogContent, { Dialog } from '@components/Dialogs/Dialog';
+import { PostingEditDialog } from '@components/Dialogs/PostingEditDIalog';
 import { ErrorTryAgain } from '@components/ErrorTryAgain';
-import { PostingForm } from '@components/Formik/Forms/PostingForm';
 import { PostOverviewDialogContent } from '@components/PostOverviewDialogContent';
 import { CreatePostingDialog } from '@components/Posts/CreatePostingDialog';
-import { CreatePostingForm } from '@components/Posts/CreatePostingForm';
-import { EditPostingForm } from '@components/Posts/EditPostingForm';
 import { PostOverview } from '@components/Posts/employer/PostOverview';
 import { useQuery } from '@tanstack/react-query';
 import { queries } from '@utils/simplwork';
@@ -17,8 +14,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { string } from 'yup';
+import React, { useState } from 'react';
 
 type Props = {};
 
@@ -36,7 +32,6 @@ const Home: NextPage = (props: Props) => {
 		router.push('');
 	};
 
-	// const { data: employer } = useQuery(queries.user.employerList(user?.credential ?? ''));
 	const { data, isLoading, isSuccess, isError } = useQuery({
 		...queries.employer.postings.getOverviews(user?.credential ?? '', employerName as string, params),
 		refetchInterval: 30000,
@@ -88,36 +83,25 @@ const Home: NextPage = (props: Props) => {
 							))}
 					</div>
 				</main>
-				<Dialog open={!!overviewId} onOpenChange={onOpenChange}>
-					{buttonState == 0 && (
+				{buttonState == 0 && (
+					<Dialog open={!!overviewId} onOpenChange={onOpenChange}>
 						<DialogContent className='h-auto w-[300px] bg-gray-50 flex flex-col gap-3'>
 							<Link href={`?${new URLSearchParams({ id: router.query.id as string, action: 'manage' })}`} shallow className='button text-center'>
 								Manage Applications
 							</Link>
-							<Link href={`?${new URLSearchParams({ id: router.query.id as string, action: 'edit' })}`} shallow className='button text-center'>
-								Edit Posting
-							</Link>
-							<Link href={`?${new URLSearchParams({ id: router.query.id as string, action: 'delete' })}`} shallow className='btn-red text-center'>
-								Delete Posting
-							</Link>
-						</DialogContent>
-					)}
-					{router.query.action == 'manage' && (
-						<DialogContent className='h-auto max-w-5xl bg-gray-50'>
-							<PostOverviewDialogContent />
-						</DialogContent>
-					)}
-					{router.query.action == 'edit' && (
-						<DialogContent className='h-auto max-w-5xl bg-gray-50'>
-							<EditPostingForm />
-						</DialogContent>
-					)}
-					{router.query.action == 'delete' && (
-						<DialogContent className='h-auto max-w-5xl bg-gray-50'>
+							<PostingEditDialog id={overviewId} data={data} />
 							<DeletePostingDialog id={overviewId} />
 						</DialogContent>
-					)}
-				</Dialog>
+					</Dialog>
+				)}
+				{router.query.action == 'manage' && (
+					<Dialog open={!!overviewId} onOpenChange={onOpenChange}>
+						<DialogContent className='h-auto max-w-5xl bg-gray-50'>
+							<PostOverviewDialogContent id={overviewId} />
+						</DialogContent>
+					</Dialog>
+				)}
+				{router.query.action == 'edit' && <div className='h-auto max-w-5xl bg-gray-50'></div>}
 			</ProtectedPage>
 		</>
 	);

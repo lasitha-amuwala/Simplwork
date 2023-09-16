@@ -44,9 +44,15 @@ export const queries = {
 					get(createURL(`employer/postings/overview`, { employerName: employerName, ...params })),
 				enabled: !!credential && !!employerName,
 			}),
-			getMatchesbyId: (credential: string, id: number, status: SW.Employer.Status, params: Params) => ({
-				queryKey: ['employer/postings/match', id, status, params],
+			getMatchesById: (credential: string, id: number, status: SW.Employer.Status, params: Params) => ({
+				queryKey: [`employer/postings/match/${id}`, status, params],
 				queryFn: (): Promise<SW.Employer.Postings.Match[]> => get(createURL(`employer/postings/match/${id}`, { status, ...params })),
+				enabled: !!credential && !!id && !!status,
+			}),
+			getPostingByID: (credential: string, id: number) => ({
+				queryKey: [`employer/postings/${id}`],
+				queryFn: (): Promise<SW.IPosting> => get(`employer/postings/${id}`),
+				enabled: !!credential && !!id,
 			}),
 		},
 	},
