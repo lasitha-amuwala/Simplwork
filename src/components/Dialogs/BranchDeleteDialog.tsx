@@ -5,7 +5,7 @@ import { DeleteDialog } from './DeleteDialog';
 export const BranchDeleteDialog = ({ branchName, employerName }: { branchName: string; employerName: string }) => {
 	const queryClient = useQueryClient();
 
-	const deletePost = () => SimplworkApi.delete(`employer/${employerName}/branch?branchName=${branchName}`);
+	const deletePost = () => SimplworkApi.delete(`employer/${employerName}/branch?branchName=${branchName}&force=true`);
 
 	const { mutate, isLoading, isSuccess } = useMutation({
 		mutationFn: deletePost,
