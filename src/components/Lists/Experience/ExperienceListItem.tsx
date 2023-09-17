@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { WorkHistory } from './ExperienceList';
-import { EditExperienceDialog } from '@components/Dialogs/EditExperience/EditExperienceDialog';
-import { DeleteExperienceDialog } from '@components/Dialogs/DeleteExperience/DeleteExperienceDialog';
+import { EditExperienceDialog } from '@components/Dialogs/Experience/ExperienceEditDialog';
+import { ExperienceDeleteDialog } from '@components/Dialogs/Experience/ExperienceDeleteDialog';
 import { Card } from '@components/Card';
 
 type ExperienceListItem = { data: WorkHistory; index: number; renderButtons: boolean };
@@ -21,7 +21,7 @@ export const ExperienceListItem = ({ data, index, renderButtons }: ExperienceLis
 			{renderButtons && (
 				<div className='flex gap-3 items-start'>
 					<EditExperienceDialog index={index} data={data} />
-					<DeleteExperienceDialog id={index} />
+					<ExperienceDeleteDialog id={index} />
 				</div>
 			)}
 		</div>

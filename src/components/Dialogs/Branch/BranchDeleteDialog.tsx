@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { SimplworkApi } from '@utils/simplwork';
-import { DeleteDialog } from './DeleteDialog';
+import { DeleteDialog } from '../DeleteDialog';
 
 export const BranchDeleteDialog = ({ branchName, employerName }: { branchName: string; employerName: string }) => {
 	const queryClient = useQueryClient();

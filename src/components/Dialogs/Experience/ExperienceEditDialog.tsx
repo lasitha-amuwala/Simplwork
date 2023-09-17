@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { MdEdit } from 'react-icons/md';
 import { WorkHistory } from '@components/Lists/Experience/ExperienceList';
-import { WorkExperienceEditForm } from './EditExperienceForm';
+import { WorkExperienceEditForm } from './ExperienceEditForm';
 import { DialogContentLayout } from '@components/Dialogs/DialogContentLayout';
 
 export const EditExperienceDialog = ({ index, data }: { index: number; data: WorkHistory }) => {

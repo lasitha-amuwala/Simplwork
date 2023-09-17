@@ -61,11 +61,11 @@ const TabBody = ({ status }: { status: SW.Employer.Status }) => {
 
 	const ActionButtons = () => (
 		<>
-			{status == 'NEW' && renderActionButton('Shortlist', canId, postId, 'REVIEWED')}
 			{(status == 'NEW' || status == 'REVIEWED' || status == 'REJECTED') &&
 				renderActionButton('Request Interview', canId, postId, 'INTERVIEW_REQUESTED')}
-			{status == 'REJECTED' && renderActionButton('Shortlist', canId, postId, 'SHORTLISTED')}
-			{(status == 'NEW' || status == 'REVIEWED') && renderActionButton('Reject', canId, postId, 'REJECTED', 'btn-red')}
+			{(status == 'NEW' || status == 'REVIEWED' || status == 'REJECTED') && renderActionButton('Shortlist', canId, postId, 'SHORTLISTED')}
+			{(status == 'NEW' || status == 'REVIEWED' || status == 'READY_FOR_INTERVIEW') &&
+				renderActionButton('Reject', canId, postId, 'REJECTED', 'btn-red')}
 		</>
 	);
 
@@ -120,7 +120,7 @@ const TabBody = ({ status }: { status: SW.Employer.Status }) => {
 									</div>
 								</div>
 								<AvailabilityViewDialog availability={currMatch.candidateProfile.availability} shifts={post?.shifts} />
-								<ExperienceList history={currMatch.candidateProfile.workHistory} renderButtons={false}/>
+								<ExperienceList history={currMatch.candidateProfile.workHistory} renderButtons={false} />
 							</div>
 						) : (
 							<div className='flex justify-center items-center h-full min-h-[55vh] font-medium'>

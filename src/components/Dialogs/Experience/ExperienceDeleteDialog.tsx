@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchCandidate } from '@utils/simplwork';
 import { DeleteDialog } from '../DeleteDialog';
 
-export const DeleteExperienceDialog = ({ id }: { id: number }) => {
+export const ExperienceDeleteDialog = ({ id }: { id: number }) => {
 	const queryClient = useQueryClient();
 
 	const { mutateAsync, isLoading, isSuccess } = useMutation({

@@ -14,7 +14,7 @@ import { ErrorMessage, Field, Form, Formik, FormikValues } from 'formik';
 import { convertShiftsToAvailability, createAvailabilityObject } from '@components/AvailabilityWidget/logic';
 import { AvailabilityEditSignUp } from '@components/AvailabilityWidget/AvailabilityEditSignUp';
 import { CommuteSelect } from './CommuteSelect';
-import { SignUpExperienceForm } from '@components/Dialogs/AddExperience/SignUpExperienceForm';
+import { ExperienceSignUpForm } from '@components/Dialogs/Experience/ExperienceSignUpForm';
 import {
 	commutePreferencesValidationSchema,
 	profileValidationSchema,
@@ -116,7 +116,7 @@ export const CandidateSignUp = ({ credential, resetSignUp }: SignUpFlowProps) =>
 			{isCandidateCreated ? (
 				<Step>
 					<StepHeader title='Work Experience' subtitle='Add work experience to help' />
-					<SignUpExperienceForm />
+					<ExperienceSignUpForm />
 					<button
 						className='btn-blue '
 						onClick={() => {

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { DialogContentLayout } from './DialogContentLayout';
+import { DialogContentLayout } from '../DialogContentLayout';
 import { CreateBranchForm } from '@components/Formik/Forms/Signup/CreateBranchForm';
 
 type Props = {
 	employerName: string;
 };
 
-export const CreateBranchDialog = ({ employerName }: Props) => {
+export const BranchCreateDialog = ({ employerName }: Props) => {
 	const [open, setOpen] = useState(false);
 	return (
 		<DialogContentLayout

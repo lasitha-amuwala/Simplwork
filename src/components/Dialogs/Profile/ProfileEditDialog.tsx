@@ -1,11 +1,11 @@
 import { PropsWithChildren, useState } from 'react';
-import { EditProfileForm } from './EditProfileForm';
+import { ProfileEditForm } from './ProfileEditForm';
 import { DialogContentLayout } from '@components/Dialogs/DialogContentLayout';
 import { MdEdit } from 'react-icons/md';
 
-type EditProfileDialogProps = { profileData: any };
+type ProfileEditDialogProps = { profileData: any };
 
-export const EditProfileDialog = ({ profileData }: PropsWithChildren<EditProfileDialogProps>) => {
+export const ProfileEditDialog = ({ profileData }: PropsWithChildren<ProfileEditDialogProps>) => {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -16,7 +16,7 @@ export const EditProfileDialog = ({ profileData }: PropsWithChildren<EditProfile
 			triggerClassName='light-blue-round-btn'
 			title='Edit Profile'
 			description={`Make changes to your profile here. Click save when you're done.`}>
-			<EditProfileForm profileData={profileData} afterSave={() => setOpen(false)} />
+			<ProfileEditForm profileData={profileData} afterSave={() => setOpen(false)} />
 		</DialogContentLayout>
 	);
 };

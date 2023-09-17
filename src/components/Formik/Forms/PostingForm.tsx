@@ -4,22 +4,32 @@ import { Field, useFormikContext } from 'formik';
 import { AvailabilityEditDialog } from '@components/AvailabilityWidget/AvailabilityEditDialog';
 import { Tooltip } from '@components/Tooltip';
 import { LuInfo } from 'react-icons/lu';
-import { PostingValues } from '@components/Posts/CreatePostingForm';
+
+export type PostingValues = {
+	positionTitle: string;
+	pay: number;
+	fixedSchedule: boolean;
+	jobDescription: string;
+	estimatedHours: number;
+	benefits: string;
+	branch: string;
+};
 
 type Props = {
 	shifts: SW.IShift[];
 	setShifts: Dispatch<SetStateAction<SW.IShift[]>>;
 	branches: SW.Employer.IBranch[] | undefined;
+	branchesDisabled?: boolean;
 };
 
-export const PostingForm = ({ branches, shifts, setShifts }: Props) => {
+export const PostingForm = ({ branches, shifts, setShifts, branchesDisabled }: Props) => {
 	const { values } = useFormikContext<PostingValues>();
 
 	const onSave = (shifts: SW.IShift[]) => setShifts(shifts);
 	return (
 		<div className='flex flex-col gap-1 pb-5 w-full'>
 			<FieldControl name='positionTitle' type='text' label='Position Title' />
-			<FieldControl name='branch' type='text' label='Location' as='select'>
+			<FieldControl name='branch' type='text' label='Location' as='select' disabled={branchesDisabled}>
 				<option value='' selected disabled hidden>
 					Choose branch here
 				</option>

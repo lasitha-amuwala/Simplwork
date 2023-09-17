@@ -8,9 +8,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { profileValidationSchema } from '@components/Formik/FormValidation';
 import { Card } from '@components/Card';
 
-type EditProfileForm = { profileData: any; afterSave: () => void };
+type ProfileEditForm = { profileData: any; afterSave: () => void };
 
-export const EditProfileForm = ({ profileData, afterSave }: EditProfileForm) => {
+export const ProfileEditForm = ({ profileData, afterSave }: ProfileEditForm) => {
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
 

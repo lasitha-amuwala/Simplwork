@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { SimplworkApi } from '@utils/simplwork';
-import { BaseDialogContent } from './DialogContentLayout';
-import { DialogCancelButton } from './DialogCancelButton';
-import { DialogClose } from './Dialog';
 import { DeleteButton } from '@components/Buttons/DeleteButton';
+import { DialogCancelButton } from '../DialogCancelButton';
+import { BaseDialogContent } from '../DialogContentLayout';
+import { DialogClose } from '../Dialog';
 
 export const DeletePostingDialog = ({ id }: { id: number }) => {
 	const queryClient = useQueryClient();

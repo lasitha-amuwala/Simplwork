@@ -6,8 +6,8 @@ import { useAuth } from '@components/Auth/AuthProvider';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
 import { ExperienceList } from '@components/Lists/Experience/ExperienceList';
 import { queries } from '@utils/simplwork';
-import { AddExperienceDialog } from '@components/Dialogs/AddExperience/AddExperienceDialog';
-import { EditProfileDialog } from '@components/Dialogs/EditProfile/EditProfileDialog';
+import { AddExperienceDialog } from '@components/Dialogs/Experience/ExperienceAddDialog';
+import { ProfileEditDialog } from '@components/Dialogs/Profile/ProfileEditDialog';
 import { HeaderWithButton } from '@components/Profile/HeaderWithButton';
 import { MyInformationCard } from '@components/Profile/MyInformationCard';
 import { CandidateAvailabilityEditDialog } from '@components/AvailabilityWidget/CandidateAvailabilityEditDialog';
@@ -48,7 +48,7 @@ const Profile: NextPage = () => {
 					<div className='w-6/12 flex flex-col gap-5 '>
 						<div>
 							<HeaderWithButton title='My Information'>
-								<EditProfileDialog profileData={candidate} />
+								<ProfileEditDialog profileData={candidate} />
 							</HeaderWithButton>
 							<MyInformationCard candidate={candidate} />
 						</div>

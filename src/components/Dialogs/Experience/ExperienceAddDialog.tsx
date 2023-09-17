@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AddExperienceForm } from './AddExperienceForm';
+import { ExperienceAddForm } from './ExperienceAddForm';
 import { DialogContentLayout, DialogContentLayoutProps } from '@components/Dialogs/DialogContentLayout';
 
 export const AddExperienceDialog = ({
@@ -16,7 +16,7 @@ export const AddExperienceDialog = ({
 			triggerClassName={triggerClassName}
 			title='Add Work Experience'
 			description={`Add work history here. Click add when you're done.`}>
-			<AddExperienceForm afterSave={() => setOpen(false)} />
+			<ExperienceAddForm afterSave={() => setOpen(false)} />
 		</DialogContentLayout>
 	);
 };

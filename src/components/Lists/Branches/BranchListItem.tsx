@@ -1,7 +1,7 @@
 import { useAuth } from '@components/Auth/AuthProvider';
 import { Card } from '@components/Card';
-import { BranchDeleteDialog } from '@components/Dialogs/BranchDeleteDialog';
-import { EditBranchDialog } from '@components/Dialogs/BranchEditDialog';
+import { BranchDeleteDialog } from '@components/Dialogs/Branch/BranchDeleteDialog';
+import { EditBranchDialog } from '@components/Dialogs/Branch/BranchEditDialog';
 import React from 'react';
 
 export type BranchEditProps = {

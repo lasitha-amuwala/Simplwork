@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { DialogContentLayout } from '../Dialogs/DialogContentLayout';
+import { DialogContentLayout } from '../DialogContentLayout';
 import { HiOutlinePlus } from 'react-icons/hi';
-import { CreatePostingForm } from './CreatePostingForm';
+import { PostingCreateForm } from './PostingCreateForm';
 
 type Props = {};
 
-export const CreatePostingDialog = (props: Props) => {
+export const PostingCreateDialog = (props: Props) => {
 	const [open, setOpen] = useState<boolean>(false);
 
 	const TriggerButton = () => (
@@ -23,7 +23,7 @@ export const CreatePostingDialog = (props: Props) => {
 			title='Create Job Posting'
 			description={`Create and post job posting. Click save when you're done.`}>
 			<div className='w-[550px]'>
-				<CreatePostingForm afterSave={() => setOpen(false)} />
+				<PostingCreateForm afterSave={() => setOpen(false)} />
 			</div>
 		</DialogContentLayout>
 	);

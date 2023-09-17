@@ -11,12 +11,12 @@ import { useAuth } from '@components/Auth/AuthProvider';
 import { ErrorTryAgain } from '@components/ErrorTryAgain';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
 import DialogContent, { Dialog } from '@components/Dialogs/Dialog';
-import { EditPostingForm } from '@components/Dialogs/EditPostingForm';
 import { PostOverview } from '@components/Posts/employer/PostOverview';
-import { CreatePostingDialog } from '@components/Posts/CreatePostingDialog';
+import { PostingCreateDialog } from '@components/Dialogs/Posting/PostingCreateDialog';
 import { BaseDialogContent } from '@components/Dialogs/DialogContentLayout';
-import { DeletePostingDialog } from '@components/Dialogs/DeletePostingDialog';
 import { PostOverviewDialogContent } from '@components/PostOverviewDialogContent';
+import { PostingEditForm } from '@components/Dialogs/Posting/PostingEditForm';
+import { DeletePostingDialog } from '@components/Dialogs/Posting/PostingDeleteDialog';
 
 type Props = {};
 
@@ -72,7 +72,7 @@ const Home: NextPage = (props: Props) => {
 
 						<div className='flex flex-col gap-3 w-auto'>
 							<div className='self-end'>
-								<CreatePostingDialog />
+								<PostingCreateDialog />
 							</div>
 							{isSuccess &&
 								(overviews.length > 0 ? (
@@ -110,7 +110,7 @@ const Home: NextPage = (props: Props) => {
 					)}
 					{action === 'edit' && (
 						<BaseDialogContent title='Edit Posting' description={`Edit posting here. Click add when you're done`}>
-							<EditPostingForm data={post as SW.IPosting} />
+							<PostingEditForm data={post as SW.IPosting} />
 						</BaseDialogContent>
 					)}
 					{action === 'delete' && <DeletePostingDialog id={overviewId} />}

@@ -1,6 +1,6 @@
 import { useAuth } from '@components/Auth/AuthProvider';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
-import { CreateBranchDialog } from '@components/Dialogs/CreateBranchDialog';
+import { BranchCreateDialog } from '@components/Dialogs/Branch/BranchCreateDialog';
 import { ErrorTryAgain } from '@components/ErrorTryAgain';
 import { BranchList } from '@components/Lists/Branches/BranchList';
 import { useQuery } from '@tanstack/react-query';
@@ -29,7 +29,7 @@ const Branches: NextPage = (props: Props) => {
 				<div className='flex flex-col justify-center items-center'>
 					<div className='max-w-2xl w-full pt-10 gap-5 flex flex-col'>
 						<div className='self-end'>
-							<CreateBranchDialog employerName={employerName} />
+							<BranchCreateDialog employerName={employerName} />
 						</div>
 						<BranchList branches={branches ?? []} employerName={employerName} />
 					</div>

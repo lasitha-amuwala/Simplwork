@@ -6,12 +6,12 @@ import { patchCandidate } from '@utils/simplwork';
 import { DialogFormLayout } from '@components/Dialogs/DialogFormLayout';
 import { WorkExperienceForm } from '@components/Formik/Forms/WorkExperienceForm';
 import { workHistoryValidationSchema } from '@components/Formik/FormValidation';
-import { WorkHistoryValuesType } from '../EditExperience/EditExperienceForm';
+import { WorkHistoryValuesType } from './ExperienceEditForm';
 import dayjs from 'dayjs';
 
-type AddExperienceFormProps = { afterSave?(): void };
+type ExperienceAddFormProps = { afterSave?(): void };
 
-export const AddExperienceForm = ({ afterSave }: AddExperienceFormProps) => {
+export const ExperienceAddForm = ({ afterSave }: ExperienceAddFormProps) => {
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
 

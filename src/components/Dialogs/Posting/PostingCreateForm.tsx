@@ -2,24 +2,25 @@ import { useState } from 'react';
 import { FormikValues } from 'formik';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { SimplworkApi, queries } from '@utils/simplwork';
-import { DialogFormLayout } from '../Dialogs/DialogFormLayout';
-import { jobPostingValidationSchema } from '../Formik/FormValidation';
-import { PostingForm } from '../Formik/Forms/PostingForm';
-import { useAuth } from '../Auth/AuthProvider';
+import { useAuth } from '@components/Auth/AuthProvider';
+import { DialogFormLayout } from '../DialogFormLayout';
+import { PostingForm, PostingValues } from '@components/Formik/Forms/PostingForm';
+import { jobPostingValidationSchema } from '@components/Formik/FormValidation';
 
-export type PostingValues = {
+interface IPostPosting {
 	positionTitle: string;
 	pay: number;
-	fixedSchedule: boolean;
 	jobDescription: string;
-	estimatedHours: number;
 	benefits: string;
-	branch: string;
-};
+	fixedSchedule: boolean;
+	estimatedHours: number;
+	industryType: string;
+	shifts: SW.IShift[];
+}
 
-type CreatePostingFormProps = { afterSave: () => void };
+type PostingCreateFormProps = { afterSave: () => void };
 
-export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
+export const PostingCreateForm = ({ afterSave }: PostingCreateFormProps) => {
 	const { user, employerName } = useAuth();
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
@@ -43,16 +44,15 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 		},
 	});
 
-	interface IPostPosting {
-		positionTitle: string;
-		pay: number;
-		jobDescription: string;
-		benefits: string;
-		fixedSchedule: boolean;
-		estimatedHours: number;
-		industryType: string;
-		shifts: SW.IShift[];
-	}
+	const initialValues: PostingValues = {
+		positionTitle: '',
+		pay: 0,
+		fixedSchedule: false,
+		jobDescription: '',
+		estimatedHours: 0,
+		benefits: '',
+		branch: '',
+	};
 
 	const onSubmit = async ({ positionTitle, pay, jobDescription, fixedSchedule, benefits, branch, estimatedHours }: FormikValues) => {
 		setSaving(true);
@@ -68,16 +68,6 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 		};
 		mutate({ data, branch });
 		afterSave();
-	};
-
-	const initialValues: PostingValues = {
-		positionTitle: '',
-		pay: 0,
-		fixedSchedule: false,
-		jobDescription: '',
-		estimatedHours: 0,
-		benefits: '',
-		branch: '',
 	};
 
 	return (
