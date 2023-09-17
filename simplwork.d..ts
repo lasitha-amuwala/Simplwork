@@ -110,7 +110,7 @@ namespace SW {
 			age: number;
 			maxTravelTimes: IMaxTravelTimes;
 			workHistory: IWorkHistory[];
-			postalCode: string;
+			fullAddress: string;
 			availability: IAvailability;
 			autoMatch: boolean;
 			picture: string;

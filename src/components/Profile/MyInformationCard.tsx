@@ -26,6 +26,10 @@ export const MyInformationCard = ({ candidate }: ProfileInfoCardProps) => {
 				<p>{candidate?.phoneNumber}</p>
 			</div>
 			<div>
+				<h1 className='font-semibold'>Address:</h1>
+				<p>{candidate?.fullAddress}</p>
+			</div>
+			<div>
 				<h1 className='font-semibold pb-1'>Maximum Work Hours:</h1>
 				<p>{candidate?.maximumHours}</p>
 			</div>
