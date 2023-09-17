@@ -5,7 +5,6 @@ import { SimplworkApi } from '@utils/simplwork';
 import { DialogFormLayout } from '@components/Dialogs/DialogFormLayout';
 import { BranchValidationSchema } from '@components/Formik/FormValidation';
 import { BranchForm } from '@components/Formik/Forms/BranchForm';
-import { useAuth } from '@components/Auth/AuthProvider';
 
 type BranchValueType = {
 	branchName: string;
@@ -16,7 +15,7 @@ type BranchEditFormProps = { employerName: string; afterSave: () => void; branch
 export const BranchEditForm = ({ employerName, afterSave, branch }: BranchEditFormProps) => {
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
-	const [location, setLocation] = useState<SW.ILocation>({ latitude: 0, longitude: 0, postalCode: '' });
+	const [location, setLocation] = useState<SW.ILocation>(branch.location);
 
 	const initialValues: BranchValueType = { branchName: branch.branchName ?? '' };
 

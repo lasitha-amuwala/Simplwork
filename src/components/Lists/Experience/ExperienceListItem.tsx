@@ -4,11 +4,11 @@ import { EditExperienceDialog } from '@components/Dialogs/EditExperience/EditExp
 import { DeleteExperienceDialog } from '@components/Dialogs/DeleteExperience/DeleteExperienceDialog';
 import { Card } from '@components/Card';
 
-type ExperienceListItem = { data: WorkHistory; index: number };
+type ExperienceListItem = { data: WorkHistory; index: number; renderButtons: boolean };
 
 const dateFormatString = (date: string) => dayjs(date, 'DD-MM-YYYY').format('MMMM YYYY');
 
-export const ExperienceListItem = ({ data, index }: ExperienceListItem) => (
+export const ExperienceListItem = ({ data, index, renderButtons }: ExperienceListItem) => (
 	<Card className='flex flex-col py-2 p-5 '>
 		<div className='flex'>
 			<div className='flex flex-col pb-3 grow'>
@@ -18,12 +18,12 @@ export const ExperienceListItem = ({ data, index }: ExperienceListItem) => (
 					{data.startDate && <span>{dateFormatString(data.startDate)}</span>} - {data.endDate && <span>{dateFormatString(data.endDate)}</span>}
 				</p>
 			</div>
-			<div className='flex gap-5 text-gray-600'>
+			{renderButtons && (
 				<div className='flex gap-3 items-start'>
 					<EditExperienceDialog index={index} data={data} />
 					<DeleteExperienceDialog id={index} />
 				</div>
-			</div>
+			)}
 		</div>
 		<p className='line-clamp-2'>{data.details}</p>
 	</Card>

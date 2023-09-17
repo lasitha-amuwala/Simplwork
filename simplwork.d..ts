@@ -135,7 +135,7 @@ namespace SW {
 	}
 
 	namespace Employer {
-		type Status = 'NEW' | 'REVIEWED' | 'INTERVIEW_REQUESTED' | 'READY_FOR_INTERVIEW' | 'REJECTED';
+		type Status = 'NEW' | 'REVIEWED' | 'SHORTLISTED' | 'INTERVIEW_REQUESTED' | 'READY_FOR_INTERVIEW' | 'REJECTED';
 
 		interface IEmployer {
 			companyName: string;

@@ -9,9 +9,9 @@ export type WorkHistory = {
 	endDate?: string;
 };
 
-type ExperienceListProps = { history: WorkHistory[] };
+type ExperienceListProps = { history: WorkHistory[]; renderButtons: boolean };
 
-export const ExperienceList = ({ history }: ExperienceListProps) => {
+export const ExperienceList = ({ history, renderButtons }: ExperienceListProps) => {
 	return (
 		<>
 			{history.length === 0 ? (
@@ -24,7 +24,7 @@ export const ExperienceList = ({ history }: ExperienceListProps) => {
 			) : (
 				<div className='flex flex-col gap-3'>
 					{history.map((data, i) => (
-						<ExperienceListItem key={i} data={data} index={i} />
+						<ExperienceListItem key={i} data={data} index={i} renderButtons={renderButtons} />
 					))}
 				</div>
 			)}

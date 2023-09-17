@@ -37,8 +37,10 @@ const Home: NextPage = (props: Props) => {
 		isError,
 	} = useQuery({
 		...queries.employer.postings.getOverviews(user?.credential ?? '', employerName as string, params),
-		refetchInterval: 30000,
+		refetchInterval: 15000,
 	});
+
+	const { data: post } = useQuery(queries.employer.postings.getPostingByID(user?.credential ?? '', overviewId));
 
 	useEffect(() => {
 		const overviewExists = overviews?.some((overview) => overview.jobPosting.id == overviewId);
@@ -58,9 +60,6 @@ const Home: NextPage = (props: Props) => {
 			<ProtectedPage>
 				<main className='flex justify-center pt-7 w-full '>
 					<div className='max-w-7xl p-1.5 w-full flex flex-col gap-3 justify-center items-center overflow-y-auto'>
-						<div className='self-end'>
-							<CreatePostingDialog />
-						</div>
 						{isLoading &&
 							Array(10)
 								.fill(0)
@@ -70,10 +69,14 @@ const Home: NextPage = (props: Props) => {
 									</div>
 								))}
 						{isError && <ErrorTryAgain />}
-						{isSuccess &&
-							(overviews ? (
-								<div className='flex flex-col gap-3 w-auto'>
-									{overviews?.map(
+
+						<div className='flex flex-col gap-3 w-auto'>
+							<div className='self-end'>
+								<CreatePostingDialog />
+							</div>
+							{isSuccess &&
+								(overviews.length > 0 ? (
+									overviews?.map(
 										({ jobPosting, new_count, reviewed_count, interview_requested_count, ready_for_interview_count, rejected_count }) => (
 											<Link href={{ pathname: '/e/', query: { id: jobPosting.id } }} key={jobPosting.id} className='w-full sm:w-auto'>
 												<PostOverview
@@ -87,16 +90,16 @@ const Home: NextPage = (props: Props) => {
 												/>
 											</Link>
 										)
-									)}
-								</div>
-							) : (
-								<div className='bg-gray-200 w-[672px] rounded-lg py-10 px-5 flex flex-col justify-center items-center'>
-									<p className=''>You have no posts to display.</p>
-									<p>
-										Click <span className='font-semibold'>Create Job Posting</span> to continue.
-									</p>
-								</div>
-							))}
+									)
+								) : (
+									<div className='bg-gray-200 w-[672px] rounded-lg py-10 px-5 flex flex-col justify-center items-center'>
+										<p className=''>You have no posts to display.</p>
+										<p>
+											Click <span className='font-semibold'>Create Job Posting</span> to continue.
+										</p>
+									</div>
+								))}
+						</div>
 					</div>
 				</main>
 				<Dialog open={open} onOpenChange={onOpenChange}>
@@ -107,7 +110,7 @@ const Home: NextPage = (props: Props) => {
 					)}
 					{action === 'edit' && (
 						<BaseDialogContent title='Edit Posting' description={`Edit posting here. Click add when you're done`}>
-							<EditPostingForm id={overviewId} />
+							<EditPostingForm data={post as SW.IPosting} />
 						</BaseDialogContent>
 					)}
 					{action === 'delete' && <DeletePostingDialog id={overviewId} />}

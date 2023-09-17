@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FormikValues } from 'formik';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { SimplworkApi, queries } from '@utils/simplwork';
@@ -28,21 +28,16 @@ interface IPostPosting {
 }
 
 type EditPostingForm = {
-	id: number;
+	data: SW.IPosting;
 };
 
-export const EditPostingForm = ({ id }: EditPostingForm) => {
+export const EditPostingForm = ({ data }: EditPostingForm) => {
 	const { user, employerName } = useAuth();
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
-	const [shifts, setShifts] = useState<SW.IShift[]>([]);
+	const [shifts, setShifts] = useState<SW.IShift[] | []>(data?.shifts ?? []);
 
 	const { data: branches } = useQuery(queries.employer.getBranches(user?.credential ?? '', employerName, { pageSize: '20', pageNo: '0' }));
-	const { data: post } = useQuery(queries.employer.postings.getPostingByID(user?.credential ?? '', id));
-
-	useEffect(() => {
-		if (post) setShifts(post?.shifts);
-	}, [post]);
 
 	const { mutate } = useMutation({
 		mutationFn: (data: any) => {
@@ -56,13 +51,13 @@ export const EditPostingForm = ({ id }: EditPostingForm) => {
 	});
 
 	const initialValues: PostingValues = {
-		positionTitle: post?.positionTitle ?? '',
-		pay: post?.pay ?? 0,
-		fixedSchedule: false,
-		jobDescription: post?.jobDescription ?? '',
-		estimatedHours: post?.estimatedHours ?? 0,
-		benefits: post?.benefits ?? '',
-		branch: '',
+		positionTitle: data?.positionTitle ?? '',
+		pay: data?.pay ?? 0,
+		fixedSchedule: data?.isFixedSchedule ?? false,
+		jobDescription: data?.jobDescription ?? '',
+		estimatedHours: data?.estimatedHours ?? 0,
+		benefits: data?.benefits ?? '',
+		branch: data?.employer.branches[0].branchName ?? '',
 	};
 
 	const onSubmit = async ({ positionTitle, pay, jobDescription, fixedSchedule, benefits, branch }: FormikValues) => {
@@ -73,7 +68,7 @@ export const EditPostingForm = ({ id }: EditPostingForm) => {
 			jobDescription,
 			benefits,
 			fixedSchedule,
-			shifts: [{ dayOfWeek: 1, shiftTimes: { startTime: 0, endTime: 120 } }],
+			shifts,
 			industryType: 'RETAIL',
 		};
 		mutate({ data, branch });

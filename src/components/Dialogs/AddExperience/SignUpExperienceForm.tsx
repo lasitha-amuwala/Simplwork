@@ -22,7 +22,7 @@ export const SignUpExperienceForm = (props: Props) => {
 	return (
 		<div className='flex flex-col gap-5'>
 			<div className='max-h-[400px] overflow-y-auto pr-1'>
-				<ExperienceList history={candidate?.workHistory ?? []} />
+				<ExperienceList history={candidate?.workHistory ?? []} renderButtons/>
 			</div>
 			<div className='self-end'>
 				<AddExperienceDialog triggerLabel='Add Experience' />

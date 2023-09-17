@@ -8,21 +8,14 @@ import { useAuth } from './Auth/AuthProvider';
 import { useRouter } from 'next/router';
 import { displayDistance } from '@utils/helpers';
 import { CgSpinner } from 'react-icons/cg';
+import { twMerge } from 'tailwind-merge';
 import Link from 'next/link';
 
 type Props = {};
 
-const TabBody = ({
-	status,
-	actionBtnText,
-	newStatus,
-}: {
-	status: SW.Employer.Status;
-	actionBtnText: string;
-	newStatus: SW.Employer.Status;
-}) => {
+const TabBody = ({ status }: { status: SW.Employer.Status }) => {
 	const router = useRouter();
-	const { user, employerName } = useAuth();
+	const { user } = useAuth();
 	const canId = parseInt(router.query.canId as string);
 	const postId = parseInt(router.query.id as string);
 
@@ -40,26 +33,40 @@ const TabBody = ({
 		mutationFn: ({ candidateID, postingID, newStatus }: { candidateID: number; postingID: number; newStatus: SW.Employer.Status }) =>
 			SimplworkApi.post('employer/postings/status', null, { params: { candidateID, postingID, newStatus } }),
 		onSuccess: () => queryClient.invalidateQueries(),
-		onError: () => alert('There was an issue deleting your postings, please try again later.'),
+		onError: () => alert('There was an issue updating the status of application, please try again later.'),
 	});
+
+	const { mutate: mutateWithoutRefetch } = useMutation({
+		mutationFn: ({ candidateID, postingID, newStatus }: { candidateID: number; postingID: number; newStatus: SW.Employer.Status }) =>
+			SimplworkApi.post('employer/postings/status', null, { params: { candidateID, postingID, newStatus } }),
+		onError: () => alert('There was an issue updating the status of application, please try again later.'),
+	});
+
+	const handleSetReviewed = (status: SW.Employer.Status, candidateID: number, postingID: number) => {
+		if (status == 'NEW') mutateWithoutRefetch({ candidateID, postingID, newStatus: 'REVIEWED' });
+	};
 
 	const updateMatchStatus = (candidateID: number, postingID: number, newStatus: SW.Employer.Status) =>
 		mutate({ candidateID, postingID, newStatus });
 
-	const renderActionButton = (text: string, canId: number, postId: number, newStatus: SW.Employer.Status) => (
+	const renderActionButton = (text: string, canId: number, postId: number, newStatus: SW.Employer.Status, className?: string) => (
 		<button
 			disabled={mutateIsLoading}
-			className='button inline-flex justify-center items-center group/button disabled:pointer-events-none'
+			className={twMerge(className, 'button inline-flex justify-center items-center group/button disabled:pointer-events-none')}
 			onClick={() => updateMatchStatus(canId, postId, newStatus)}>
 			<CgSpinner className='w-5 h-5 absolute group-enabled/button:opacity-0 animate-spin ' />
 			<span className='group-disabled/button:opacity-0 '>{text}</span>
 		</button>
 	);
 
-	const RejectButton = () => (
-		<button className='btn-red' onClick={() => updateMatchStatus(canId, postId, 'REJECTED')}>
-			Reject
-		</button>
+	const ActionButtons = () => (
+		<>
+			{status == 'NEW' && renderActionButton('Shortlist', canId, postId, 'REVIEWED')}
+			{(status == 'NEW' || status == 'REVIEWED' || status == 'REJECTED') &&
+				renderActionButton('Request Interview', canId, postId, 'INTERVIEW_REQUESTED')}
+			{status == 'REJECTED' && renderActionButton('Shortlist', canId, postId, 'SHORTLISTED')}
+			{(status == 'NEW' || status == 'REVIEWED') && renderActionButton('Reject', canId, postId, 'REJECTED', 'btn-red')}
+		</>
 	);
 
 	if (isError) return <div>...error</div>;
@@ -82,7 +89,8 @@ const TabBody = ({
 							{matches.length == 0 && <li className='flex justify-center items-center min-h-[55vh] font-medium'>No Applications.</li>}
 							{matches.map((match, i) => (
 								<Link
-									key={`${canId}-${i}`}
+									key={`${match.candidateProfile.id}-${i}`}
+									onClick={() => handleSetReviewed(status, match.candidateProfile.id, postId)}
 									className={`flex flex-col ring-sw hover:ring rounded text-start ${match.candidateProfile.id == canId && 'ring '}`}
 									href={`?${new URLSearchParams({
 										...router.query,
@@ -98,25 +106,21 @@ const TabBody = ({
 							<div className='flex flex-col gap-5'>
 								<div className='flex gap-5'>
 									<div className='grow'>
-										<h1 className='text-2xl font-semibold'>{currMatch.candidateProfile.candidateName}</h1>
-										<h1 className='text-lg font-medium text-gray-500'>location</h1>
+										<h1 className='text-2xl font-bold pb-5'>{currMatch.candidateProfile.candidateName}</h1>
+										<h1 className='text-xl font-semibold'>Contact Info</h1>
+										<p className=''>
+											Email: <span className='font-medium'>{currMatch.candidateProfile.email}</span>
+										</p>
+										<p className=''>
+											Phone Number: <span className='font-medium'>{currMatch.candidateProfile.phoneNumber}</span>
+										</p>
 									</div>
-									<div className='flex h-full gap-3'>
-										<>{renderActionButton(actionBtnText, canId, postId, newStatus)}</>
-										<RejectButton />
+									<div className='flex flex-col h-full gap-3'>
+										<ActionButtons />
 									</div>
-								</div>
-								<div>
-									<h1 className='text-lg font-medium'>Contact Info</h1>
-									<p className=''>
-										Email: <span className='font-medium'>{currMatch.candidateProfile.email}</span>
-									</p>
-									<p className=''>
-										Phone Number: <span className='font-medium'>{currMatch.candidateProfile.phoneNumber}</span>
-									</p>
 								</div>
 								<AvailabilityViewDialog availability={currMatch.candidateProfile.availability} shifts={post?.shifts} />
-								<ExperienceList history={currMatch.candidateProfile.workHistory} />
+								<ExperienceList history={currMatch.candidateProfile.workHistory} renderButtons={false}/>
 							</div>
 						) : (
 							<div className='flex justify-center items-center h-full min-h-[55vh] font-medium'>
@@ -136,24 +140,28 @@ export const PostOverviewDialogContent = ({ id }: { id: number }) => {
 			<Tabs.List className='shrink-0 flex ' aria-label='Manage your account'>
 				<TabTrigger label='New' value='tab1' />
 				<TabTrigger label='Reviewed' value='tab2' />
-				<TabTrigger label='Interview Requested' value='tab3' />
-				<TabTrigger label='Ready For Interview' value='tab4' />
-				<TabTrigger label='Rejected' value='tab5' />
+				<TabTrigger label='Shortlisted' value='tab3' />
+				<TabTrigger label='Interview Requested' value='tab4' />
+				<TabTrigger label='Ready For Interview' value='tab5' />
+				<TabTrigger label='Rejected' value='tab6' />
 			</Tabs.List>
 			<TabContent value='tab1'>
-				<TabBody status='NEW' actionBtnText='Request Interview' newStatus={'INTERVIEW_REQUESTED'} />
+				<TabBody status='NEW' />
 			</TabContent>
 			<TabContent value='tab2'>
-				<TabBody status='REVIEWED' actionBtnText='Request Interview' newStatus={'INTERVIEW_REQUESTED'} />
+				<TabBody status='REVIEWED' />
 			</TabContent>
 			<TabContent value='tab3'>
-				<TabBody status='INTERVIEW_REQUESTED' actionBtnText='Ready For Interview' newStatus={'READY_FOR_INTERVIEW'} />
+				<TabBody status='SHORTLISTED' />
 			</TabContent>
 			<TabContent value='tab4'>
-				<TabBody status='READY_FOR_INTERVIEW' actionBtnText='Ready For Interview' newStatus={'NEW'} />
+				<TabBody status='INTERVIEW_REQUESTED' />
 			</TabContent>
 			<TabContent value='tab5'>
-				<TabBody status='REJECTED' actionBtnText='Ready For Interview' newStatus={'READY_FOR_INTERVIEW'} />
+				<TabBody status='READY_FOR_INTERVIEW' />
+			</TabContent>
+			<TabContent value='tab6'>
+				<TabBody status='REJECTED' />
 			</TabContent>
 		</Tabs.Root>
 	);
@@ -181,7 +189,6 @@ const MatchListItem = ({ match }: { match: SW.Employer.Postings.Match }) => {
 	return (
 		<div className='bg-white w-full border-[1.5px] rounded p-5'>
 			<h1 className='font-medium text-md'>{match.candidateProfile.candidateName}</h1>
-			<p className='flex items-center gap-1 text-gray-500 text-md'>location</p>
 			<p className='text-ms'>
 				Compatible Hours: <span>{match.matchingHours}hrs</span>
 			</p>

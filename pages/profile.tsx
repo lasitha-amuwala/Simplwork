@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import { NextPage } from 'next';
@@ -43,7 +42,7 @@ const Profile: NextPage = () => {
 							<AddExperienceDialog triggerLabel={<CgMathPlus />} triggerClassName='light-blue-round-btn' />
 						</HeaderWithButton>
 						<div className='max-h-[800px] overflow-y-auto pr-2 pb-3'>
-							<ExperienceList history={candidate?.workHistory ?? []} />
+							<ExperienceList history={candidate?.workHistory ?? []} renderButtons />
 						</div>
 					</div>
 					<div className='w-6/12 flex flex-col gap-5 '>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FormikValues } from 'formik';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { SimplworkApi, queries } from '@utils/simplwork';
@@ -49,11 +49,12 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 		jobDescription: string;
 		benefits: string;
 		fixedSchedule: boolean;
+		estimatedHours: number;
 		industryType: string;
 		shifts: SW.IShift[];
 	}
 
-	const onSubmit = async ({ positionTitle, pay, jobDescription, fixedSchedule, benefits, branch }: FormikValues) => {
+	const onSubmit = async ({ positionTitle, pay, jobDescription, fixedSchedule, benefits, branch, estimatedHours }: FormikValues) => {
 		setSaving(true);
 		const data: IPostPosting = {
 			positionTitle,
@@ -62,6 +63,7 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 			benefits,
 			fixedSchedule,
 			shifts,
+			estimatedHours,
 			industryType: 'RETAIL',
 		};
 		mutate({ data, branch });
