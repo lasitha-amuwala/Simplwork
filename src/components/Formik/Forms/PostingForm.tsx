@@ -2,20 +2,20 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { FieldControl } from '../inputs/FieldControl';
 import { Field, useFormikContext } from 'formik';
 import { AvailabilityEditDialog } from '@components/AvailabilityWidget/AvailabilityEditDialog';
-import { convertShiftsToAvailability } from '@components/AvailabilityWidget/logic';
 import { Tooltip } from '@components/Tooltip';
 import { LuInfo } from 'react-icons/lu';
 import { PostingValues } from '@components/Posts/CreatePostingForm';
 
 type Props = {
-	availability: SW.IAvailability;
-	setAvailability: Dispatch<SetStateAction<SW.IAvailability>>;
+	shifts: SW.IShift[];
+	setShifts: Dispatch<SetStateAction<SW.IShift[]>>;
 	branches: SW.Employer.IBranch[] | undefined;
 };
 
-export const PostingForm = ({ branches, availability, setAvailability }: Props) => {
-	const onSave = (shifts: SW.IShift[]) => setAvailability(convertShiftsToAvailability(shifts));
+export const PostingForm = ({ branches, shifts, setShifts }: Props) => {
 	const { values } = useFormikContext<PostingValues>();
+
+	const onSave = (shifts: SW.IShift[]) => setShifts(shifts);
 	return (
 		<div className='flex flex-col gap-1 pb-5 w-full'>
 			<FieldControl name='positionTitle' type='text' label='Position Title' />
@@ -50,8 +50,8 @@ export const PostingForm = ({ branches, availability, setAvailability }: Props) 
 			<h1 className='font-semibold'>
 				{values.fixedSchedule ? 'Create weekly shift schedule:' : 'Enter all the possible shifts for the job posting:'}
 			</h1>
-			<div className='h-[400px] overflow-auto my-3'>
-				<AvailabilityEditDialog availability={availability} onSave={onSave} isLoading={false} />
+			<div className='py-5 w-full'>
+				<AvailabilityEditDialog shifts={shifts} onSave={onSave} isLoading={false} />
 			</div>
 			{!values.fixedSchedule && (
 				<label className='flex gap-3 items-center'>

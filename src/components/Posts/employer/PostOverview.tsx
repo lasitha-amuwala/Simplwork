@@ -1,5 +1,4 @@
 import { Card } from '@components/Card';
-import { DeletePostingDialog } from '@components/Dialogs/DeletePostingDialog';
 import { timeFromNow } from '@utils/helpers';
 import React from 'react';
 
@@ -7,6 +6,7 @@ type PostOverviewProps = {
 	post: SW.Employer.Postings.IJobPosting;
 	newCount: number;
 	reviewedCount: number;
+	shortlistedCount: number;
 	interviewRequestedCount: number;
 	readyForInterviewCount: number;
 	rejectedCount: number;
@@ -16,30 +16,32 @@ export const PostOverview = ({
 	post,
 	newCount,
 	reviewedCount,
+	shortlistedCount,
 	interviewRequestedCount,
 	readyForInterviewCount,
 	rejectedCount,
 }: PostOverviewProps) => {
 	const DataDisplay = ({ text, value }: { text: string; value: number }) => {
 		return (
-			<div className='flex flex-col items-center justify-center'>
-				<h1 className='text-2xl font-bold text-sw-500'>{value}</h1>
-				<p className='font-medium'>{text}</p>
-			</div>
+			<h1 className='font-bold text-3xl text-black'>
+				{value}
+				<span className='font-medium text-gray-500 text-base pl-2 whitespace-nowrap'>{text}</span>
+			</h1>
 		);
 	};
 
 	return (
-		<Card className='flex flex-col gap-4 w-full group/postOverview hover:cursor-pointer ring-sw hover:ring ring-2 select-none'>
-			<div>
-				<h1 className='font-semibold text-lg'>{post.positionTitle}</h1>
-				<p className='font-medium text-md'>
+		<Card className='flex flex-col gap-3 w-full group/postOverview hover:cursor-pointer ring-sw hover:ring ring-2 select-none'>
+			<div className='flex gap-2 items-end'>
+				<h1 className='font-bold text-lg'>{post.positionTitle}</h1>
+				<p className='font-medium text-lg text-gray-600'>
 					{post.branch.branchName} - <span className='text-gray-500 font-normal'>{post.branch.location.addressComponents?.place}</span>
 				</p>
 			</div>
-			<div className='flex justify-between gap-7'>
+			<div className='flex flex-col sm:flex-row gap-1 sm:gap-x-10 flex-wrap'>
 				<DataDisplay value={newCount} text='New' />
 				<DataDisplay value={reviewedCount} text='Reviewed' />
+				<DataDisplay value={shortlistedCount} text='ShortListed' />
 				<DataDisplay value={interviewRequestedCount} text='Interview Requested' />
 				<DataDisplay value={readyForInterviewCount} text='Ready For Interview' />
 				<DataDisplay value={rejectedCount} text='Rejected' />

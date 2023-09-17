@@ -31,11 +31,12 @@ export const getDateDetails = (date: Date) => {
 // convert shift to event object from fullCalender
 export const convertShiftToEvent = (eventData: EventInput) => {
 	const { dayOfWeek, shiftTimes } = eventData as SW.IShift;
-	return {
+	const event = {
 		title: '',
 		start: convertShiftTimeToDate(dayOfWeek, shiftTimes.startTime),
 		end: convertShiftTimeToDate(dayOfWeek, shiftTimes.endTime == 1440 ? 1439 : shiftTimes.endTime),
 	};
+	return event;
 };
 
 export const convertEventsToShifts = (events: EventApi[]): SW.IShift[] => {
@@ -68,38 +69,20 @@ export const convertEventsToShifts = (events: EventApi[]): SW.IShift[] => {
 			for (let i = 1; i < daysInBetween + 1; i++) shifts.push(createShift(startWeekDay == 7 ? i : startWeekDay + i, 0, 1439));
 			shifts.push(createShift(endInMinutes == 0 ? endWeekDay - 1 : endWeekDay, 0, newEndInMinues));
 		}
-
-		// if (startDay === endDay) {
-		// 	shifts.push(createShift(startDay, startInMinutes, endInMinutes));
-		// } else {
-		// if (startDay === 7) {
-		// 	shifts.push(createShift(startDay, startInMinutes, 1440));
-		// 	console.log(endDay);
-		// 	for (let i = 1; i < endDay + 1; i++) shifts.push(createShift(i, 0, i == endDay ? endInMinutes : 1440));
-		// } else {
-		// 	const daysBetween = Math.abs(endDay - startDay) - 1;
-		//  else {
-		// 		shifts.push(createShift(startDay, startInMinutes, 1440));
-		// 		for (let i = 0; i < daysBetween; i++) {
-		// 			shifts.push(createShift(startDay + 1 + i, 0, 1440));
-		// 		}
-		// 		shifts.push(createShift(endDay, 0, endInMinutes));
-		// 	}
-		// }
 	});
 	return shifts;
 };
 
 // convert minutes in a day to a date object
-export const convertShiftTimeToDate = (day: number, minutes: number) => {
-	return dayjs()
-		.isoWeekday(day == 7 ? 0 : day)
+export const convertShiftTimeToDate = (day: number, minutes: number) =>
+	dayjs()
+		.startOf('week')
+		.day(day == 7 ? 0 : day)
 		.hour(Math.floor(minutes / 60))
 		.minute(minutes % 60)
 		.second(0)
 		.millisecond(0)
 		.toDate();
-};
 
 // convert availibility object to list of shits, opposite of convertShiftsToAvailability
 export const convertAvailabilityToShifts = (availability: SW.IAvailability | undefined): SW.IShift[] => {

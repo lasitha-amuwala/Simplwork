@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormikValues } from 'formik';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { SimplworkApi, queries } from '@utils/simplwork';
@@ -6,7 +6,6 @@ import { DialogFormLayout } from '../Dialogs/DialogFormLayout';
 import { jobPostingValidationSchema } from '../Formik/FormValidation';
 import { PostingForm } from '../Formik/Forms/PostingForm';
 import { useAuth } from '../Auth/AuthProvider';
-import { createAvailabilityObject } from '@components/AvailabilityWidget/logic';
 
 export type PostingValues = {
 	positionTitle: string;
@@ -24,7 +23,7 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 	const { user, employerName } = useAuth();
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
-	const [availability, setAvailability] = useState<SW.IAvailability>(createAvailabilityObject());
+	const [shifts, setShifts] = useState<SW.IShift[]>([]);
 
 	const {
 		data: branches,
@@ -62,7 +61,7 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 			jobDescription,
 			benefits,
 			fixedSchedule,
-			shifts: [{ dayOfWeek: 1, shiftTimes: { startTime: 0, endTime: 120 } }],
+			shifts,
 			industryType: 'RETAIL',
 		};
 		mutate({ data, branch });
@@ -81,7 +80,7 @@ export const CreatePostingForm = ({ afterSave }: CreatePostingFormProps) => {
 
 	return (
 		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={jobPostingValidationSchema} formDisabled={saving}>
-			<PostingForm branches={branches} availability={availability} setAvailability={setAvailability} />
+			<PostingForm branches={branches} shifts={shifts} setShifts={setShifts} />
 		</DialogFormLayout>
 	);
 };

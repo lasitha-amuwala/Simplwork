@@ -21,9 +21,9 @@ export const DialogContentLayout = (props: PropsWithChildren<DialogContentLayout
 	</Dialog>
 );
 
-const BaseDialogContent = ({ title, description, children }: PropsWithChildren<{ title: string; description: string }>) => (
-	<DialogContent className='flex flex-col gap-3 w-auto px-5 md:px-10'>
-		<div className='min-w-[400px]'>
+export const BaseDialogContent = ({ title, description, children }: PropsWithChildren<{ title: string; description: string }>) => (
+	<DialogContent className='flex flex-col gap-3 w-auto h-auto px-5 md:px-10'>
+		<div className='min-w-[450px]'>
 			<DialogTitle>{title}</DialogTitle>
 			<DialogDescription>{description}</DialogDescription>
 		</div>

@@ -1,13 +1,11 @@
-import { useState } from 'react';
-import { Formik, FormikValues } from 'formik';
+import { useState, useEffect } from 'react';
+import { FormikValues } from 'formik';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { SimplworkApi, queries } from '@utils/simplwork';
 import { DialogFormLayout } from './DialogFormLayout';
 import { jobPostingValidationSchema } from '../Formik/FormValidation';
 import { PostingForm } from '../Formik/Forms/PostingForm';
 import { useAuth } from '../Auth/AuthProvider';
-import { createAvailabilityObject } from '@components/AvailabilityWidget/logic';
-import { FormikLayout } from '@components/Formik/FormikBaseLayout';
 
 export type PostingValues = {
 	positionTitle: string;
@@ -19,15 +17,32 @@ export type PostingValues = {
 	branch: string;
 };
 
-type EditPostingForm = {};
+interface IPostPosting {
+	positionTitle: string;
+	pay: number;
+	jobDescription: string;
+	benefits: string;
+	fixedSchedule: boolean;
+	industryType: string;
+	shifts: SW.IShift[];
+}
 
-export const EditPostingForm = ({}: EditPostingForm) => {
+type EditPostingForm = {
+	id: number;
+};
+
+export const EditPostingForm = ({ id }: EditPostingForm) => {
 	const { user, employerName } = useAuth();
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
-	const [availability, setAvailability] = useState<SW.IAvailability>(createAvailabilityObject());
+	const [shifts, setShifts] = useState<SW.IShift[]>([]);
 
 	const { data: branches } = useQuery(queries.employer.getBranches(user?.credential ?? '', employerName, { pageSize: '20', pageNo: '0' }));
+	const { data: post } = useQuery(queries.employer.postings.getPostingByID(user?.credential ?? '', id));
+
+	useEffect(() => {
+		if (post) setShifts(post?.shifts);
+	}, [post]);
 
 	const { mutate } = useMutation({
 		mutationFn: (data: any) => {
@@ -36,19 +51,19 @@ export const EditPostingForm = ({}: EditPostingForm) => {
 		},
 		onSuccess: () => queryClient.invalidateQueries(),
 		onError: () => {
-			alert('There was an issue creating job posting, please try again later.');
+			alert('There was an issue editing job posting, please try again later.');
 		},
 	});
 
-	interface IPostPosting {
-		positionTitle: string;
-		pay: number;
-		jobDescription: string;
-		benefits: string;
-		fixedSchedule: boolean;
-		industryType: string;
-		shifts: SW.IShift[];
-	}
+	const initialValues: PostingValues = {
+		positionTitle: post?.positionTitle ?? '',
+		pay: post?.pay ?? 0,
+		fixedSchedule: false,
+		jobDescription: post?.jobDescription ?? '',
+		estimatedHours: post?.estimatedHours ?? 0,
+		benefits: post?.benefits ?? '',
+		branch: '',
+	};
 
 	const onSubmit = async ({ positionTitle, pay, jobDescription, fixedSchedule, benefits, branch }: FormikValues) => {
 		setSaving(true);
@@ -64,19 +79,9 @@ export const EditPostingForm = ({}: EditPostingForm) => {
 		mutate({ data, branch });
 	};
 
-	const initialValues: PostingValues = {
-		positionTitle: '',
-		pay: 0,
-		fixedSchedule: false,
-		jobDescription: '',
-		estimatedHours: 0,
-		benefits: '',
-		branch: '',
-	};
-
 	return (
-		<FormikLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={jobPostingValidationSchema}>
-			<PostingForm branches={branches} availability={availability} setAvailability={setAvailability} />
-		</FormikLayout>
+		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={jobPostingValidationSchema} formDisabled={saving}>
+			<PostingForm branches={branches} shifts={shifts} setShifts={setShifts} />
+		</DialogFormLayout>
 	);
 };
