@@ -34,11 +34,7 @@ export const BranchEditForm = ({ employerName, afterSave, branch }: BranchEditFo
 	const onSubmit = ({ branchName }: FormikValues) => {
 		setSaving(true);
 		const data = [
-			{
-				op: 'replace',
-				path: `/branchName`,
-				value: branchName,
-			},
+			{ op: 'replace', path: `/branchName`, value: branchName },
 			{ op: 'replace', path: '/location', value: location },
 		];
 		mutate({ employerName, oldbranchName: branch.branchName, data });

@@ -23,6 +23,7 @@ interface IPostPosting {
 	jobDescription: string;
 	benefits: string;
 	fixedSchedule: boolean;
+	estimatedHours: number;
 	industryType: string;
 	shifts: SW.IShift[];
 }
@@ -31,17 +32,20 @@ type EditPostingForm = {
 	data: SW.IPosting;
 };
 
-export const EditPostingForm = ({ data }: EditPostingForm) => {
+export const EditPostingForm = ({ data: posting }: EditPostingForm) => {
 	const { user, employerName } = useAuth();
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
-	const [shifts, setShifts] = useState<SW.IShift[] | []>(data?.shifts ?? []);
+	const [shifts, setShifts] = useState<SW.IShift[] | []>(posting?.shifts ?? []);
 
 	const { data: branches } = useQuery(queries.employer.getBranches(user?.credential ?? '', employerName, { pageSize: '20', pageNo: '0' }));
 
 	const { mutate } = useMutation({
 		mutationFn: (data: any) => {
-			if (branches) return SimplworkApi.post(`employer/postings?employerName=${employerName}&branchName=${data.branch}`, data.data);
+			if (branches)
+				return SimplworkApi.patch(`employer/postings/${posting.id}`, JSON.stringify(data.data), {
+					headers: { 'Content-Type': 'application/json-patch+json' },
+				});
 			return Promise.reject();
 		},
 		onSuccess: () => queryClient.invalidateQueries(),
@@ -51,26 +55,28 @@ export const EditPostingForm = ({ data }: EditPostingForm) => {
 	});
 
 	const initialValues: PostingValues = {
-		positionTitle: data?.positionTitle ?? '',
-		pay: data?.pay ?? 0,
-		fixedSchedule: data?.isFixedSchedule ?? false,
-		jobDescription: data?.jobDescription ?? '',
-		estimatedHours: data?.estimatedHours ?? 0,
-		benefits: data?.benefits ?? '',
-		branch: data?.employer.branches[0].branchName ?? '',
+		positionTitle: posting?.positionTitle ?? '',
+		pay: posting?.pay ?? 0,
+		fixedSchedule: posting?.isFixedSchedule ?? false,
+		jobDescription: posting?.jobDescription ?? '',
+		estimatedHours: posting?.estimatedHours ?? 0,
+		benefits: posting?.benefits ?? '',
+		branch: posting?.employer.branches[0].branchName ?? '',
 	};
 
-	const onSubmit = async ({ positionTitle, pay, jobDescription, fixedSchedule, benefits, branch }: FormikValues) => {
+	const onSubmit = async ({ positionTitle, pay, jobDescription, fixedSchedule, benefits, branch, estimatedHours }: FormikValues) => {
 		setSaving(true);
-		const data: IPostPosting = {
-			positionTitle,
-			pay,
-			jobDescription,
-			benefits,
-			fixedSchedule,
-			shifts,
-			industryType: 'RETAIL',
-		};
+
+		const data = [
+			{ op: 'replace', path: `/shifts`, value: shifts },
+			{ op: 'replace', path: '/positionTitle', value: positionTitle },
+			{ op: 'replace', path: '/pay', value: pay },
+			{ op: 'replace', path: '/jobDescription', value: jobDescription },
+			{ op: 'replace', path: '/benefits', value: benefits },
+			{ op: 'replace', path: '/fixedSchedule', value: fixedSchedule },
+			{ op: 'replace', path: '/estimatedHours', value: estimatedHours },
+			// { op: 'replace', path: '/branch', value: branch },
+		];
 		mutate({ data, branch });
 	};
 
