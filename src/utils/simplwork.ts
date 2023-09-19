@@ -51,7 +51,7 @@ export const queries = {
 			}),
 			getPostingByID: (credential: string, id: number) => ({
 				queryKey: [`employer/postings/${id}`],
-				queryFn: (): Promise<SW.IPosting> => get(`employer/postings/${id}`),
+				queryFn: (): Promise<SW.IPosting> => (id == -1 ? Promise.reject() : get(`employer/postings/${id}`)),
 				enabled: !!credential && !!id,
 			}),
 		},

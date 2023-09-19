@@ -39,7 +39,7 @@ namespace SW {
 		jobDescription: string;
 		benefits: string;
 		createdAt: string;
-		employer: any;
+		employer: Employer.IEmployer;
 		shifts: IShift[];
 		isFixedSchedule: boolean;
 		estimatedHours?: number;
@@ -140,6 +140,8 @@ namespace SW {
 		interface IEmployer {
 			companyName: string;
 			companyDescription: stdistancering;
+			branches: IBranch[];
+			imageID: string;
 		}
 
 		interface IBranch {

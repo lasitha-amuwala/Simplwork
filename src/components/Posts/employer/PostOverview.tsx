@@ -32,10 +32,10 @@ export const PostOverview = ({
 
 	return (
 		<Card className='flex flex-col gap-3 w-full group/postOverview hover:cursor-pointer ring-sw hover:ring ring-2 select-none'>
-			<div className='flex gap-2 items-end'>
-				<h1 className='font-bold text-lg'>{post.positionTitle}</h1>
+			<div className='flex flex-col'>
+				<h1 className='font-bold text-xl'>{post.positionTitle}</h1>
 				<p className='font-medium text-lg text-gray-600'>
-					{post.branch.branchName} - <span className='text-gray-500 font-normal'>{post.branch.location.addressComponents?.place}</span>
+					{post.branch.branchName} - <span className='text-gray-500 font-normal'>{post.branch.location.fullAddress}</span>
 				</p>
 			</div>
 			<div className='flex flex-col sm:flex-row gap-1 sm:gap-x-10 flex-wrap'>

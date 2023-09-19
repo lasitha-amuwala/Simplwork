@@ -28,6 +28,7 @@ const Home: NextPage = (props: Props) => {
 
 	const router = useRouter();
 	const overviewId = parseInt(router.query.id as string);
+
 	const action = router.query.action;
 
 	const {
@@ -40,15 +41,21 @@ const Home: NextPage = (props: Props) => {
 		refetchInterval: 15000,
 	});
 
-	const { data: post } = useQuery(queries.employer.postings.getPostingByID(user?.credential ?? '', overviewId));
+	const { data: post } = useQuery(queries.employer.postings.getPostingByID(user?.credential ?? '', overviewId ?? -1));
 
 	useEffect(() => {
+		if (!overviewId) router.push('');
 		const overviewExists = overviews?.some((overview) => overview.jobPosting.id == overviewId);
-		if (overviewExists) setOpen(true);
+		console.log(overviewExists);
+		if (!!overviewExists && overviewId) setOpen(true);
 	}, [overviewId, overviews]);
 
-	const onOpenChange = (isOpen: boolean) => {
-		if (isOpen == false) setOpen(false);
+	useEffect(() => {
+		console.log(open);
+	}, [open]);
+
+	const onOpenChange = (open: boolean) => {
+		setOpen(false);
 		router.push('');
 	};
 
@@ -69,7 +76,6 @@ const Home: NextPage = (props: Props) => {
 									</div>
 								))}
 						{isError && <ErrorTryAgain />}
-
 						<div className='flex flex-col gap-3 w-auto'>
 							<div className='self-end'>
 								<PostingCreateDialog />
@@ -110,7 +116,7 @@ const Home: NextPage = (props: Props) => {
 					)}
 					{action === 'edit' && (
 						<BaseDialogContent title='Edit Posting' description={`Edit posting here. Click add when you're done`}>
-							<PostingEditForm data={post as SW.IPosting} />
+							<PostingEditForm data={post as SW.IPosting} afterSave={onOpenChange} />
 						</BaseDialogContent>
 					)}
 					{action === 'delete' && <DeletePostingDialog id={overviewId} />}

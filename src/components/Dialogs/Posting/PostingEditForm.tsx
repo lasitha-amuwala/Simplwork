@@ -8,21 +8,23 @@ import { jobPostingValidationSchema } from '@components/Formik/FormValidation';
 
 type EditPostingForm = {
 	data: SW.IPosting;
+	afterSave: () => void;
 };
 
-export const PostingEditForm = ({ data: posting }: EditPostingForm) => {
+export const PostingEditForm = ({ data: posting, afterSave }: EditPostingForm) => {
 	const queryClient = useQueryClient();
 	const [saving, setSaving] = useState(false);
 	const [shifts, setShifts] = useState<SW.IShift[] | []>(posting?.shifts ?? []);
 
-	const { mutate } = useMutation({
+	const { mutateAsync } = useMutation({
 		mutationFn: (data: any) =>
-			SimplworkApi.patch(`employer/postings/${posting.id}`, JSON.stringify(data.data), {
+			SimplworkApi.patch(`employer/postings/${posting.id}`, JSON.stringify(data), {
 				headers: { 'Content-Type': 'application/json-patch+json' },
 			}),
 		onSuccess: () => queryClient.invalidateQueries(),
 		onError: () => {
 			alert('There was an issue editing job posting, please try again later.');
+			afterSave();
 		},
 	});
 
@@ -38,7 +40,6 @@ export const PostingEditForm = ({ data: posting }: EditPostingForm) => {
 
 	const onSubmit = async ({ positionTitle, pay, jobDescription, fixedSchedule, benefits, estimatedHours }: FormikValues) => {
 		setSaving(true);
-
 		const data = [
 			{ op: 'replace', path: `/shifts`, value: shifts },
 			{ op: 'replace', path: '/positionTitle', value: positionTitle },
@@ -48,12 +49,13 @@ export const PostingEditForm = ({ data: posting }: EditPostingForm) => {
 			{ op: 'replace', path: '/fixedSchedule', value: fixedSchedule },
 			{ op: 'replace', path: '/estimatedHours', value: estimatedHours },
 		];
-		mutate({ data });
+		await mutateAsync(data);
+		afterSave();
 	};
 
 	return (
 		<DialogFormLayout initialValues={initialValues} onSubmit={onSubmit} validationSchema={jobPostingValidationSchema} formDisabled={saving}>
-			<PostingForm branches={[]} shifts={shifts} setShifts={setShifts} branchesDisabled />
+			<PostingForm branches={posting.employer.branches} shifts={shifts} setShifts={setShifts} branchesDisabled />
 		</DialogFormLayout>
 	);
 };
