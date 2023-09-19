@@ -98,13 +98,8 @@ export const convertAvailabilityToShifts = (availability: SW.IAvailability | und
 
 // convert list of shifts to Availability object, opposite of convertAvailabilityToShifts
 export const convertShiftsToAvailability = (shifts: SW.IShift[]): SW.IAvailability => {
-	console.log(shifts);
 	const availabilityObject = createAvailabilityObject();
-	shifts.forEach(({ dayOfWeek, shiftTimes }) => {
-		console.log(dayOfWeek, shiftTimes);
-		return availabilityObject[getDayStringByNumber(dayOfWeek)].push(shiftTimes);
-	});
-
+	shifts.forEach(({ dayOfWeek, shiftTimes }) => availabilityObject[getDayStringByNumber(dayOfWeek)].push(shiftTimes));
 	return availabilityObject;
 };
 

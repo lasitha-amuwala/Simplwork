@@ -27,7 +27,7 @@ const Home: NextPage = (props: Props) => {
 	const [open, setOpen] = useState(false);
 
 	const router = useRouter();
-	const overviewId = parseInt(router.query.id as string);
+	const overviewId = router.query.id ? parseInt(router.query.id as string) : undefined;
 
 	const action = router.query.action;
 
@@ -41,22 +41,28 @@ const Home: NextPage = (props: Props) => {
 		refetchInterval: 15000,
 	});
 
-	const { data: post } = useQuery(queries.employer.postings.getPostingByID(user?.credential ?? '', overviewId ?? -1));
+	const {
+		data: post,
+		isSuccess: isPostSuccess,
+		isLoading: isPostLoading,
+		isError: isPostError,
+	} = useQuery(queries.employer.postings.getPostingByID(user?.credential ?? '', overviewId ?? -1));
 
 	useEffect(() => {
-		if (!overviewId) router.push('');
-		const overviewExists = overviews?.some((overview) => overview.jobPosting.id == overviewId);
-		console.log(overviewExists);
-		if (!!overviewExists && overviewId) setOpen(true);
+		if (router.query.id) {
+			const overviewExists = overviews?.some((overview) => overview.jobPosting.id == overviewId);
+			if (overviewExists) {
+				setOpen(true);
+			} else {
+				setOpen(false);
+				router.push('/e');
+			}
+		}
 	}, [overviewId, overviews]);
-
-	useEffect(() => {
-		console.log(open);
-	}, [open]);
 
 	const onOpenChange = (open: boolean) => {
 		setOpen(false);
-		router.push('');
+		router.push('/e');
 	};
 
 	return (
@@ -108,32 +114,34 @@ const Home: NextPage = (props: Props) => {
 						</div>
 					</div>
 				</main>
-				<Dialog open={open} onOpenChange={onOpenChange}>
-					{action === 'manage' && (
-						<DialogContent className='h-auto max-w-7xl bg-gray-50 flex flex-col gap-3'>
-							<PostOverviewDialogContent id={overviewId} />
-						</DialogContent>
-					)}
-					{action === 'edit' && (
-						<BaseDialogContent title='Edit Posting' description={`Edit posting here. Click add when you're done`}>
-							<PostingEditForm data={post as SW.IPosting} afterSave={onOpenChange} />
-						</BaseDialogContent>
-					)}
-					{action === 'delete' && <DeletePostingDialog id={overviewId} />}
-					{!action && (
-						<DialogContent className='h-auto w-[300px] bg-gray-50 flex flex-col gap-3'>
-							<Link href={`?${new URLSearchParams({ id: router.query.id as string, action: 'manage' })}`} shallow className='button text-center'>
-								Manage Applications
-							</Link>
-							<Link href={`?${new URLSearchParams({ id: router.query.id as string, action: 'edit' })}`} shallow className='button text-center'>
-								Edit Posting
-							</Link>
-							<Link href={`?${new URLSearchParams({ id: router.query.id as string, action: 'delete' })}`} shallow className='btn-red text-center'>
-								Delete Posting
-							</Link>
-						</DialogContent>
-					)}
-				</Dialog>
+				{isSuccess && isPostSuccess && (
+					<Dialog open={open} onOpenChange={onOpenChange}>
+						{overviewId && action === 'manage' && (
+							<DialogContent className='h-auto max-w-7xl bg-gray-50 flex flex-col gap-3'>
+								<PostOverviewDialogContent id={overviewId} />
+							</DialogContent>
+						)}
+						{overviewId && action === 'edit' && (
+							<BaseDialogContent title='Edit Posting' description={`Edit posting here. Click add when you're done`}>
+								<PostingEditForm data={post} afterSave={() => onOpenChange(false)} />
+							</BaseDialogContent>
+						)}
+						{overviewId && action === 'delete' && <DeletePostingDialog id={overviewId} />}
+						{!action && (
+							<DialogContent className='h-auto w-[300px] bg-gray-50 flex flex-col gap-3'>
+								<Link href={`?${new URLSearchParams({ id: `${overviewId}`, action: 'manage' })}`} shallow className='button text-center'>
+									Manage Applications
+								</Link>
+								<Link href={`?${new URLSearchParams({ id: `${overviewId}`, action: 'edit' })}`} shallow className='button text-center'>
+									Edit Posting
+								</Link>
+								<Link href={`?${new URLSearchParams({ id: `${overviewId}`, action: 'delete' })}`} shallow className='btn-red text-center'>
+									Delete Posting
+								</Link>
+							</DialogContent>
+						)}
+					</Dialog>
+				)}
 			</ProtectedPage>
 		</>
 	);
