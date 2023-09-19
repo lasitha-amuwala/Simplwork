@@ -1,6 +1,7 @@
 import { useAuth } from '@components/Auth/AuthProvider';
 import { ProtectedPage } from '@components/Auth/ProtectedPage';
 import { Card } from '@components/Card';
+import { EmployerProfileEditDialog } from '@components/Dialogs/EmployerProfile/EmployerProfileEditDialog';
 import { ProfileImage } from '@components/ProfileImage';
 import { useQuery } from '@tanstack/react-query';
 import { queries } from '@utils/simplwork';
@@ -25,9 +26,12 @@ const Profile = (props: Props) => {
 					<Card className='flex flex-col justify-center items-center min-w-[350px] py-10 px-10 gap-7'>
 						<ProfileImage image={user?.picture} />
 						{employer && (
-							<div className='flex justify-center flex-col items-center '>
-								<h1 className='text-4xl font-semibold'>{employer.companyName}</h1>
-								<h1 className='text-lg text-gray-600'>{employer.companyDescription}</h1>
+							<div className='flex items-center gap-3'>
+								<div className='flex justify-center flex-col items-center '>
+									<h1 className='text-4xl font-semibold'>{employer.companyName}</h1>
+									<h1 className='text-lg text-gray-600'>{employer.companyDescription}</h1>
+								</div>
+								<EmployerProfileEditDialog employerData={employer} />
 							</div>
 						)}
 					</Card>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FormikValues } from 'formik';
-import { SimplworkApi } from '@utils/simplwork';
+import { patchCandidate } from '@utils/simplwork';
 import { ProfileForm } from '@components/Formik/Forms/ProfileForm';
 import { FieldControl } from '@components/Formik/inputs/FieldControl';
 import { DialogFormLayout } from '@components/Dialogs/DialogFormLayout';
@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { profileValidationSchema } from '@components/Formik/FormValidation';
 import { Card } from '@components/Card';
 
-type ProfileEditForm = { profileData: any; afterSave: () => void };
+type ProfileEditForm = { profileData: SW.Candidate.ICandidate; afterSave: () => void };
 
 export const ProfileEditForm = ({ profileData, afterSave }: ProfileEditForm) => {
 	const queryClient = useQueryClient();
@@ -22,10 +22,6 @@ export const ProfileEditForm = ({ profileData, afterSave }: ProfileEditForm) => 
 		commuteTypes: profileData.maxTravelTimes ? Object.keys(profileData.maxTravelTimes).map((key) => key) : [],
 		maxTravelTimes: profileData.maxTravelTimes ?? '',
 		maximumHours: profileData.maximumHours ?? '',
-	};
-
-	const patchCandidate = (data: any) => {
-		return SimplworkApi.patch('candidate', JSON.stringify(data), { headers: { 'Content-Type': 'application/json-patch+json' } });
 	};
 
 	const { mutateAsync } = useMutation({

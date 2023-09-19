@@ -30,7 +30,7 @@ export const PostingForm = ({ branches, shifts, setShifts, branchesDisabled }: P
 		<div className='flex flex-col gap-1 pb-5 w-full'>
 			<FieldControl name='positionTitle' type='text' label='Position Title' />
 			<FieldControl name='branch' type='text' label='Branch' as='select' disabled={branchesDisabled}>
-				<option value=''  disabled hidden>
+				<option value='' disabled hidden>
 					Choose branch here
 				</option>
 				{branches?.map((branch) => (

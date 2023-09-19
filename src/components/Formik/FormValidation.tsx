@@ -40,6 +40,12 @@ export const commutePreferencesValidationSchema = object().shape({
 	}),
 });
 
+export const employerDescription = object().shape({
+	companyDescription: string()
+		.required('Compnay description is required.')
+		.min(2, 'Too Short!')
+		.max(2000, 'Maximum 2000 characters, Too Long!'),
+});
 export const employerProfile = object().shape({
 	companyName: string().required('Company name is required.').min(2, 'Too Short!').max(500, 'Too Long'),
 	companyDescription: string()

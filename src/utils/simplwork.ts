@@ -30,7 +30,7 @@ export const queries = {
 		getEmployer: (credential: string, employerName: string) => ({
 			queryKey: [`employer/${employerName}`],
 			queryFn: (): Promise<SW.Employer.IEmployer> => get(createURL(`employer/${employerName}`)),
-			enabled: !!credential,
+			enabled: !!credential && !!employerName,
 		}),
 		getBranches: (credential: string, employerName: string | null, params: Params) => ({
 			queryKey: [`employer/${employerName}/branch`, params],

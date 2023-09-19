@@ -1,11 +1,11 @@
 import { PropsWithChildren, useState } from 'react';
-import { ProfileEditForm } from './ProfileEditForm';
 import { DialogContentLayout } from '@components/Dialogs/DialogContentLayout';
 import { MdEdit } from 'react-icons/md';
+import { EmployerProfileEditForm } from './EmployerProfileEditForm';
 
-type ProfileEditDialogProps = { profileData: SW.Candidate.ICandidate };
+type EmployerProfileEditDialogProps = { employerData: SW.Employer.IEmployer };
 
-export const ProfileEditDialog = ({ profileData }: PropsWithChildren<ProfileEditDialogProps>) => {
+export const EmployerProfileEditDialog = ({ employerData }: PropsWithChildren<EmployerProfileEditDialogProps>) => {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -16,7 +16,7 @@ export const ProfileEditDialog = ({ profileData }: PropsWithChildren<ProfileEdit
 			triggerClassName='light-blue-round-btn'
 			title='Edit Profile'
 			description={`Make changes to your profile here. Click save when you're done.`}>
-			<ProfileEditForm profileData={profileData} afterSave={() => setOpen(false)} />
+			<EmployerProfileEditForm employerData={employerData} afterSave={() => setOpen(false)} />
 		</DialogContentLayout>
 	);
 };
