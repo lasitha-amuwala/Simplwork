@@ -16,7 +16,8 @@ const Register: NextPageWithLayout = () => {
 
 	useEffect(() => {
 		if (!user) router.replace('/e/register');
-	}, [user]);
+	}, [user, router]);
+	
 	return <EmployerSignUp />;
 };
 

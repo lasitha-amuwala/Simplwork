@@ -58,7 +58,7 @@ const Home: NextPage = (props: Props) => {
 				router.push('/e');
 			}
 		}
-	}, [overviewId, overviews]);
+	}, [overviewId, overviews, router]);
 
 	const onOpenChange = (open: boolean) => {
 		setOpen(false);
