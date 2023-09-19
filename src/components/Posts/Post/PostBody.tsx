@@ -2,6 +2,7 @@ import { useAuth } from '@components/Auth/AuthProvider';
 import { AvailabilityViewDialog } from '@components/AvailabilityWidget/AvailabilityViewDialog';
 import { useQuery } from '@tanstack/react-query';
 import { queries } from '@utils/simplwork';
+import parse from 'html-react-parser';
 
 type PostBodyProps = { post: SW.PostingResponse };
 
@@ -18,6 +19,7 @@ export const PostBody = ({ post }: PostBodyProps) => {
 	);
 
 	const requiredHours = requiredMinutes / 60;
+	const data = 'lorem <b>&ampipsum</b>';
 
 	return (
 		<div className='flex flex-col gap-4 p-5'>
@@ -47,7 +49,7 @@ export const PostBody = ({ post }: PostBodyProps) => {
 			</div>
 			<div className='flex flex-col gap-1'>
 				<h1 className='font-semibold text-lg'>Job Description</h1>
-				<p className='text-gray-500'>{post.posting.jobDescription}</p>
+				<p className='text-gray-500'>{parse(post.posting.jobDescription)}</p>
 			</div>
 			<div className='flex flex-col gap-1'>
 				<h1 className='font-semibold text-lg'>Benefits</h1>

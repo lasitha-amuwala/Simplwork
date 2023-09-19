@@ -3,6 +3,7 @@ import { CommutePostTags } from '../PostTags';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { unEscape } from '@utils/helpers';
 import axios from 'axios';
+import parse from 'html-react-parser';
 
 export const CompanyHeaderCard = ({ post }: { post: SW.PostingResponse }) => {
 	const queryClient = useQueryClient();
@@ -21,7 +22,6 @@ export const CompanyHeaderCard = ({ post }: { post: SW.PostingResponse }) => {
 	});
 
 	const onStatusChangeClick = (status: string) => mutate({ id: post.posting.id, status: status });
-
 	return (
 		<div className='bg-[#64B1EC]/10 border-b p-5 flex flex-col gap-4 overflow-auto'>
 			<div className='h-auto flex gap-4'>
@@ -45,7 +45,7 @@ export const CompanyHeaderCard = ({ post }: { post: SW.PostingResponse }) => {
 					</div>
 				</div>
 			</div>
-			<p className='text-md text-gray-600'>{unEscape(post.posting.employer.companyDescription)}</p>
+			<p className='text-md text-gray-600'>{parse(post.posting.employer.companyDescription)}</p>
 			<CommutePostTags
 				distance={post.distance}
 				CarCommuteTime={post.carCommuteTime}
