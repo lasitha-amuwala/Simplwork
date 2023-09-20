@@ -3,6 +3,7 @@ import { MdAttachMoney, MdCalendarMonth, MdOutlineAccessTime } from 'react-icons
 import { PostTag } from '../PostTags';
 import { timeFromNow } from '@utils/helpers';
 import { Card } from '@components/Card';
+import parse from 'html-react-parser';
 
 type PostPreviewItemProps = {
 	post: any;
@@ -79,7 +80,7 @@ export const PostPreview = memo(({ post, status = '', active }: PostPreviewItemP
 					{post.shifts.length > 0 && <PostTag icon={<MdCalendarMonth />}>{AvailableDayOfWeek(post.shifts)}</PostTag>}
 					{!post.isFixedSchedule && post.estimatedHours >= 0 && <PostTag icon={<MdOutlineAccessTime />}>{`${post.estimatedHours} hrs`}</PostTag>}
 				</div>
-				<p className='w-full text-gray-600 line-clamp-2'>{post.jobDescription}</p>
+				<p className='w-full text-gray-600 line-clamp-2'>{parse(post.jobDescription)}</p>
 			</div>
 			<p className='text-xs pt-3 text-gray-500'>{timeFromNow(post.createdAt)}</p>
 		</Card>

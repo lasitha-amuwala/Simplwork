@@ -61,9 +61,10 @@ const TabBody = ({ status }: { status: SW.Employer.Status }) => {
 
 	const ActionButtons = () => (
 		<>
-			{(status == 'NEW' || status == 'REVIEWED' || status == 'REJECTED') &&
+			{(status == 'NEW' || status == 'REVIEWED' || status == 'REJECTED' || status == 'SHORTLISTED') &&
 				renderActionButton('Request Interview', canId, postId, 'INTERVIEW_REQUESTED')}
 			{(status == 'NEW' || status == 'REVIEWED' || status == 'REJECTED') && renderActionButton('Shortlist', canId, postId, 'SHORTLISTED')}
+			{status == 'SHORTLISTED' && renderActionButton('Remove from shortlist', canId, postId, 'REVIEWED')}
 			{(status == 'NEW' || status == 'REVIEWED' || status == 'READY_FOR_INTERVIEW') &&
 				renderActionButton('Reject', canId, postId, 'REJECTED', 'btn-red')}
 		</>
