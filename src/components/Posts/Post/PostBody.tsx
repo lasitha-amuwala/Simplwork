@@ -49,7 +49,7 @@ export const PostBody = ({ post }: PostBodyProps) => {
 			</div>
 			<div className='flex flex-col gap-1'>
 				<h1 className='font-semibold text-lg'>Job Description</h1>
-				<p className='text-gray-500'>{parse(post.posting.jobDescription)}</p>
+				<div className='text-gray-500'>{parse(post.posting.jobDescription)}</div>
 			</div>
 			<div className='flex flex-col gap-1'>
 				<h1 className='font-semibold text-lg'>Benefits</h1>

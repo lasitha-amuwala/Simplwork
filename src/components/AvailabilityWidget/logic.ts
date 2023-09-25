@@ -41,33 +41,55 @@ export const convertShiftToEvent = (eventData: EventInput) => {
 
 export const convertEventsToShifts = (events: EventApi[]): SW.IShift[] => {
 	let shifts: SW.IShift[] = [];
+
 	events.forEach((event: EventApi) => {
 		const { day: startDay, dayOfWeek: startWeekDay, minuteOfDay: startInMinutes } = getDateDetails(new Date(event.startStr));
 		const { day: endDay, dayOfWeek: endWeekDay, minuteOfDay: endInMinutes } = getDateDetails(new Date(event.endStr));
 
+		/* logic to help with annoying midnights, 
+			 Problem 1: The calender widget converts any day at midnight to the following day at 0 minutes.
+			 ex. Saturday at midnight is converted to next Sunday at 0 minutes, next Sunday is not shown on the widget (problem)
+			 Problem 2: The calender widget starts its week on Sunday and ends on Saturday, while the backend is setup so monday
+			 is the first day of the week and sunday is the last. This discrepency causes issues when selecting a shift from sunday
+			 to any other day
+			 Problem 3: this problem is a result of problem 2, if today is Sunday, the calender thinks its Sunday of next week. Because
+			 again the calender follows sunday to saturday week, while server follows monday to sunday. Sundays are annoying
+			 Possible Solution: make the backend week start on sunday. This is solve all the issues and make the logic MUCH simpler	*/
+
+		// if selection is only within one day
 		if (startWeekDay === endWeekDay) {
 			if (startDay === endDay) {
 				shifts.push(createShift(startWeekDay, startInMinutes, endInMinutes));
 			} else {
+				// adjust for problem 3
 				shifts.push(createShift(startWeekDay, startInMinutes, 1439));
 				for (let i = 1; i < 7; i++) shifts.push(createShift(i, 0, 1439));
 			}
 		} else {
-			let daysInBetween = endWeekDay - startWeekDay - 1;
-			let newEndInMinues = endInMinutes;
+			if (startWeekDay == 7 && endWeekDay < 7) {
+				// for a selection starting on Sunday and ending before next Sunday
 
-			if (startWeekDay == 7) {
-				daysInBetween = endWeekDay - 1;
+				// create shift for sunday till midnight
+				shifts.push(createShift(7, startInMinutes, 1439));
+				// create shifts between monday and endWeekDay
+				for (let i = 1; i < endWeekDay; i++) shifts.push(createShift(i, 0, 1439));
+				// create shift for endWeekDay only if endInMinutes is not 0, if 0 then it was already covered by the for loop
+				if (endInMinutes !== 0) shifts.push(createShift(endWeekDay, 0, endInMinutes));
+			} else if (startWeekDay < 7 && endWeekDay == 7) {
+				// for a selection starting after Sunday but ending on next Sunday
+
+				// create shift for starting day
+				shifts.push(createShift(startWeekDay, startInMinutes, 1439));
+				// create shift for everyday till saturday at midnight
+				for (let i = startWeekDay + 1; i < endWeekDay; i++) shifts.push(createShift(i, 0, 1439));
+			} else {
+				// create shift for starting day
+				shifts.push(createShift(startWeekDay, startInMinutes, 1439));
+				// create shift for everyday till endWeekDay at midnight
+				for (let i = startWeekDay + 1; i < endWeekDay; i++) shifts.push(createShift(i, 0, 1439));
+				// create shift for endWeekDay only if endInMinutes is not 0, if 0 then it was already covered by the for loop
+				if (endInMinutes !== 0) shifts.push(createShift(endWeekDay, 0, endInMinutes));
 			}
-
-			if (endInMinutes === 0) {
-				newEndInMinues = 1439;
-				daysInBetween -= 1;
-			}
-
-			shifts.push(createShift(startWeekDay, startInMinutes, 1439));
-			for (let i = 1; i < daysInBetween + 1; i++) shifts.push(createShift(startWeekDay == 7 ? i : startWeekDay + i, 0, 1439));
-			shifts.push(createShift(endInMinutes == 0 ? endWeekDay - 1 : endWeekDay, 0, newEndInMinues));
 		}
 	});
 	return shifts;

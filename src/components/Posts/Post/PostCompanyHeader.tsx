@@ -44,7 +44,7 @@ export const CompanyHeaderCard = ({ post }: { post: SW.PostingResponse }) => {
 					</div>
 				</div>
 			</div>
-			<p className='text-md text-gray-600'>{parse(post.posting.employer.companyDescription)}</p>
+			<div className='text-md text-gray-600'>{parse(post.posting.employer.companyDescription)}</div>
 			<CommutePostTags
 				distance={post.distance}
 				CarCommuteTime={post.carCommuteTime}
